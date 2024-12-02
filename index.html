@@ -277,7 +277,7 @@
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
-            const seedString = document.getElementById('seed-input').value || "Enter in your movie name";
+            const seedString = document.getElementById('seed-input').value || "";
             setCookie('seed-input', seedString, 7);
             const seed = hashString(seedString+userId);
             console.log(seed);
