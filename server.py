@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def serve_bingo():
-    return send_from_directory('.', 'bingo.html')
+    return send_from_directory('.', 'index.html')
 
 if __name__ == '__main__':
     
