@@ -14,6 +14,7 @@
             margin-left: 0; /* Align table to the left */
             padding-left: 3px; /* Add padding to the left */
             padding-right: 3px; /* Add padding to the right */
+            table-layout: fixed; /* Ensure equal width for all cells */
         }
         /* Add media query for desktop */
         @media (min-width: 768px) {
@@ -23,7 +24,7 @@
         }
         td {
             border: 1px solid #000;
-            width: 20%;
+            width: 20%; /* Ensure equal width for all cells */
             text-align: center;
             vertical-align: middle;
             /*font-size: 4vw;*/
@@ -39,8 +40,7 @@
 </head>
 <body>
     <h1>Holiday Bingo</h1>
-    <input type="text" id="seed-input" placeholder="Movie Name">
-    <button id="generate-board">Create Bingo</button>
+    <button id="generate-board">Regenerate Bingo</button>
     <table id="bingo-board">
         <!-- ...existing code... -->
         <!-- Generate a 5x5 Bingo board -->
@@ -267,9 +267,9 @@
             return 'user_' + Math.random().toString(36).substr(2, 9);
         }
 
-        function getOrCreateUserId() {
+        function getOrCreateUserId(reset) {
             let userId = getCookie('user-id');
-            if (!userId) {
+            if (!userId || reset) {
                 userId = generateRandomUserId();
                 setCookie('user-id', userId, 365);
             }
@@ -279,9 +279,8 @@
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
-            const seedString = document.getElementById('seed-input').value || "";
-            setCookie('seed-input', seedString, 7);
-            const seed = hashString(seedString+userId);
+            
+            const seed = hashString(userId);
             console.log(seed);
             christmasTropes = getTropes();
             seededShuffle(christmasTropes, seed);
@@ -311,16 +310,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const savedSeed = getCookie('seed-input');
-            
-            if (savedSeed) {
-                document.getElementById('seed-input').value = savedSeed;
-            }
             generateBoard();
             loadCellColors();
         });
 
         document.getElementById('generate-board').addEventListener('click', async () => {
+            console.log(getOrCreateUserId(true));
             generateBoard();
         });
 
