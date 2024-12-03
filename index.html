@@ -242,7 +242,6 @@
         }
 
         function seededShuffle(array, s) {
-            console.log(s);
             var seed = s + 1;
 
             for (let i = array.length - 1; i > 0; i--) {
@@ -299,13 +298,12 @@
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            console.log(seed);
             christmasTropes = getTropes();
             seededShuffle(christmasTropes, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {
-                cell.classList.remove('marked_green');
+                
                 if (index < christmasTropes.length) {
                     cell.textContent = christmasTropes[index];
                     if (index === 12) {
@@ -314,16 +312,17 @@
                     }
                 }
             });
-            saveCellColors();
         }
 
         function saveCellColors() {
+            console.log('save cell colors');
             const cells = document.querySelectorAll('#bingo-board td');
             const colors = Array.from(cells).map(cell => cell.classList.contains('marked_green') ? 'green' : '');
             setCookie('cell-colors', JSON.stringify(colors), 7);
         }
 
         function loadCellColors() {
+            console.log('load cell colors');
             const colors = JSON.parse(getCookie('cell-colors') || '[]');
             const cells = document.querySelectorAll('#bingo-board td');
             cells.forEach((cell, index) => {
@@ -339,12 +338,20 @@
         });
 
         document.getElementById('generate-board').addEventListener('click', async () => {
-            console.log(getOrCreateUserId(true));
+            console.log('generate board click');
+            getOrCreateUserId(true);
+            const cells = document.querySelectorAll('#bingo-board td');
+            cells.forEach((cell, index) => {
+                cell.classList.remove('marked_green');
+            });
             generateBoard();
+            saveCellColors();
+            //loadCellColors();
         });
 
         document.querySelectorAll('#bingo-board td').forEach(cell => {
             cell.addEventListener('click', () => {
+                console.log('cell click');
                 if (cell.classList.contains('marked_green')) {
                     cell.classList.remove('marked_green');
                 } else {
