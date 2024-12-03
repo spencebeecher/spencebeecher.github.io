@@ -41,6 +41,7 @@
 <body>
     <h1>Holiday Bingo</h1>
     <button id="generate-board">Regenerate Bingo</button>
+    <button id="copy-emojis">Share Results</button>
     <table id="bingo-board">
         <!-- ...existing code... -->
         <!-- Generate a 5x5 Bingo board -->
@@ -332,6 +333,30 @@
             });
         }
 
+        function copyBoardEmojis() {
+            const cells = document.querySelectorAll('#bingo-board td');
+            
+            let boardEmojis = '';
+            boardEmojis += 'Holiday Bingo!';
+            boardEmojis += '\n';
+            boardEmojis += '🎄🎅🎁🦌❄️';
+            boardEmojis += '\n';
+            cells.forEach((cell, index) => {
+                if (index % 5 === 0 && index !== 0) {
+                    boardEmojis += '\n';
+                }
+                boardEmojis += cell.classList.contains('marked_green') ? '✅' : '⬜';
+            });
+            
+            boardEmojis += '\n';
+            boardEmojis += '\n';
+            boardEmojis += 'https://spencebeecher.github.io';
+
+            navigator.clipboard.writeText(boardEmojis).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             generateBoard();
             loadCellColors();
@@ -348,6 +373,8 @@
             saveCellColors();
             //loadCellColors();
         });
+
+        document.getElementById('copy-emojis').addEventListener('click', copyBoardEmojis);
 
         document.querySelectorAll('#bingo-board td').forEach(cell => {
             cell.addEventListener('click', () => {
