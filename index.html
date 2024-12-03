@@ -328,11 +328,12 @@
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {
                 if (index < christmasTropes.length) {
+                    
+                    cell.textContent = christmasTropes[index];
                     if (index === 12) {
                         cell.textContent = 'FREE';
                         cell.classList.add('marked_green');
                     }
-                    cell.textContent = christmasTropes[index];
                 }
             });
         }
