@@ -305,8 +305,8 @@
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {
+                cell.classList.remove('marked_green');
                 if (index < christmasTropes.length) {
-                    
                     cell.textContent = christmasTropes[index];
                     if (index === 12) {
                         cell.textContent = 'FREE';
