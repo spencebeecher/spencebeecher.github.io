@@ -331,13 +331,13 @@
             let boardEmojis = '';
             boardEmojis += 'Holiday Bingo!';
             boardEmojis += '\n';
-            boardEmojis += '🎄🎅🎁🦌❄️';
+            boardEmojis += '🎅🎁🦌❄️';
             boardEmojis += '\n';
             cells.forEach((cell, index) => {
                 if (index % 5 === 0 && index !== 0) {
                     boardEmojis += '\n';
                 }
-                boardEmojis += cell.classList.contains('marked_green') ? '✅' : '⬜';
+                boardEmojis += cell.classList.contains('marked_green') ? '🎄' : '⬜';
             });
             
             boardEmojis += '\n';
