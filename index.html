@@ -90,7 +90,6 @@
                 "Romantic Carriage Ride in Town",
                 "Epic Christmas Decor Showdown",
                 "Countdown Clock to Holiday Love",
-                "Reference to other chrismas movie",
                 "Snowfall at the Perfect Moment",
                 "Mistletoe Kiss",
                 "Holiday Schedule Chaos",
@@ -180,7 +179,6 @@
                 "Snow Globe",
                 "Over-the-Top Neighbors",
                 "Magical Creatures",
-                "Ornaments",
                 "Stockings",
                 "Christmas Lights",
                 "Candy Canes",
@@ -217,7 +215,6 @@
                 
                 "Holiday Mugs",
                 "Nutcracker",
-                "Candy Canes",
                 "French Horn in Soundtrack",
                 "Sleigh Bells Ringing",
                 "Christmas Stockings",
@@ -227,8 +224,8 @@
                 "Ice Skating",
                 "Holiday Classics Music",
                 "Holiday Magic",
-                "Geneerous application of fake snow",
-                "Geneerous application of hairspray",
+                "Generous application of fake snow",
+                "Generous application of hairspray",
             ];
 
             return [...new Set(tropes)];
@@ -281,7 +278,7 @@
             let userId = getCookie('user-id');
             if (!userId || reset) {
                 userId = generateRandomUserId();
-                setCookie('user-id', userId, 365);
+                setCookie('user-id', userId, 7);
             }
             return userId;
         }
