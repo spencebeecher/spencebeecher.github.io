@@ -8,27 +8,34 @@
         /* Add some basic styling width: 100%;*/
         table {
             border-collapse: collapse;
-            
-            max-width: 200px;
+            width: 380px;
+            height: 400px;
             margin: auto;
             margin-left: 0; /* Align table to the left */
             padding-left: 3px; /* Add padding to the left */
             padding-right: 3px; /* Add padding to the right */
             table-layout: fixed; /* Ensure equal width for all cells */
         }
-        /* Add media query for desktop */
+        /* Add media query for desktop 
         @media (min-width: 768px) {
             table {
                 max-width: 300px;
             }
-        }
+        }*/
         td {
             border: 1px solid #000;
-            width: 20%; /* Ensure equal width for all cells */
+            width: 20%; 
+            height: 18%; /* Ensure equal height for all rows */
             text-align: center;
             vertical-align: middle;
-            /*font-size: 4vw;*/
+            font-size: 13px;
+            font-family: Arial, sans-serif;
             border-right: 1px solid #000;
+        }
+        .header-row td {
+            height: auto; /* Allow the header row to have auto height */
+            font-size: 35px;
+            font-weight: bold;
         }
         .marked_green {
             background-color: green;
@@ -45,7 +52,7 @@
     <table id="bingo-board">
         <!-- ...existing code... -->
         <!-- Generate a 5x5 Bingo board -->
-        <tr>
+        <tr class="header-row">
             <td>B</td><td>I</td><td>N</td><td>G</td><td>O</td>
         </tr>
         <!-- ...existing code... -->
@@ -75,7 +82,7 @@
                 "Perfect Holiday Festival",
                 "Workaholic Learns Holiday Spirit",
                 "Small-Town Charm Wins Over Cynic",
-                "Overachiever Learns to Relax",
+                "Over-achiever Learns to Relax",
                 "Small Town with Big Traditions",
                 "Snowed-In!",
                 "Sassy Friend Loves Christmas",
@@ -89,7 +96,7 @@
                 "Adorable animal in a Santa Hat",
                 "Romantic Carriage Ride in Town",
                 "Epic Christmas Decor Showdown",
-                "Countdown Clock to Holiday Love",
+                
                 "Snowfall at the Perfect Moment",
                 "Mistletoe Kiss",
                 "Holiday Schedule Chaos",
@@ -133,7 +140,7 @@
                 "Holiday Grump",
                 "Santa Stand-In",
                 "Holiday Workaholic",
-                "Overbearing Relative",
+                "Over-bearing Relative",
                 "Perfect Love Interest",
                 "City Slicker",
                 
@@ -165,7 +172,7 @@
                 "Dcovery of True Meaning of Christmas",
                 "Redemption and Forgiveness",
                 "Overcoming Holiday Cynicism",
-                "Generational Holiday Conflict",
+                "Conflict Across Generations",
                 "Spirit of Giving",
                 "Snowy Nights",
                 "Mistletoe",
