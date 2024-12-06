@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holiday Bingo</title>
+    <title>Christmas Bingo!</title>
     <style>
         /* Add some basic styling width: 100%;*/
         table {
@@ -16,12 +16,7 @@
             padding-right: 3px; /* Add padding to the right */
             table-layout: fixed; /* Ensure equal width for all cells */
         }
-        /* Add media query for desktop 
-        @media (min-width: 768px) {
-            table {
-                max-width: 300px;
-            }
-        }*/
+        
         td {
             border: 1px solid #000;
             width: 20%; 
@@ -36,6 +31,20 @@
             height: auto; /* Allow the header row to have auto height */
             font-size: 35px;
             font-weight: bold;
+            color: #fff; /* Set text color to white */
+            background-color: #ff0000; /* Set background color to red */
+        }
+        .header-row td:nth-child(2) {
+            background-color: #00a000; /* Set background color to green */
+        }
+        .header-row td:nth-child(3) {
+            background-color: #0000ff; /* Set background color to blue */
+        }
+        .header-row td:nth-child(4) {
+            background-color: #ffbf00; /* Set background color to amber */
+        }
+        .header-row td:nth-child(5) {
+            background-color: #9932CC; /* Set background color to brighter purple */
         }
         .marked_green {
             background-color: green;
@@ -46,7 +55,6 @@
     </style>
 </head>
 <body>
-    <h1>Holiday Bingo</h1>
     <button id="generate-board">Regenerate Bingo</button>
     <button id="copy-emojis">Share Results</button>
     <table id="bingo-board">
@@ -85,17 +93,17 @@
                 "Over-achiever Learns to Relax",
                 "Small Town with Big Traditions",
                 "Snowed-In!",
-                "Sassy Friend Loves Christmas",
+                "Sassy Friend Loves Holidays",
                 "Snow Globe",
                 
                 "Grumpy Boss Finds Holiday Joy",
-                "Inheriting a Christmas Cottage",
+                
                 "Miracle Saves the Holidays",
                 "Special Ornament",
                 "Big Family Gathering",
                 "Adorable animal in a Santa Hat",
                 "Romantic Carriage Ride in Town",
-                "Epic Christmas Decor Showdown",
+                "Epic Holiday Decor Showdown",
                 
                 "Snowfall at the Perfect Moment",
                 "Mistletoe Kiss",
@@ -313,7 +321,7 @@
 
         function saveCellColors() {
             console.log('save cell colors');
-            const cells = document.querySelectorAll('#bingo-board td');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             const colors = Array.from(cells).map(cell => cell.classList.contains('marked_green') ? 'green' : '');
             setCookie('cell-colors', JSON.stringify(colors), 7);
         }
@@ -321,7 +329,7 @@
         function loadCellColors() {
             console.log('load cell colors');
             const colors = JSON.parse(getCookie('cell-colors') || '[]');
-            const cells = document.querySelectorAll('#bingo-board td');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
                 if (colors[index] === 'green') {
                     cell.classList.add('marked_green');
@@ -330,7 +338,7 @@
         }
 
         function copyBoardEmojis() {
-            const cells = document.querySelectorAll('#bingo-board td');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             
             let boardEmojis = '';
             boardEmojis += 'Holiday Bingo!';
@@ -363,7 +371,7 @@
         document.getElementById('generate-board').addEventListener('click', async () => {
             console.log('generate board click');
             getOrCreateUserId(true);
-            const cells = document.querySelectorAll('#bingo-board td');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
                 cell.classList.remove('marked_green');
             });
@@ -374,7 +382,7 @@
 
         document.getElementById('copy-emojis').addEventListener('click', copyBoardEmojis);
 
-        document.querySelectorAll('#bingo-board td').forEach(cell => {
+        document.querySelectorAll('#bingo-board tr:not(.header-row) td').forEach(cell => {
             cell.addEventListener('click', () => {
                 console.log('cell click');
                 if (cell.classList.contains('marked_green')) {
