@@ -23,7 +23,16 @@
             padding-left: 3px; /* Add padding to the left */
             padding-right: 3px; /* Add padding to the right */
             table-layout: fixed; /* Ensure equal width for all cells */
-            background-color: rgba(255, 255, 255, 0.8); /* Add a white background with some transparency */
+            background-color: rgba(255, 255, 255, 0.9); /* Add a white background with some transparency */
+        }
+        @media (min-width: 1024px) {
+            table {
+                width: 600px;
+                height: 600px;
+            }
+            td {
+                font-size: 18px;
+            }
         }
         
         td {
@@ -47,13 +56,13 @@
             background-color: #00a000; /* Set background color to green */
         }
         .header-row td:nth-child(3) {
-            background-color: #0000ff; /* Set background color to blue */
+            background-color: #ff0000; /* Set background color to blue */
         }
         .header-row td:nth-child(4) {
-            background-color: #ffbf00; /* Set background color to amber */
+            background-color: #00a000; /* Set background color to amber */
         }
         .header-row td:nth-child(5) {
-            background-color: #9932CC; /* Set background color to brighter purple */
+            background-color: #ff0000; /* Set background color to brighter purple */
         }
         .marked_green {
             background-color: green;
