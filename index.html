@@ -25,16 +25,7 @@
             table-layout: fixed; /* Ensure equal width for all cells */
             background-color: rgba(255, 255, 255, 0.9); /* Add a white background with some transparency */
         }
-        @media (min-width: 1024px) {
-            table {
-                width: 600px;
-                height: 600px;
-            }
-            td {
-                font-size: 30px; /* Increase font size for desktop */
-                
-            }
-        }
+        
         
         td {
             border: 1px solid #000;
@@ -70,6 +61,16 @@
         }
         .marked_red {
             background-color: red;
+        }
+        @media (min-width: 1024px) {
+            table {
+                width: 600px;
+                height: 600px;
+            }
+            td {
+                font-size: 24px; /* Increase font size for desktop */
+                
+            }
         }
     </style>
 </head>
