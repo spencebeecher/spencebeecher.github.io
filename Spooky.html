@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>{{icon_emoji}}</text></svg>">
-    <title>{{ title }}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>💀</text></svg>">
+    <title>Spooky Bingo!</title>
     <style>
         body {
-            background-image: url({{ background_image_url }});
+            background-image: url(./super_spooky.png);
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -45,7 +45,7 @@
         
         
         .marked {
-            background-color: {{ marked_color }};
+            background-color: #C87500;
         }
     </style>
 </head>
@@ -78,11 +78,11 @@
     </table>
     <script>
         const colorSchemes = {
-            default: {{ color_scheme }},
+            default: ['#43009B', '#C87500', '#43009B', '#C87500', '#43009B'],
         };
 
         const tropesList = {
-            default: {{ tropes_list }},
+            default: ['Demonic Possession', 'Creepy Kid', 'Haunted House', 'Sleep Paralysis', 'Family Secrets', 'Witchcraft', 'Cult Ritual', 'Jump Scare', 'Cursed Object', 'Static TV', 'Creepy Phone Call', 'Bloody Bathroom', 'Dream Killings', 'Hallway of Blood', 'Endless Maze', 'Unstoppable Killer', 'Chainsaw Chase', 'Meat Hook', 'Silent Stalker', 'Hidden Caller', 'Creepy Attic', 'Occult Symbol', 'Paranoid Neighbor', 'Gaslighting', 'Body Horror', 'Cold Whisper', 'Eyes Roll Back', 'Possessed Voice', 'Blood on the Walls', 'Final Survivor'],
         };
 
         function applyColorScheme(scheme) {
@@ -197,7 +197,7 @@
             boardEmojis += 'Holiday Bingo!';
 
             boardEmojis += '\n';
-            boardEmojis += '{{board_emojis}}';
+            boardEmojis += '🎃👻🍬🕷️🦇';
 
             boardEmojis += '\n';
             cells.forEach((cell, index) => {
@@ -208,7 +208,7 @@
             });
             
             boardEmojis += '\n';
-            boardEmojis += 'https://spencebeecher.github.io/{{ page_name }}';
+            boardEmojis += 'https://spencebeecher.github.io/spooky.html';
 
             navigator.clipboard.writeText(boardEmojis).then(() => {
                 alert('Copied to clipboard!');
@@ -246,10 +246,14 @@
             });
         });
     </script>
-    {% for page in other_pages %}
-        <button onclick="window.location.href='{{ page }}'">
-            {{ page.replace('.html', '').replace('_', ' ').capitalize() }} Bingo
+    
+        <button onclick="window.location.href='christmas.html'">
+            Christmas Bingo
         </button>
-    {% end %}
+    
+        <button onclick="window.location.href='halloween.html'">
+            Halloween Bingo
+        </button>
+    
 </body>
 </html>

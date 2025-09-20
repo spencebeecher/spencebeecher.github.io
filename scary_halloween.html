@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>{{icon_emoji}}</text></svg>">
-    <title>{{ title }}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>🎃</text></svg>">
+    <title>Scary Halloween Bingo!</title>
     <style>
         body {
-            background-image: url({{ background_image_url }});
+            background-image: url(./spooky.png);
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -45,7 +45,7 @@
         
         
         .marked {
-            background-color: {{ marked_color }};
+            background-color: #FFB347;
         }
     </style>
 </head>
@@ -78,11 +78,11 @@
     </table>
     <script>
         const colorSchemes = {
-            default: {{ color_scheme }},
+            default: ['#9A4DFF', '#FFB347', '#9A4DFF', '#FFB347', '#9A4DFF'],
         };
 
         const tropesList = {
-            default: {{ tropes_list }},
+            default: ['Jump Scare False Alarm', 'Flashlight Batteries Die', '‘Let’s Split Up!’', 'Mirror Scare', 'Phone With No Signal', 'Final Girl Energy', 'Creepy Basement', 'Chainsaw Guy', 'Haunted Objects', 'Eerie Lullabies', 'Candy', "I'm Not Afraid!", 'Stormy Night', 'Car Won’t Start', 'Running Upstairs Instead of Out', 'Look Behind You', 'Killer appears in Background', 'The Killer Moves Really Slowly…', 'Random Cat Jumping Out', 'Stranger Knows Too Much', '‘It Was Just a Dream’', 'Evil Laugh', 'Possessed Child', 'Old TV Static', 'Locked From the Outside', 'Flickering Lights', 'The Call Is Coming From Inside the House', 'Ancient Cursed Object', 'Pumpkin Patch', 'Local Legend', 'Abrupt Weather Change', 'Endless Fog Machine', 'Fake-Out Death', 'Evil Script', 'Crowd Gasps in Unison', 'Killer’s Mask Reveal', 'Magic Book Nobody Should Open', 'Make fun of Horror Clichés', 'Blood on the Mirror', 'Jump Cut to Screaming', 'Safe then Not Safe', 'Costumes', 'Trick or Treating', 'Haunted House Attraction', 'Pumpkin Carving', 'Spooky Decorations', 'Full Moon', 'Creepy Doll', 'Monsters', 'Killer is friend or family', 'Killer is among us', 'Killer theme music', 'Good turned bad'],
         };
 
         function applyColorScheme(scheme) {
@@ -197,7 +197,7 @@
             boardEmojis += 'Holiday Bingo!';
 
             boardEmojis += '\n';
-            boardEmojis += '{{board_emojis}}';
+            boardEmojis += '🎃👻🍬🕷️🦇';
 
             boardEmojis += '\n';
             cells.forEach((cell, index) => {
@@ -208,7 +208,7 @@
             });
             
             boardEmojis += '\n';
-            boardEmojis += 'https://spencebeecher.github.io/{{ page_name }}';
+            boardEmojis += 'https://spencebeecher.github.io/Scary_Halloween.html';
 
             navigator.clipboard.writeText(boardEmojis).then(() => {
                 alert('Copied to clipboard!');
@@ -246,10 +246,14 @@
             });
         });
     </script>
-    {% for page in other_pages %}
-        <button onclick="window.location.href='{{ page }}'">
-            {{ page.replace('.html', '').replace('_', ' ').capitalize() }} Bingo
+    
+        <button onclick="window.location.href='christmas.html'">
+            Christmas Bingo
         </button>
-    {% end %}
+    
+        <button onclick="window.location.href='halloween.html'">
+            Halloween Bingo
+        </button>
+    
 </body>
 </html>

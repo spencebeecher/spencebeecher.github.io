@@ -18,8 +18,9 @@ def generate_html_from_template(template_path, output_path, context):
 
 def main():
     template_filepath = 'index_template.html'
+    contexts = {}
 
-    christmas_context = {
+    contexts['christmas.html'] = {
         "title": "Christmas Bingo!",
         "background_image_url": "./holly.jpeg",
         "color_scheme":  ['#ff0000', '#00a000', '#0000ff', '#ffbf00', '#9932CC'],
@@ -187,10 +188,8 @@ def main():
             ],
         
     }
-    
-    generate_html_from_template(template_filepath, 'christmas.html', christmas_context)
 
-    halloween_context = {
+    contexts['halloween.html'] = {
         "title": "Halloween Bingo!",
         "background_image_url": "./spooky.png",
         "color_scheme":  ['#9A4DFF', '#FFB347',  '#9A4DFF', '#FFB347', '#9A4DFF'],
@@ -254,7 +253,52 @@ def main():
         ]
 
     }
-    generate_html_from_template(template_filepath, 'halloween.html', halloween_context)
+
+    contexts['spooky.html'] = {
+        "title": "Spooky Bingo!",
+        "background_image_url": "./super_spooky.png",
+        "color_scheme":  ["#43009B", "#C87500",  "#43009B", "#C87500", "#43009B"],
+        "icon_emoji": "💀",
+        "marked_color": "#C87500",  # Or any color you want
+        "board_emojis": "🎃👻🍬🕷️🦇",
+        "tropes_list": [
+            "Demonic Possession",
+            "Creepy Kid",
+            "Haunted House",
+            "Sleep Paralysis",
+            "Family Secrets",
+            "Witchcraft",
+            "Cult Ritual",
+            "Jump Scare",
+            "Cursed Object",
+            "Static TV",
+            "Creepy Phone Call",
+            "Bloody Bathroom",
+            "Dream Killings",
+            "Hallway of Blood",
+            "Endless Maze",
+            "Unstoppable Killer",
+            "Chainsaw Chase",
+            "Meat Hook",
+            "Silent Stalker",
+            "Hidden Caller",
+            "Creepy Attic",
+            "Occult Symbol",
+            "Paranoid Neighbor",
+            "Gaslighting",
+            "Body Horror",
+            "Cold Whisper",
+            "Eyes Roll Back",
+            "Possessed Voice",
+            "Blood on the Walls",
+            "Final Survivor"
+        ]
+    }
+
+    for filename, context in contexts.items():
+        context['page_name'] = filename
+        context['other_pages'] = [f for f in contexts.keys() if f != filename]
+        generate_html_from_template(template_filepath, filename, context)
 
 if __name__ == "__main__":
     main()

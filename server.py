@@ -16,6 +16,11 @@ def serve_christmas():
 def serve_haloween():
     return send_from_directory('.', 'halloween.html')
 
+#serve spooky.html
+@app.route('/spooky.html')
+def serve_spooky_page():
+    return send_from_directory('.', 'spooky.html')
+
 # serve holly.jpeg
 @app.route('/holly.jpeg')
 def serve_holly():
@@ -24,6 +29,10 @@ def serve_holly():
 @app.route('/spooky.png')
 def serve_spooky():
     return send_from_directory('.', 'spooky.png')
+
+@app.route('/super_spooky.png')
+def serve_super_spooky():
+    return send_from_directory('.', 'super_spooky.png')
 
 if __name__ == '__main__':
     
