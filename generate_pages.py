@@ -23,6 +23,7 @@ def main():
         "title": "Christmas Bingo!",
         "background_image_url": "./holly.jpeg",
         "color_scheme":  ['#ff0000', '#00a000', '#0000ff', '#ffbf00', '#9932CC'],
+        "icon_emoji": "🎄",
         "marked_color": "#00a000",  # Or any color you want
         "board_emojis": "🎄🎅❄️⛄🎁",
         "tropes_list": [
@@ -193,74 +194,65 @@ def main():
         "title": "Halloween Bingo!",
         "background_image_url": "./spooky.png",
         "color_scheme":  ['#9A4DFF', '#FFB347',  '#9A4DFF', '#FFB347', '#9A4DFF'],
+        "icon_emoji": "🎃",
         "marked_color": "#FFB347",  # Or any color you want
         "board_emojis": "🎃👻🍬🕷️🦇",
         "tropes_list": [
-                "Haunted House",
-                "Trick-or-Treating",
-                "Costume Party",
-                "Pumpkin Carving",
-                "Scary Movie Marathon",
-                "Spooky Decorations",
-                "Ghost Stories",
-                "Witches and Wizards",
-                "Monsters",
-                "Black Cats",
-                "Full Moon",
-                "Creepy Crawlies",
-                "Candy Overload",
-                "Jack-o'-Lanterns",
-                "Zombie Apocalypse",
-                "Vampires",
-                "Werewolves",
-                "Mummies",
-                "Skeletons",
-                "Bats",
-                "Spiders and Webs",
-                "Graveyard Scenes",
-                "Creepy Music",
-                "Foggy Nights",
-                "Costume Contests",
-                "Haunted Hayrides",
-                "Bonfires",
-                "Apple Bobbing",
-                "Tarot Card Readings",
-                "Ouija Boards",
-                "Magic Spells",
-                "Potion Making",
-                "Creepy Clowns",
-                
-                "Scarecrows",
-                
-                "Cemetery Visits",
-                
-                "Horror Novels or Comics",
-                
-                "Creepy Dolls or Toys",
-                
-                "Witch's Brew (Themed Drinks)",
-                
-                "Spooky Sound Effects (Howling Wind, Creaking Doors)",
-                
-                "Halloween Parades or Festivals",
-                
-                "Day of the Dead Celebrations (Día de los Muertos)",
-                
-                "Pumpkin Spice (Lattes, Candles, Snacks)",
-                
-                "Autumn Leaves and Scenery (Fall Foliage)",
-                
-                "Harvest Themes (Corn Mazes, Hayrides)",
-                
-                "Scary Masks and Makeup (Face Paint, Prosthetics)",
-                
-                "Creepy Costumes (Zombies, Ghosts, Vampires)",
-                
-                "Halloween-themed TV Shows or Movies",
-                
-                "Halloween-themed Songs",
-                
-            ]
+            "Jump Scare False Alarm",
+            "Flashlight Batteries Die",
+            "‘Let’s Split Up!’",
+            "Mirror Scare",
+            "Phone With No Signal",
+            "Final Girl Energy",
+            "Creepy Basement",
+            "Chainsaw Guy",
+            "Haunted Objects",
+            "Eerie Lullabies",
+            "Candy",
+            "I'm Not Afraid!",
+            "Stormy Night",
+            "Car Won’t Start",
+            "Running Upstairs Instead of Out",
+            "Look Behind You",
+            "Killer appears in Background",
+            "The Killer Moves Really Slowly…",
+            "Random Cat Jumping Out",
+            "Stranger Knows Too Much",
+            "‘It Was Just a Dream’",
+            "Evil Laugh",
+            "Possessed Child",
+            "Old TV Static",
+            "Locked From the Outside",
+            "Flickering Lights",
+            "The Call Is Coming From Inside the House",
+            "Ancient Cursed Object",
+            "Pumpkin Patch",
+            "Local Legend",
+            "Abrupt Weather Change",
+            "Endless Fog Machine",
+            "Fake-Out Death",
+            "Evil Script",
+            "Crowd Gasps in Unison",
+            "Killer’s Mask Reveal",
+            "Magic Book Nobody Should Open",
+            "Make fun of Horror Clichés",
+            "Blood on the Mirror",
+            "Jump Cut to Screaming",
+            "Safe then Not Safe",
+            "Costumes",
+            "Trick or Treating",
+            "Haunted House Attraction",
+            "Pumpkin Carving",
+            "Spooky Decorations",
+            "Full Moon",
+            "Creepy Doll",
+            "Monsters",
+            "Killer is friend or family",
+            "Killer is among us",
+            "Killer theme music",
+            "Good turned bad",
+        ]
+
     }
     generate_html_from_template(template_filepath, 'halloween.html', halloween_context)
 
