@@ -14,8 +14,7 @@
             margin-left: 0;
             margin-right: auto;
             text-align: left;
-            transform: scale(0.75);
-            transform-origin: top left;
+            overflow-x: auto;
         }
         table {
             border-collapse: collapse;
@@ -27,9 +26,9 @@
             background: #fff;
             text-align: center;
             font-size: 1.1em;
-            min-width: 110px;   /* Narrower columns */
-            width: 110px;       /* Narrower columns */
-            height: 72px;
+            min-width: 90px;
+            width: 90px;
+            height: 56px;
             box-sizing: border-box;
         }
         th {
@@ -65,6 +64,19 @@
         .bingo-link:hover {
             background: rgba(255,255,255,0.9);
             box-shadow: 0 0 4px #888;
+        }
+        @media (max-width: 600px) {
+            th, td {
+                min-width: 60px;
+                width: 60px;
+                height: 40px;
+                font-size: 0.85em;
+                padding: 2px;
+            }
+            .bingo-link {
+                font-size: 0.8em;
+                padding: 3px 4px;
+            }
         }
     </style>
 </head>
