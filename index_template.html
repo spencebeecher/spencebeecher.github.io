@@ -88,8 +88,10 @@
                 overflow-x: auto;
             }
             table {
-                width: 480px;         /* Fixed width for 5 columns, fits most phones with scroll */
+                width: 480px;
                 min-width: 480px;
+                transform: scale(0.75);           /* Scale down to 75% */
+                transform-origin: top left;        /* Snap to left side */
             }
             th, td {
                 min-width: 80px;
