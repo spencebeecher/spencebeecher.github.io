@@ -83,15 +83,21 @@
             box-shadow: 0 0 6px #888;
         }
         @media (max-width: 600px) {
+            body {
+                padding: 0; /* Remove default body padding on mobile */
+            }
             .bingo-list {
                 max-width: 100vw;
+                margin-left: 0;      /* Anchor to left */
+                margin-right: 0;
+                text-align: left;
                 overflow-x: auto;
             }
             table {
                 width: 480px;
                 min-width: 480px;
-                transform: scale(0.75);           /* Scale down to 75% */
-                transform-origin: top left;        /* Snap to left side */
+                transform: scale(0.75);
+                transform-origin: top left;
             }
             th, td {
                 min-width: 80px;
