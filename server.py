@@ -37,7 +37,7 @@ def serve_super_spooky():
     return send_from_directory('.', 'super_spooky.png')
 
 
-@app.route('/octoberfest.html')
+@app.route('/october-fest.html')
 def serve_octoberfest():
     return send_from_directory('.', 'octoberfest.html')
 @app.route('/octoberfest.png')

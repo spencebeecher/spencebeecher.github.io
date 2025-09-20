@@ -303,7 +303,7 @@ def main():
         ]
     } 
 
-    contexts['octoberfest.html'] = {
+    contexts['october-fest.html'] = {
         "title": "Oktoberfest Bingo!",
         "background_image_url": "./octoberfest.png",  # Add this image to your project
         "color_scheme": ['#FFD700', '#8B4513', '#006400', '#1E90FF', '#FF6347'],

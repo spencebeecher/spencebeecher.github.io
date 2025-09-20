@@ -4,67 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bingo Games</title>
+
+
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: #fff;
-            padding: 40px;
+            
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
-        .bingo-list {
-            max-width: 1000px; /* Wider board */
-            margin-left: 0;
-            margin-right: auto;
-            text-align: left;
-            overflow-x: auto;
-        }
+        /* Add some basic styling width: 100%;*/
         table {
             border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
+            width: 380px;
+            height: 400px;
+            margin: auto;
+            margin-left: 0; /* Align table to the left */
+            padding-left: 3px; /* Add padding to the left */
+            padding-right: 3px; /* Add padding to the right */
+            table-layout: fixed; /* Ensure equal width for all cells */
         }
-        th, td {
-            border: 1px solid #888;
-            background: #fff;
-            text-align: center;
-            font-size: 1.5em;   /* Bigger font */
-            min-width: 130px;   /* Wider columns */
-            width: 130px;
-            height: 72px;       /* Taller cells */
-            box-sizing: border-box;
-        }
-        th {
-            font-weight: bold;
-            font-size: 2em;
-            background: #264b96; /* Cornflower/darker blue */
-            color: #fff;         /* White text */
-            letter-spacing: 0.2em;
-            border: 1px solid #888;
-        }
+        
         td {
-            font-weight: normal;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            border: 1px solid #000;
+            width: 20%; 
+            height: 18%; /* Ensure equal height for all rows */
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            border-right: 1px solid #000;
+            background-color: white; /* Set cell background to white */
         }
-        .bingo-link {
-            display: inline-block;
-            padding: 10px 18px;
-            background: rgba(255,255,255,0.7);
-            border-radius: 6px;
-            color: #222;
-            text-decoration: none;
+        .header-row td {
+            height: auto;
+            font-size: 35px;
             font-weight: bold;
-            font-size: 0.9em;   /* Bigger button text */
-            border: 1px solid #888;
-            transition: background 0.2s, box-shadow 0.2s;
-            position: relative;
-            z-index: 1;
-            margin: 6px 0;
-            white-space: nowrap;
+            background: #264b96;   /* Softer, dark blue */
+            color: #fff;
         }
-        .bingo-link:hover {
-            background: rgba(255,255,255,0.9);
-            box-shadow: 0 0 4px #888;
+        
+        
+        .marked {
+            background-color: #264b96; /* Softer, dark blue */
         }
         #copy-emojis,
         #generate-board,
@@ -73,7 +56,7 @@
             padding: 10px 22px;     /* Slightly less padding */
             border-radius: 8px;
             font-weight: bold;
-            background: #264b96;
+            background: #264b96;   /* Softer, dark blue */
             color: #fff;
             border: none;
             cursor: pointer;
@@ -83,50 +66,40 @@
         #copy-emojis:hover,
         #generate-board:hover,
         button[onclick]:hover {
-            background: #1a3266;
+            background: #264b96;
             box-shadow: 0 0 6px #888;
         }
-        @media (max-width: 600px) {
-            body {
-                padding: 0; /* Remove default body padding on mobile */
-            }
-            .bingo-list {
-                max-width: 100vw;
-                margin-left: 0;      /* Anchor to left */
-                margin-right: 0;
-                text-align: left;
-                overflow-x: auto;
-            }
-            table {
-                width: 480px;
-                min-width: 480px;
-                transform: scale(0.75);
-                transform-origin: top left;
-            }
-            th, td {
-                min-width: 80px;
-                width: 80px;
-                height: 48px;
-                font-size: 1.1em;
-                padding: 4px;
-            }
-            .bingo-link {
-                font-size: 0.9em;
-                padding: 4px 6px;
-            }
-        }
+        .bingo-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 2px;
+    background: #fff;         /* Fully opaque white background */
+    border-radius: 6px;
+    color: #222;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.0em;
+    border: 1px solid #888;
+    transition: background 0.2s, box-shadow 0.2s;
+    position: relative;
+    z-index: 1;
+    margin: 6px 0;
+    text-align: center;
+    word-break: break-word;
+}
     </style>
 </head>
 <body>
     <button id="copy-emojis">Share</button>
     <div class="bingo-list">
         <table>
-            <tr>
-                <th>B</th>
-                <th>I</th>
-                <th>N</th>
-                <th>G</th>
-                <th>O</th>
+            <tr class="header-row">
+                <td>B</td>
+                <td>I</td>
+                <td>N</td>
+                <td>G</td>
+                <td>O</td>
             </tr>
             {% for row in range(5) %}
                 <tr>

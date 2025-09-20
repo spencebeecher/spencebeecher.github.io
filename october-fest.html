@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>🍺</text></svg>">
+    <title>Oktoberfest Bingo!</title>
+    <style>
+        body {
+            background-image: url(./octoberfest.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* Add some basic styling width: 100%;*/
+        table {
+            border-collapse: collapse;
+            width: 380px;
+            height: 400px;
+            margin: auto;
+            margin-left: 0; /* Align table to the left */
+            padding-left: 3px; /* Add padding to the left */
+            padding-right: 3px; /* Add padding to the right */
+            table-layout: fixed; /* Ensure equal width for all cells */
+        }
+        
+        td {
+            border: 1px solid #000;
+            width: 20%; 
+            height: 18%; /* Ensure equal height for all rows */
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            border-right: 1px solid #000;
+            background-color: white; /* Set cell background to white */
+        }
+        .header-row td {
+            height: auto; /* Allow the header row to have auto height */
+            font-size: 35px;
+            font-weight: bold;
+            color: #000; /* Set text color to black */
+        }
+        
+        
+        .marked {
+            background-color: #FFD700;
+        }
+        #copy-emojis,
+        #generate-board,
+        button[onclick] {
+            font-size: 1.15em;      /* Slightly smaller font */
+            padding: 10px 22px;     /* Slightly less padding */
+            border-radius: 8px;
+            font-weight: bold;
+            background: #FFD700;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 18px;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        #copy-emojis:hover,
+        #generate-board:hover,
+        button[onclick]:hover {
+            background: #FFD700;
+            box-shadow: 0 0 6px #888;
+        }
+    </style>
+</head>
+<body>
+    <button id="generate-board">Refresh</button>
+    <button id="copy-emojis">Share</button>
+    <!-- Add button to go to index.html -->
+    <button onclick="resetBoardAndNavigate('/')">
+        Games
+    </button>
+
+    <script>
+        function resetBoardAndNavigate(page) {
+            // Clear cell colors and user id cookies
+            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = page;
+        }
+    </script>
+    <table id="bingo-board">
+        <!-- ...existing code... -->
+        <!-- Generate a 5x5 Bingo board -->
+        <tr class="header-row">
+            <td>B</td><td>I</td><td>N</td><td>G</td><td>O</td>
+        </tr>
+        <!-- ...existing code... -->
+        <!-- Add rows for numbers -->
+        <tr>
+            <td class="cell">1</td><td class="cell">16</td><td class="cell">31</td><td class="cell">46</td><td class="cell">61</td>
+        </tr>
+        <tr>
+            <td class="cell">2</td><td class="cell">17</td><td class="cell">32</td><td class="cell">47</td><td class="cell">62</td>
+        </tr>
+        <tr>
+            <td class="cell">3</td><td class="cell">18</td><td class="cell">33</td><td class="cell">48</td><td class="cell">63</td>
+        </tr>
+        <tr>
+            <td class="cell">4</td><td class="cell">19</td><td class="cell">34</td><td class="cell">49</td><td class="cell">64</td>
+        </tr>
+        <tr>
+            <td class="cell">5</td><td class="cell">20</td><td class="cell">35</td><td class="cell">50</td><td class="cell">65</td>
+        </tr>
+    </table>
+    <script>
+        const colorSchemes = {
+            default: ['#FFD700', '#8B4513', '#006400', '#1E90FF', '#FF6347'],
+        };
+
+        const tropesList = {
+            default: ['Giant Pretzel', 'Stein Holding Contest', 'Traditional Lederhosen', 'Dirndl Dress', 'Oompah Band', 'Chicken Dance', 'Beer Tent', 'Bratwurst', 'Polka Music', 'Blue and White Decorations', 'Alpine Hat', 'Beer Mug Souvenir', 'Festival Parade', 'German Flag', 'Bavarian Lion', 'Sauerkraut', 'Roasted Chicken', 'Apple Strudel', 'Carnival Rides', 'Festival Games', 'Group Toast', 'Prost!', 'Beer Foam Mustache', 'Pretzel Necklace', 'Festival Badge', 'Bavarian Pretzel', 'Festival Hat Pin', 'Traditional Dance', 'Beer Garden', 'Festival Banner'],
+        };
+
+        function applyColorScheme(scheme) {
+            console.log('applyColorScheme');
+            const colors = colorSchemes[scheme] || colorSchemes.default;
+            const headerCells = document.querySelectorAll('.header-row td');
+            console
+            console.log('Colors:', colors);
+            headerCells.forEach((cell, index) => {
+                cell.style.backgroundColor = colors[index];
+                console.log('Set header cell', index, 'to color', colors[index]);
+            });
+        }
+
+        function getTropes(list) {
+            return [...new Set(tropesList[list] || tropesList.default)];
+        }
+
+        function seededShuffle(array, s) {
+            var seed = s + 1;
+            for (let i = array.length - 1; i > 0; i--) {
+                var x = Math.sin(seed++) * 10000;
+                x = x - Math.floor(x);
+                const j = Math.floor(x * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0, len = str.length; i < len; i++) {
+                let chr = str.charCodeAt(i);
+                hash = (hash << 5) - hash + chr;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        }
+
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            //name = name + "-" + "october-fest.html"; // Make cookie name unique per page
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function generateRandomUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function getOrCreateUserId(reset) {
+            let userId = getCookie('user-id');
+            if (!userId || reset) {
+                userId = generateRandomUserId();
+                setCookie('user-id', userId, 7);
+            }
+            return userId;
+        }
+
+        function generateBoard() {
+            const userId = getOrCreateUserId();
+            console.log('User ID:', userId);
+            
+            const seed = hashString(userId);
+            const christmasTropes = getTropes('default');
+            seededShuffle(christmasTropes, seed);
+
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                if (index < christmasTropes.length) {
+                    cell.textContent = christmasTropes[index];
+                    if (index === 12) {
+                        cell.textContent = 'FREE';
+                        cell.classList.add('marked');
+                    }
+                }
+            });
+        }
+
+        function saveCellColors() {
+            console.log('saveCellColors');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            const colors = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
+            setCookie('cell-colors', JSON.stringify(colors), 7);
+        }
+
+        function loadCellColors() {
+            console.log('loadCellColors');
+            const colors = JSON.parse(getCookie('cell-colors') || '[]');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            cells.forEach((cell, index) => {
+                if (colors[index] === 'marked') {
+                    cell.classList.add('marked');
+                }
+            });
+        }
+
+        function copyBoardEmojis() {
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            
+            let boardEmojis = '';
+            boardEmojis += 'Oktoberfest Bingo!';
+
+            boardEmojis += '\n';
+            boardEmojis += '🍺🥨🎶🍂🍗';
+
+            boardEmojis += '\n';
+            cells.forEach((cell, index) => {
+                if (index % 5 === 0 && index !== 0) {
+                    boardEmojis += '\n';
+                }
+                boardEmojis += cell.classList.contains('marked') ? '✅' : '⬜';
+            });
+            
+            boardEmojis += '\n';
+            boardEmojis += 'https://spencebeecher.github.io/october-fest.html';
+
+            navigator.clipboard.writeText(boardEmojis).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyColorScheme('default');
+            generateBoard();
+            loadCellColors();
+        });
+
+        document.getElementById('generate-board').addEventListener('click', async () => {
+            console.log('generate board click');
+            getOrCreateUserId(true);
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            cells.forEach((cell, index) => {
+                cell.classList.remove('marked');
+            });
+            generateBoard();
+            saveCellColors();
+        });
+
+        document.getElementById('copy-emojis').addEventListener('click', copyBoardEmojis);
+
+        document.querySelectorAll('#bingo-board tr:not(.header-row) td').forEach(cell => {
+            cell.addEventListener('click', () => {
+                console.log('cell click');
+                if (cell.classList.contains('marked')) {
+                    cell.classList.remove('marked');
+                } else {
+                    cell.classList.add('marked');
+                }
+                saveCellColors();
+            });
+        });
+    </script>
+    
+</body>
+</html>
