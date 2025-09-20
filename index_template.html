@@ -129,6 +129,7 @@
         }
 
         function getCookie(name) {
+            //name = name + "-" + "{{ page_name }}"; // Make cookie name unique per page
             const nameEQ = name + "=";
             const ca = document.cookie.split(';');
             for (let i = 0; i < ca.length; i++) {
@@ -247,9 +248,18 @@
         });
     </script>
     {% for page in other_pages %}
-        <button onclick="window.location.href='{{ page }}'">
+        <button onclick="resetBoardAndNavigate('{{ page }}')">
             {{ page.replace('.html', '').replace('_', ' ').capitalize() }} Bingo
         </button>
     {% end %}
+
+    <script>
+        function resetBoardAndNavigate(page) {
+            // Clear cell colors and user id cookies
+            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = page;
+        }
+    </script>
 </body>
 </html>
