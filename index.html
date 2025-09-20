@@ -11,7 +11,7 @@
             padding: 40px;
         }
         .bingo-list {
-            max-width: 700px;
+            max-width: 1000px; /* Wider board */
             margin-left: 0;
             margin-right: auto;
             text-align: left;
@@ -26,10 +26,10 @@
             border: 1px solid #888;
             background: #fff;
             text-align: center;
-            font-size: 1.1em;
-            min-width: 90px;
-            width: 90px;
-            height: 56px;
+            font-size: 1.5em;   /* Bigger font */
+            min-width: 130px;   /* Wider columns */
+            width: 130px;
+            height: 72px;       /* Taller cells */
             box-sizing: border-box;
         }
         th {
@@ -48,13 +48,13 @@
         }
         .bingo-link {
             display: inline-block;
-            padding: 5px 8px;
+            padding: 10px 18px;
             background: rgba(255,255,255,0.7);
             border-radius: 6px;
             color: #222;
             text-decoration: none;
             font-weight: bold;
-            font-size: 0.9em;   /* Smaller font size */
+            font-size: 0.9em;   /* Bigger button text */
             border: 1px solid #888;
             transition: background 0.2s, box-shadow 0.2s;
             position: relative;
@@ -66,23 +66,39 @@
             background: rgba(255,255,255,0.9);
             box-shadow: 0 0 4px #888;
         }
+        #copy-emojis {
+            font-size: 1.4em;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: bold;
+            background: #264b96;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 18px;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        #copy-emojis:hover {
+            background: #1a3266;
+            box-shadow: 0 0 6px #888;
+        }
         @media (max-width: 600px) {
             th, td {
-                min-width: 80px;
-                width: 80px;
-                height: 56px;
-                font-size: 1.2em;
-                padding: 8px;
+                min-width: 100px;
+                width: 100px;
+                height: 64px;
+                font-size: 2em;
+                padding: 12px;
             }
             .bingo-link {
-                font-size: 0.5em;
-                padding: 8px 10px;
+                font-size: 1.5em;
+                padding: 12px 16px;
             }
         }
     </style>
 </head>
 <body>
-    <button id="copy-emojis" style="margin-bottom: 18px;">Share</button>
+    <button id="copy-emojis">Share</button>
     <div class="bingo-list">
         <table>
             <tr>

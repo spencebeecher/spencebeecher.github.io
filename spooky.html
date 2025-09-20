@@ -47,6 +47,26 @@
         .marked {
             background-color: #C87500;
         }
+        #copy-emojis,
+        #generate-board,
+        button[onclick] {
+            font-size: 1.15em;      /* Slightly smaller font */
+            padding: 10px 22px;     /* Slightly less padding */
+            border-radius: 8px;
+            font-weight: bold;
+            background: #C87500;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 18px;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        #copy-emojis:hover,
+        #generate-board:hover,
+        button[onclick]:hover {
+            background: #C87500;
+            box-shadow: 0 0 6px #888;
+        }
     </style>
 </head>
 <body>
