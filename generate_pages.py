@@ -293,7 +293,7 @@ def main():
             "Blood on the Walls",
             "Final Survivor"
         ]
-    }
+    } 
 
     for filename, context in contexts.items():
         context['page_name'] = filename
