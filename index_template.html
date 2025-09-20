@@ -92,7 +92,9 @@
                                 {% end %}
                             "
                         >
-                            {% if idx < len(bingo_pages) %}
+                            {% if idx == 12 %}
+                                <span class="bingo-link">FREE</span>
+                            {% elif idx < len(bingo_pages) %}
                                 <a href="{{ bingo_pages[idx] }}" class="bingo-link">
                                     {{ bingo_pages[idx].replace('.html', '').replace('_', ' ').capitalize() }}
                                 </a>
@@ -110,15 +112,14 @@ document.getElementById('copy-emojis').addEventListener('click', function() {
     // Collect bingo page names and emojis
     const ths = Array.from(document.querySelectorAll('.bingo-list th')).map(th => th.textContent.trim()).join('');
     let boardEmojis = '';
-    boardEmojis += 'Bingo Games\n';
+    boardEmojis += 'Bingo Games!\n';
     boardEmojis += '🎉🎲🎁🎯🎈\n';
     boardEmojis += '⬜⬜✅⬜✅\n';
     boardEmojis += '⬜⬜✅⬜⬜\n';
     boardEmojis += '✅⬜✅⬜✅\n';
     boardEmojis += '✅⬜✅✅✅\n';
     boardEmojis += '✅⬜✅⬜✅\n';
-
-    boardEmojis += '\nhttps://spencebeecher.github.io/';
+    boardEmojis += 'https://spencebeecher.github.io/';
     navigator.clipboard.writeText(boardEmojis).then(() => {
         alert('Copied to clipboard!');
     });

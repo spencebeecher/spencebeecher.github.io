@@ -36,13 +36,29 @@ def serve_spooky():
 def serve_super_spooky():
     return send_from_directory('.', 'super_spooky.png')
 
-# octoberfest page and image
+
 @app.route('/octoberfest.html')
 def serve_octoberfest():
     return send_from_directory('.', 'octoberfest.html')
 @app.route('/octoberfest.png')
 def serve_octoberfest_image():
     return send_from_directory('.', 'octoberfest.png')
+
+# stranger things page and image
+@app.route('/stranger_things.html')
+def serve_stranger_things():
+    return send_from_directory('.', 'stranger_things.html')
+@app.route('/stranger.png')
+def serve_stranger_image():
+    return send_from_directory('.', 'stranger.png')
+
+# football page and image
+@app.route('/football.html')
+def serve_football():
+    return send_from_directory('.', 'football.html')
+@app.route('/football.png')
+def serve_football_image():
+    return send_from_directory('.', 'football.png')
 
 if __name__ == '__main__':
     

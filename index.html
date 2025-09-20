@@ -154,6 +154,77 @@
                         <td
                             style="
                                 
+                                    background-image: url('./stranger.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="stranger_things.html" class="bingo-link">
+                                    Stranger things
+                                </a>
+                            
+                        </td>
+                    
+                </tr>
+            
+                <tr>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./football.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="football.html" class="bingo-link">
+                                    Football
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
                             "
                         >
                             
@@ -194,66 +265,7 @@
                             "
                         >
                             
-                                <!-- Blank cell -->
-                            
-                        </td>
-                    
-                        
-                        <td
-                            style="
-                                
-                            "
-                        >
-                            
-                                <!-- Blank cell -->
-                            
-                        </td>
-                    
-                        
-                        <td
-                            style="
-                                
-                            "
-                        >
-                            
-                                <!-- Blank cell -->
-                            
-                        </td>
-                    
-                </tr>
-            
-                <tr>
-                    
-                        
-                        <td
-                            style="
-                                
-                            "
-                        >
-                            
-                                <!-- Blank cell -->
-                            
-                        </td>
-                    
-                        
-                        <td
-                            style="
-                                
-                            "
-                        >
-                            
-                                <!-- Blank cell -->
-                            
-                        </td>
-                    
-                        
-                        <td
-                            style="
-                                
-                            "
-                        >
-                            
-                                <!-- Blank cell -->
+                                <span class="bingo-link">FREE</span>
                             
                         </td>
                     
@@ -406,15 +418,14 @@ document.getElementById('copy-emojis').addEventListener('click', function() {
     // Collect bingo page names and emojis
     const ths = Array.from(document.querySelectorAll('.bingo-list th')).map(th => th.textContent.trim()).join('');
     let boardEmojis = '';
-    boardEmojis += 'Bingo Games\n';
+    boardEmojis += 'Bingo Games!\n';
     boardEmojis += '🎉🎲🎁🎯🎈\n';
     boardEmojis += '⬜⬜✅⬜✅\n';
     boardEmojis += '⬜⬜✅⬜⬜\n';
     boardEmojis += '✅⬜✅⬜✅\n';
     boardEmojis += '✅⬜✅✅✅\n';
     boardEmojis += '✅⬜✅⬜✅\n';
-
-    boardEmojis += '\nhttps://spencebeecher.github.io/';
+    boardEmojis += 'https://spencebeecher.github.io/';
     navigator.clipboard.writeText(boardEmojis).then(() => {
         alert('Copied to clipboard!');
     });
