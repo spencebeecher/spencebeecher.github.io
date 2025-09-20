@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6636252539023013"
+     crossorigin="anonymous"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christmas Bingo!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>🎄</text></svg>">
     <style>
+        /* Add some basic styling width: 100%;*/
         body {
-            background-image: url(./holly.jpeg);
+            background-image: url('holly.jpeg');
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-        /* Add some basic styling width: 100%;*/
         table {
             border-collapse: collapse;
             width: 380px;
@@ -22,7 +24,9 @@
             padding-left: 3px; /* Add padding to the left */
             padding-right: 3px; /* Add padding to the right */
             table-layout: fixed; /* Ensure equal width for all cells */
+            background-color: rgba(255, 255, 255, 0.9); /* Add a white background with some transparency */
         }
+        
         
         td {
             border: 1px solid #000;
@@ -33,20 +37,43 @@
             font-size: 13px;
             font-family: Arial, sans-serif;
             border-right: 1px solid #000;
-            background-color: white; /* Set cell background to white */
         }
         .header-row td {
             height: auto; /* Allow the header row to have auto height */
             font-size: 35px;
             font-weight: bold;
-            color: #000; /* Set text color to black */
+            color: #fff; /* Set text color to white */
+            background-color: #ff0000; /* Set background color to red */
         }
-        
+        .header-row td:nth-child(2) {
+            background-color: green; /* Set background color to green */
+        }
+        .header-row td:nth-child(3) {
+            background-color: #ff0000; /* Set background color to blue */
+        }
+        .header-row td:nth-child(4) {
+            background-color: green; /* Set background color to amber */
+        }
+        .header-row td:nth-child(5) {
+            background-color: #ff0000; /* Set background color to brighter purple */
+        }
         .marked_green {
             background-color: green;
+            color: white; /* Set text color to white when marked green */
         }
         .marked_red {
             background-color: red;
+            color: white; /* Set text color to white when marked red */
+        }
+        @media (min-width: 1024px) {
+            table {
+                width: 600px;
+                height: 600px;
+            }
+            td {
+                font-size: 20px; /* Increase font size for desktop */
+                
+            }
         }
     </style>
 </head>
@@ -78,32 +105,156 @@
         </tr>
     </table>
     <script>
-        const colorSchemes = {
-            default: ['#ff0000', '#00a000', '#0000ff', '#ffbf00', '#9932CC'],
-        };
+        function getTropes() {
+            const tropes = [
+                "City Slicker Finds Small-Town Love",
+                "Attractive Widower Or Divorcee",
+                "Family Business Needs Saving",
+                "Perfect Holiday Festival",
+                "Workaholic Learns Holiday Spirit",
+                "Small-Town Charm Wins Over Cynic",
+                "Over-Achiever Learns To Relax",
+                "Small Town With Big Traditions",
+                "Snowed-In!",
+                "Sassy Friend Loves Holidays",
+                "Snow Globe",
+                "Grumpy Boss Finds Holiday Joy",
+                "Miracle Saves The Holidays",
+                "Special Ornament",
+                "Big Family Gathering",
+                "Adorable Animal In A Santa Hat",
+                "Romantic Carriage Ride In Town",
+                "Epic Holiday Decor Showdown",
+                "Snowfall At The Perfect Moment",
+                "Mistletoe Kiss",
+                "Holiday Schedule Chaos",
+                "Big Secret Unveiled",
+                "Hometown Hero Restores Spirit",
+                "City Slicker Meets Rustic Charm",
+                "Volunteer Event",
+                "Clumsy Yet Sweet Helper",
+                "Rivalry Over Decorations",
+                "Magic Kiss On Christmas Eve",
+                "Tree Lighting Ceremony",
+                "Last-Minute Dash For Holiday Cheer",
+                "Enemies Fall In Love At Christmas",
+                "Town Legend Of Christmas Magic",
+                "Holiday Market",
+                "Family Heirloom",
+                "Assistant Finally Gets Their Moment",
+                "Christmas Engagement",
+                "Small-Town Love Interest",
+                "City Person Can’t Do Small Town Things",
+                "Caroling or Christmas Concert",
+                "Gift With Meaning",
+                "Plans Fall Apart",
+                "Lost Pet Found",
+                "Fake Dating Leads To Real Love",
+                "Holiday Photoshoot",
+                "Small-Town Festival",
+                "Surprise Family Visit",
+                "Holiday Dress Up",
+                "Petty Argument Ends In Love",
+                "Child Helps Adults Believe Again",
+                "Snowball Fight",
+                "Tree Farm",
+                "Reindeer",
+                "Hidden Talent",
+                "Holiday Concert",
+                "Holiday Grump",
+                "Santa Stand-In",
+                "Holiday Workaholic",
+                "Over-Bearing Relative",
+                "Perfect Love Interest",
+                "City Slicker",
+                "Cynical Teen",
+                "Grumpy Boss",
+                "Elder Shares Wisdom",
+                "Small Town With Big Christmas Spirit",
+                "Family Cabin",
+                "Busy Department Store",
+                "Cozy Bakery",
+                "Snowy Landscape",
+                "Over-The-Top Holiday House",
+                "Big City At Christmas",
+                "'Save Christmas' Mission",
+                "Mistaken Identity",
+                "Holiday Bet Or Dare",
+                "Christmas Competition",
+                "Return Home For The Holidays",
+                "Christmas Wish",
+                "Holiday Makeover",
+                "Romantic Mix-Up",
+                "Last-Minute Gift Dash",
+                "Holiday Proposal",
+                "Discovery Of True Meaning Of Christmas",
+                "Redemption And Forgiveness",
+                "Overcoming Holiday Cynicism",
+                "Conflict Across Generations",
+                "Spirit Of Giving",
+                "Snowy Nights",
+                "Mistletoe",
+                "Caroling",
+                "Ugly Christmas Sweaters",
+                "Festive Food Feasts",
+                "Christmas Markets",
+                "Special Ornament",
+                "Naughty Or Nice",
+                "Snow Globe",
+                "Over-The-Top Neighbors",
+                "Magical Creatures",
+                "Stockings",
+                "Christmas Lights",
+                "Candy Canes",
+                "Poinsettias",
+                "Nativity Scenes",
+                "Santa Claus",
+                "Sitting With Santa",
+                "Reindeer",
+                "Sleighs",
+                "Snowmen",
+                "Gingerbread Houses",
+                "Hot Cocoa Or Eggnog",
+                "Christmas Cookies",
+                "Yule Log (Cake) Or Fruit Cake",
+                "Fire Roaring In The Fireplace",
+                "Gift Wrapping Paper",
+                "Christmas Morning",
+                "Christmas Hits",
+                "Holiday Movie Reference",
+                "Christmas Villages",
+                "Snowflakes",
+                "Christmas Bells",
+                "Santa Hats",
+                "Winter Scarves",
+                "Holiday Pajamas",
+                "North Pole",
+                "Christmas Elves",
+                "Christmas Parties",
+                "Gift Exchanges",
+                "Caroling",
+                "Snowball Fights",
+                "Holiday Mugs",
+                "Nutcracker",
+                "French Horn In Soundtrack",
+                "Sleigh Bells Ringing",
+                "Christmas Stockings",
+                "Festive Table Settings",
+                "Holiday Baking",
+                "Festive Wreaths",
+                "Ice Skating",
+                "Holiday Classics Music",
+                "Holiday Magic",
+                "Generous Application Of Fake Snow",
+                "Generous Application Of Hairspray",
+            ];
 
-        const tropesList = {
-            default: ['City Slicker Finds Small-Town Love', 'Attractive Widower or Devorcee', 'Family Business Needs Saving', 'Perfect Holiday Festival', 'Workaholic Learns Holiday Spirit', 'Small-Town Charm Wins Over Cynic', 'Over-achiever Learns to Relax', 'Small Town with Big Traditions', 'Snowed-In!', 'Sassy Friend Loves Holidays', 'Snow Globe', 'Grumpy Boss Finds Holiday Joy', 'Miracle Saves the Holidays', 'Special Ornament', 'Big Family Gathering', 'Adorable animal in a Santa Hat', 'Romantic Carriage Ride in Town', 'Epic Holiday Decor Showdown', 'Snowfall at the Perfect Moment', 'Mistletoe Kiss', 'Holiday Schedule Chaos', 'Big Secret Unveiled', 'Hometown Hero Restores Spirit', 'City Slicker Meets Rustic Charm', 'Volunteer Event', 'Clumsy Yet Sweet Helper', 'Rivalry Over Decorations', 'Magic Kiss on Christmas Eve', 'Tree Lighting Ceremony', 'Last-Minute Dash for Holiday Cheer', 'Enemies Fall in Love at Christmas', 'Town Legend of Christmas Magic', 'Holiday Market', 'Family Heirloom', 'Assistant Finally Gets Their Moment', 'Christmas Engagement', 'Small-Town Love Interest', 'City person can’t do small town things', 'Secret Santa Gift with Meaning', 'Plans Fall Apart', 'Lost Pet Found', 'Fake Dating Leads to Real Love', 'Holiday Photoshoot', 'Small-Town Festival', 'Surprise Family Visit', 'Holiday Costume Disaster', 'Petty Argument Ends in Love', 'Child Helps Adults Believe Again', 'Snowball Fight', 'Tree Farm', 'Reindeer', 'Hidden Talent', 'Holiday Concert', 'Holiday Grump', 'Santa Stand-In', 'Holiday Workaholic', 'Over-bearing Relative', 'Perfect Love Interest', 'City Slicker', 'Cynical Teen', 'Grumpy Boss', 'Elder shares wisdom', 'Small Town with Big Christmas Spirit', 'Family Cabin', 'Busy Department Store', 'Cozy Bakery', 'Snowy Landscape', 'Over-the-Top Holiday House', 'Big City at Christmas', "'Save Christmas' Mission", 'Mistaken Identity', 'Holiday Bet or Dare', 'Christmas Competition', 'Return Home for the Holidays', 'Christmas Wish', 'Holiday Makeover', 'Romantic Mix-Up', 'Last-Minute Gift Dash', 'Holiday Proposal', 'Dcovery of True Meaning of Christmas', 'Redemption and Forgiveness', 'Overcoming Holiday Cynicism', 'Conflict Across Generations', 'Spirit of Giving', 'Snowy Nights', 'Mistletoe', 'Caroling', 'Ugly Christmas Sweaters', 'Festive Food Feasts', 'Christmas Markets', 'Special Ornament', 'Naughty or Nice', 'Snow Globe', 'Over-the-Top Neighbors', 'Magical Creatures', 'Stockings', 'Christmas Lights', 'Candy Canes', 'Poinsettias', 'Nativity Scenes', 'Santa Claus', 'Sitting with Santa', 'Reindeer', 'Sleighs', 'Snowmen', 'Gingerbread Houses', 'Hot Cocoa or Eggnog', 'Christmas Cookies', 'Yule Log (Cake) or Fruit Cake', 'Fire Roaring in the Fireplace', 'Gift Wrapping Paper', 'Christmas Morning', 'Christmas Hits', 'Holiday Movie Reference', 'Christmas Villages', 'Snowflakes', 'Christmas Bells', 'Santa Hats', 'Winter Scarves', 'Holiday Pajamas', 'North Pole', 'Christmas Elves', 'Christmas Parties', 'Gift Exchanges', 'Caroling', 'Snowball Fights', 'Holiday Mugs', 'Nutcracker', 'French Horn in Soundtrack', 'Sleigh Bells Ringing', 'Christmas Stockings', 'Festive Table Settings', 'Holiday Baking', 'Festive Wreaths', 'Ice Skating', 'Holiday Classics Music', 'Holiday Magic', 'Generous application of fake snow', 'Generous application of hairspray'],
-        };
-
-        function applyColorScheme(scheme) {
-            console.log('applyColorScheme');
-            const colors = colorSchemes[scheme] || colorSchemes.default;
-            const headerCells = document.querySelectorAll('.header-row td');
-            console
-            console.log('Colors:', colors);
-            headerCells.forEach((cell, index) => {
-                cell.style.backgroundColor = colors[index];
-                console.log('Set header cell', index, 'to color', colors[index]);
-            });
-        }
-
-        function getTropes(list) {
-            return [...new Set(tropesList[list] || tropesList.default)];
+            return [...new Set(tropes)];
         }
 
         function seededShuffle(array, s) {
             var seed = s + 1;
+
             for (let i = array.length - 1; i > 0; i--) {
                 var x = Math.sin(seed++) * 10000;
                 x = x - Math.floor(x);
@@ -158,11 +309,12 @@
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
+            christmasTropes = getTropes();
             seededShuffle(christmasTropes, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {
+                
                 if (index < christmasTropes.length) {
                     cell.textContent = christmasTropes[index];
                     if (index === 12) {
@@ -174,14 +326,14 @@
         }
 
         function saveCellColors() {
-            console.log('saveCellColors');
+            console.log('save cell colors');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             const colors = Array.from(cells).map(cell => cell.classList.contains('marked_green') ? 'green' : '');
             setCookie('cell-colors', JSON.stringify(colors), 7);
         }
 
         function loadCellColors() {
-            console.log('loadCellColors');
+            console.log('load cell colors');
             const colors = JSON.parse(getCookie('cell-colors') || '[]');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
@@ -217,7 +369,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            applyColorScheme('default');
             generateBoard();
             loadCellColors();
         });
@@ -231,6 +382,7 @@
             });
             generateBoard();
             saveCellColors();
+            //loadCellColors();
         });
 
         document.getElementById('copy-emojis').addEventListener('click', copyBoardEmojis);
@@ -246,6 +398,7 @@
                 saveCellColors();
             });
         });
+
     </script>
 </body>
 </html>

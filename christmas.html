@@ -42,11 +42,9 @@
             color: #000; /* Set text color to black */
         }
         
-        .marked_green {
-            background-color: green;
-        }
-        .marked_red {
-            background-color: red;
+        
+        .marked {
+            background-color: #00a000;
         }
     </style>
 </head>
@@ -167,7 +165,7 @@
                     cell.textContent = christmasTropes[index];
                     if (index === 12) {
                         cell.textContent = 'FREE';
-                        cell.classList.add('marked_green');
+                        cell.classList.add('marked');
                     }
                 }
             });
@@ -176,7 +174,7 @@
         function saveCellColors() {
             console.log('saveCellColors');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
-            const colors = Array.from(cells).map(cell => cell.classList.contains('marked_green') ? 'green' : '');
+            const colors = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
             setCookie('cell-colors', JSON.stringify(colors), 7);
         }
 
@@ -185,8 +183,8 @@
             const colors = JSON.parse(getCookie('cell-colors') || '[]');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
-                if (colors[index] === 'green') {
-                    cell.classList.add('marked_green');
+                if (colors[index] === 'marked') {
+                    cell.classList.add('marked');
                 }
             });
         }
@@ -198,14 +196,14 @@
             boardEmojis += 'Holiday Bingo!';
 
             boardEmojis += '\n';
-            boardEmojis += '🎅🎁🦌❄️🎄';
+            boardEmojis += '🎄🎅❄️⛄🎁';
 
             boardEmojis += '\n';
             cells.forEach((cell, index) => {
                 if (index % 5 === 0 && index !== 0) {
                     boardEmojis += '\n';
                 }
-                boardEmojis += cell.classList.contains('marked_green') ? '✅' : '⬜';
+                boardEmojis += cell.classList.contains('marked') ? '✅' : '⬜';
             });
             
             boardEmojis += '\n';
@@ -227,7 +225,7 @@
             getOrCreateUserId(true);
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
-                cell.classList.remove('marked_green');
+                cell.classList.remove('marked');
             });
             generateBoard();
             saveCellColors();
@@ -238,10 +236,10 @@
         document.querySelectorAll('#bingo-board tr:not(.header-row) td').forEach(cell => {
             cell.addEventListener('click', () => {
                 console.log('cell click');
-                if (cell.classList.contains('marked_green')) {
-                    cell.classList.remove('marked_green');
+                if (cell.classList.contains('marked')) {
+                    cell.classList.remove('marked');
                 } else {
-                    cell.classList.add('marked_green');
+                    cell.classList.add('marked');
                 }
                 saveCellColors();
             });

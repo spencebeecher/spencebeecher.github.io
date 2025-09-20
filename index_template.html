@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6636252539023013"
-     crossorigin="anonymous"></script>
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <style>
+        body {
+            background-image: url({{ background_image_url }});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
         /* Add some basic styling width: 100%;*/
         table {
             border-collapse: collapse;
@@ -28,6 +33,7 @@
             font-size: 13px;
             font-family: Arial, sans-serif;
             border-right: 1px solid #000;
+            background-color: white; /* Set cell background to white */
         }
         .header-row td {
             height: auto; /* Allow the header row to have auto height */
@@ -36,11 +42,9 @@
             color: #000; /* Set text color to black */
         }
         
-        .marked_green {
-            background-color: green;
-        }
-        .marked_red {
-            background-color: red;
+        
+        .marked {
+            background-color: {{ marked_color }};
         }
     </style>
 </head>
@@ -81,10 +85,14 @@
         };
 
         function applyColorScheme(scheme) {
+            console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
             const headerCells = document.querySelectorAll('.header-row td');
+            console
+            console.log('Colors:', colors);
             headerCells.forEach((cell, index) => {
                 cell.style.backgroundColor = colors[index];
+                console.log('Set header cell', index, 'to color', colors[index]);
             });
         }
 
@@ -157,26 +165,26 @@
                     cell.textContent = christmasTropes[index];
                     if (index === 12) {
                         cell.textContent = 'FREE';
-                        cell.classList.add('marked_green');
+                        cell.classList.add('marked');
                     }
                 }
             });
         }
 
         function saveCellColors() {
-            console.log('save cell colors');
+            console.log('saveCellColors');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
-            const colors = Array.from(cells).map(cell => cell.classList.contains('marked_green') ? 'green' : '');
+            const colors = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
             setCookie('cell-colors', JSON.stringify(colors), 7);
         }
 
         function loadCellColors() {
-            console.log('load cell colors');
+            console.log('loadCellColors');
             const colors = JSON.parse(getCookie('cell-colors') || '[]');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
-                if (colors[index] === 'green') {
-                    cell.classList.add('marked_green');
+                if (colors[index] === 'marked') {
+                    cell.classList.add('marked');
                 }
             });
         }
@@ -188,14 +196,14 @@
             boardEmojis += 'Holiday Bingo!';
 
             boardEmojis += '\n';
-            boardEmojis += '🎅🎁🦌❄️🎄';
+            boardEmojis += '{{board_emojis}}';
 
             boardEmojis += '\n';
             cells.forEach((cell, index) => {
                 if (index % 5 === 0 && index !== 0) {
                     boardEmojis += '\n';
                 }
-                boardEmojis += cell.classList.contains('marked_green') ? '✅' : '⬜';
+                boardEmojis += cell.classList.contains('marked') ? '✅' : '⬜';
             });
             
             boardEmojis += '\n';
@@ -217,7 +225,7 @@
             getOrCreateUserId(true);
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
-                cell.classList.remove('marked_green');
+                cell.classList.remove('marked');
             });
             generateBoard();
             saveCellColors();
@@ -228,10 +236,10 @@
         document.querySelectorAll('#bingo-board tr:not(.header-row) td').forEach(cell => {
             cell.addEventListener('click', () => {
                 console.log('cell click');
-                if (cell.classList.contains('marked_green')) {
-                    cell.classList.remove('marked_green');
+                if (cell.classList.contains('marked')) {
+                    cell.classList.remove('marked');
                 } else {
-                    cell.classList.add('marked_green');
+                    cell.classList.add('marked');
                 }
                 saveCellColors();
             });

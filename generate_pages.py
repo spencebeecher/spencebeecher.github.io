@@ -17,15 +17,14 @@ def generate_html_from_template(template_path, output_path, context):
     write_file(output_path, rendered_content)
 
 def main():
-    template_filepath = '/home/entrophi/repositories/spencebeecher.github.io/index_template.html'
-    output_filepath = '/home/entrophi/repositories/spencebeecher.github.io/index2.html'
-    
-    context = {
+    template_filepath = 'index_template.html'
+
+    christmas_context = {
         "title": "Christmas Bingo!",
-        "color_scheme": {
-            "default": ['#ff0000', '#00a000', '#0000ff', '#ffbf00', '#9932CC'],
-            # Add more color schemes here
-        },
+        "background_image_url": "./holly.jpeg",
+        "color_scheme":  ['#ff0000', '#00a000', '#0000ff', '#ffbf00', '#9932CC'],
+        "marked_color": "#00a000",  # Or any color you want
+        "board_emojis": "🎄🎅❄️⛄🎁",
         "tropes_list": [
                 "City Slicker Finds Small-Town Love",
                 "Attractive Widower or Devorcee",
@@ -184,11 +183,86 @@ def main():
                 "Holiday Magic",
                 "Generous application of fake snow",
                 "Generous application of hairspray",
-            ]
+            ],
         
     }
     
-    generate_html_from_template(template_filepath, output_filepath, context)
+    generate_html_from_template(template_filepath, 'christmas.html', christmas_context)
+
+    halloween_context = {
+        "title": "Halloween Bingo!",
+        "background_image_url": "./spooky.png",
+        "color_scheme":  ['#9A4DFF', '#FFB347',  '#9A4DFF', '#FFB347', '#9A4DFF'],
+        "marked_color": "#FFB347",  # Or any color you want
+        "board_emojis": "🎃👻🍬🕷️🦇",
+        "tropes_list": [
+                "Haunted House",
+                "Trick-or-Treating",
+                "Costume Party",
+                "Pumpkin Carving",
+                "Scary Movie Marathon",
+                "Spooky Decorations",
+                "Ghost Stories",
+                "Witches and Wizards",
+                "Monsters",
+                "Black Cats",
+                "Full Moon",
+                "Creepy Crawlies",
+                "Candy Overload",
+                "Jack-o'-Lanterns",
+                "Zombie Apocalypse",
+                "Vampires",
+                "Werewolves",
+                "Mummies",
+                "Skeletons",
+                "Bats",
+                "Spiders and Webs",
+                "Graveyard Scenes",
+                "Creepy Music",
+                "Foggy Nights",
+                "Costume Contests",
+                "Haunted Hayrides",
+                "Bonfires",
+                "Apple Bobbing",
+                "Tarot Card Readings",
+                "Ouija Boards",
+                "Magic Spells",
+                "Potion Making",
+                "Creepy Clowns",
+                
+                "Scarecrows",
+                
+                "Cemetery Visits",
+                
+                "Horror Novels or Comics",
+                
+                "Creepy Dolls or Toys",
+                
+                "Witch's Brew (Themed Drinks)",
+                
+                "Spooky Sound Effects (Howling Wind, Creaking Doors)",
+                
+                "Halloween Parades or Festivals",
+                
+                "Day of the Dead Celebrations (Día de los Muertos)",
+                
+                "Pumpkin Spice (Lattes, Candles, Snacks)",
+                
+                "Autumn Leaves and Scenery (Fall Foliage)",
+                
+                "Harvest Themes (Corn Mazes, Hayrides)",
+                
+                "Scary Masks and Makeup (Face Paint, Prosthetics)",
+                
+                "Creepy Costumes (Zombies, Ghosts, Vampires)",
+                
+                "Halloween-themed TV Shows or Movies",
+                
+                "Halloween-themed Songs",
+                
+            ]
+    }
+    generate_html_from_template(template_filepath, 'halloween.html', halloween_context)
 
 if __name__ == "__main__":
     main()
