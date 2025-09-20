@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>🎃</text></svg>">
-    <title>Halloween Bingo!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>🍺</text></svg>">
+    <title>Oktoberfest Bingo!</title>
     <style>
         body {
-            background-image: url(./spooky.png);
+            background-image: url(./octoberfest.png);
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -45,7 +45,7 @@
         
         
         .marked {
-            background-color: #FFB347;
+            background-color: #FFD700;
         }
     </style>
 </head>
@@ -91,11 +91,11 @@
     </table>
     <script>
         const colorSchemes = {
-            default: ['#9A4DFF', '#FFB347', '#9A4DFF', '#FFB347', '#9A4DFF'],
+            default: ['#FFD700', '#8B4513', '#006400', '#1E90FF', '#FF6347'],
         };
 
         const tropesList = {
-            default: ['Jump Scare False Alarm', 'Flashlight Batteries Die', '‘Let’s Split Up!’', 'Mirror Scare', 'Phone With No Signal', 'Final Girl Energy', 'Creepy Basement', 'Chainsaw Guy', 'Haunted Objects', 'Eerie Lullabies', 'Candy', "I'm Not Afraid!", 'Stormy Night', 'Car Won’t Start', 'Running Upstairs Instead of Out', 'Look Behind You', 'Killer appears in Background', 'The Killer Moves Really Slowly…', 'Random Cat Jumping Out', 'Stranger Knows Too Much', '‘It Was Just a Dream’', 'Evil Laugh', 'Possessed Child', 'Old TV Static', 'Locked From the Outside', 'Flickering Lights', 'The Call Is Coming From Inside the House', 'Ancient Cursed Object', 'Pumpkin Patch', 'Local Legend', 'Abrupt Weather Change', 'Endless Fog Machine', 'Fake-Out Death', 'Evil Script', 'Crowd Gasps in Unison', 'Killer’s Mask Reveal', 'Magic Book Nobody Should Open', 'Make fun of Horror Clichés', 'Blood on the Mirror', 'Jump Cut to Screaming', 'Safe then Not Safe', 'Costumes', 'Trick or Treating', 'Haunted House Attraction', 'Pumpkin Carving', 'Spooky Decorations', 'Full Moon', 'Creepy Doll', 'Monsters', 'Killer is friend or family', 'Killer is among us', 'Killer theme music', 'Good turned bad'],
+            default: ['Giant Pretzel', 'Stein Holding Contest', 'Traditional Lederhosen', 'Dirndl Dress', 'Oompah Band', 'Chicken Dance', 'Beer Tent', 'Bratwurst', 'Polka Music', 'Blue and White Decorations', 'Alpine Hat', 'Beer Mug Souvenir', 'Festival Parade', 'German Flag', 'Bavarian Lion', 'Sauerkraut', 'Roasted Chicken', 'Apple Strudel', 'Carnival Rides', 'Festival Games', 'Group Toast', 'Prost!', 'Beer Foam Mustache', 'Pretzel Necklace', 'Festival Badge', 'Bavarian Pretzel', 'Festival Hat Pin', 'Traditional Dance', 'Beer Garden', 'Festival Banner'],
         };
 
         function applyColorScheme(scheme) {
@@ -142,7 +142,7 @@
         }
 
         function getCookie(name) {
-            //name = name + "-" + "halloween.html"; // Make cookie name unique per page
+            //name = name + "-" + "octoberfest.html"; // Make cookie name unique per page
             const nameEQ = name + "=";
             const ca = document.cookie.split(';');
             for (let i = 0; i < ca.length; i++) {
@@ -208,10 +208,10 @@
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             
             let boardEmojis = '';
-            boardEmojis += 'Halloween Bingo!';
+            boardEmojis += 'Oktoberfest Bingo!';
 
             boardEmojis += '\n';
-            boardEmojis += '🎃👻🍬🕷️🦇';
+            boardEmojis += '🍺🥨🎶🍂🍗';
 
             boardEmojis += '\n';
             cells.forEach((cell, index) => {
@@ -222,7 +222,7 @@
             });
             
             boardEmojis += '\n';
-            boardEmojis += 'https://spencebeecher.github.io/halloween.html';
+            boardEmojis += 'https://spencebeecher.github.io/octoberfest.html';
 
             navigator.clipboard.writeText(boardEmojis).then(() => {
                 alert('Copied to clipboard!');

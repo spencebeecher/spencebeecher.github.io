@@ -16,13 +16,21 @@ def generate_html_from_template(template_path, output_path, context):
     rendered_content = tornado.escape.xhtml_unescape(template.generate(**context))
     write_file(output_path, rendered_content)
 
+def generate_index(template_path, output_path, bingo_pages, page_images):
+    template_content = read_file(template_path)
+    template = Template(template_content, autoescape=None)
+    rendered_content = tornado.escape.xhtml_unescape(
+        template.generate(bingo_pages=bingo_pages, page_images=page_images)
+    )
+    write_file(output_path, rendered_content)
+
 def main():
-    template_filepath = 'index_template.html'
+    template_filepath = 'bingo_template.html'
     contexts = {}
 
     contexts['christmas.html'] = {
         "title": "Christmas Bingo!",
-        "background_image_url": "./holly.jpeg",
+        "background_image_url": "./holly.png",
         "color_scheme":  ['#ff0000', '#00a000', '#0000ff', '#ffbf00', '#9932CC'],
         "icon_emoji": "🎄",
         "marked_color": "#00a000",  # Or any color you want
@@ -295,10 +303,61 @@ def main():
         ]
     } 
 
+    contexts['octoberfest.html'] = {
+        "title": "Oktoberfest Bingo!",
+        "background_image_url": "./octoberfest.png",  # Add this image to your project
+        "color_scheme": ['#FFD700', '#8B4513', '#006400', '#1E90FF', '#FF6347'],
+        "icon_emoji": "🍺",
+        "marked_color": "#FFD700",
+        "board_emojis": "🍺🥨🎶🍂🍗",
+        "tropes_list": [
+            "Giant Pretzel",
+            "Stein Holding Contest",
+            "Traditional Lederhosen",
+            "Dirndl Dress",
+            "Oompah Band",
+            "Chicken Dance",
+            "Beer Tent",
+            "Bratwurst",
+            "Polka Music",
+            "Blue and White Decorations",
+            "Alpine Hat",
+            "Beer Mug Souvenir",
+            "Festival Parade",
+            "German Flag",
+            "Bavarian Lion",
+            "Sauerkraut",
+            "Roasted Chicken",
+            "Apple Strudel",
+            "Carnival Rides",
+            "Festival Games",
+            "Group Toast",
+            "Prost!",
+            "Beer Foam Mustache",
+            "Pretzel Necklace",
+            "Festival Badge",
+            "Bavarian Pretzel",
+            "Festival Hat Pin",
+            "Traditional Dance",
+            "Beer Garden",
+            "Festival Banner"
+        ]
+    }
+
     for filename, context in contexts.items():
         context['page_name'] = filename
         context['other_pages'] = [f for f in contexts.keys() if f != filename]
         generate_html_from_template(template_filepath, filename, context)
+
+    # After generating bingo pages
+    index_template_path = 'index_template.html'
+    index_output_path = 'index.html'
+    bingo_pages = list(contexts.keys())
+
+    # Dynamically generate page_images from contexts
+    page_images = {filename: context['background_image_url'] for filename, context in contexts.items()}
+
+    generate_index(index_template_path, index_output_path, bingo_pages, page_images)
 
 if __name__ == "__main__":
     main()

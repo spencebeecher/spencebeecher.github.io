@@ -8,7 +8,7 @@
     <title>Christmas Bingo!</title>
     <style>
         body {
-            background-image: url(./holly.jpeg);
+            background-image: url(./holly.png);
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -50,8 +50,21 @@
     </style>
 </head>
 <body>
-    <button id="generate-board">Regenerate Bingo</button>
-    <button id="copy-emojis">Share Results</button>
+    <button id="generate-board">Refresh</button>
+    <button id="copy-emojis">Share</button>
+    <!-- Add button to go to index.html -->
+    <button onclick="resetBoardAndNavigate('/')">
+        Games
+    </button>
+
+    <script>
+        function resetBoardAndNavigate(page) {
+            // Clear cell colors and user id cookies
+            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = page;
+        }
+    </script>
     <table id="bingo-board">
         <!-- ...existing code... -->
         <!-- Generate a 5x5 Bingo board -->
@@ -248,22 +261,5 @@
         });
     </script>
     
-        <button onclick="resetBoardAndNavigate('halloween.html')">
-            Halloween Bingo
-        </button>
-    
-        <button onclick="resetBoardAndNavigate('spooky.html')">
-            Spooky Bingo
-        </button>
-    
-
-    <script>
-        function resetBoardAndNavigate(page) {
-            // Clear cell colors and user id cookies
-            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = page;
-        }
-    </script>
 </body>
 </html>
