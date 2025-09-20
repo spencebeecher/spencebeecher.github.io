@@ -60,6 +60,11 @@ def serve_football():
 def serve_football_image():
     return send_from_directory('.', 'football.png')
 
+# bingo.png
+@app.route('/bingo.png')
+def serve_bingo_image():
+    return send_from_directory('.', 'bingo.png')
+
 if __name__ == '__main__':
     
     #app.listen(80, address="0.0.0.0")
