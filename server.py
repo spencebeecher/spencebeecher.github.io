@@ -32,6 +32,24 @@ def serve_holly():
 def serve_spooky():
     return send_from_directory('.', 'spooky.png')
 
+# slasher page and image
+@app.route('/slasher.html')
+def serve_slasher_page():
+    return send_from_directory('.', 'slasher.html')
+
+@app.route('/slasher.png')
+def serve_slasher_image():
+    return send_from_directory('.', 'slasher.png')
+
+# monster page and image
+@app.route('/monster.html')
+def serve_monster_page():
+    return send_from_directory('.', 'monster.html')
+@app.route('/monster.png')
+def serve_monster_image():
+    return send_from_directory('.', 'monster.png')
+
+
 @app.route('/super_spooky.png')
 def serve_super_spooky():
     return send_from_directory('.', 'super_spooky.png')
