@@ -78,6 +78,30 @@ def serve_football():
 def serve_football_image():
     return send_from_directory('.', 'football.png')
 
+# romcom page and image
+@app.route('/romcom.html')
+def serve_romcom():
+    return send_from_directory('.', 'romcom.html')
+@app.route('/romcom.png')
+def serve_romcom_image():
+    return send_from_directory('.', 'romcom.png')
+
+# western
+@app.route('/western.html')
+def serve_western():
+    return send_from_directory('.', 'western.html')
+@app.route('/western.png')
+def serve_western_image():
+    return send_from_directory('.', 'western.png')
+
+# action 
+@app.route('/action.html')
+def serve_action():
+    return send_from_directory('.', 'action.html')
+@app.route('/action.png')
+def serve_action_image():
+    return send_from_directory('.', 'action.png')
+
 # bingo.png
 @app.route('/bingo.png')
 def serve_bingo_image():
