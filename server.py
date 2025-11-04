@@ -94,6 +94,14 @@ def serve_western():
 def serve_western_image():
     return send_from_directory('.', 'western.png')
 
+#hockey
+@app.route('/hockey.html')
+def serve_hockey():
+    return send_from_directory('.', 'hockey.html')
+@app.route('/hockey.png')
+def serve_hockey_image():
+    return send_from_directory('.', 'hockey.png')
+
 # action 
 @app.route('/action.html')
 def serve_action():

@@ -1002,6 +1002,56 @@ def main():
             ]
     }
 
+    contexts["hockey.html"] = {
+        "title": "Hockey Bingo!",
+        "background_image_url": "./hockey.png",  # Add a hockey-themed image to your project
+        "color_scheme": ["#0033A0", "#FF4C00", "#FFFFFF", "#000000", "#A5ACAF"],
+        "icon_emoji": "🏒",
+        "marked_color": "#0033A0",
+        "board_emojis": "🏒🥅🧤🏆🥅",
+        "tropes_list": [
+                "Slapshot",
+                "Power Play",
+                "Penalty Kill",
+                "Hat Trick",
+                "Fight on Ice",
+                "Goalie Save",
+                "Breakaway",
+                "Icing Call",
+                "Offside Call",
+                "Faceoff Win",
+                "Body Check",
+                "Empty Net Goal",
+                "Overtime Winner",
+                "Shootout Goal",
+                "Zamboni Ride",
+                "Coach’s Challenge",
+                "Captain’s Speech",
+                "Team Huddle",
+                "Goal Celebration Dance",
+                "Fan with Painted Face",
+                "Mascot on Ice",
+                "Referee’s Whistle Blow",
+                "Puck Hits Post",
+                "Goalie Glove Save",
+                "Power Skating Move",
+                "Penalty Box Time-Out",
+                "Team Chant in Locker Room",
+                "Post-Game Handshake Line",
+                "Jersey Swap After Game",
+                "Fan with Foam Finger",
+                "Goalie Stick Save",
+                "Locker Room Speech",
+                "Ice Resurfacer Sound",
+                "Goalie Mask Design Close-Up",
+                "Team Captain Lifts Trophy",
+                "Fan with Sign in Stands",
+                "Coach Draws Play on Board",
+                "Goalie Paddle Save",
+                "Team Warm-Up Routine"
+            ]
+    }
+
     for filename, context in contexts.items():
         context['page_name'] = filename
         context['other_pages'] = [f for f in contexts.keys() if f != filename]
