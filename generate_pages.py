@@ -1052,6 +1052,68 @@ def main():
             ]
     }
 
+    contexts['kids_bingo.html'] = {
+        "title": "Kids Bingo!",
+        "background_image_url": "./kids_bingo.png",
+        "color_scheme": ["#FFD966", "#8FD3A9", "#6ECFF6", "#FFB86B", "#C7C7CC"],
+        "icon_emoji": "🧒",
+        "marked_color": "#8FD3A9",
+        "board_emojis": "🧸🎈🎉🎂🎁",
+        "tropes_list": [
+                "Play Poo Sticks in the Stream",
+                "Build a Stick Fort or Teepee",
+                "Climb a Tree (Safely!)",
+                "Race Leaves Down the Stream",
+                "Make a Mud Pie",
+                "Catch a Bug (and Let It Go)",
+                "Go on a Mini Hike or Nature Walk",
+                "Find an Animal Track",
+                "Skip a Rock Across Water",
+                "Have a Backyard Picnic",
+                "Make Daisy Chains or Leaf Crowns",
+                "Play Tag in the Yard",
+                "Have a Water Balloon Fight",
+                "Make a Nature Sculpture",
+                "Collect 5 Cool Rocks",
+                "Find Something Shaped Like a Heart",
+                "Watch Clouds and Name Shapes",
+                "Build a Fairy or Critter House",
+                "Make a Treasure Map and Hunt",
+                "Draw a Picture of What You See Outside",
+                "Find a Bird and Try to Copy Its Song",
+                "Create a Secret Nature Club",
+                "Play Hide and Seek in the Woods",
+                "Build a Boat and Float It",
+                "Find a Stick Shaped Like a Sword",
+                "Pretend You’re Explorers",
+                "Go on a Bug Safari",
+                "Make a Campfire (or Pretend One)",
+                "Find Something That Smells Good Outside",
+                "Climb a Hill and Roll Down",
+                "Make a Trail Using Rocks or Sticks",
+                "Run Through the Sprinkler",
+                "Collect Fallen Leaves",
+                "Draw with Sticks in the Dirt",
+                "Balance on a Log or Curb",
+                "Go Stargazing at Night",
+                "Find Three Different Kinds of Flowers",
+                "Make Footprints in Mud or Sand",
+                "Pretend You’re Camping",
+                "Spot an Animal in the Wild",
+                "Fly a Kite or Paper Airplane",
+                "Jump Over a Puddle",
+                "Make Shadow Puppets in the Sun",
+                "Find a Cool Tree to Sit Under",
+                "Pretend to Be in a Jungle",
+                "Chase Your Own Shadow",
+                "Invent a Backyard Game",
+                "Make Up a Nature Story",
+                "Collect Pinecones or Acorns",
+                "Make a Leaf Collage",
+                "Race Snails or Bugs (Gently!)"
+        ]
+    }
+
     for filename, context in contexts.items():
         context['page_name'] = filename
         context['other_pages'] = [f for f in contexts.keys() if f != filename]

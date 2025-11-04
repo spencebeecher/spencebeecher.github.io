@@ -110,6 +110,14 @@ def serve_action():
 def serve_action_image():
     return send_from_directory('.', 'action.png')
 
+# kids_bingo
+@app.route('/kids_bingo.html')
+def serve_kids_bingo():
+    return send_from_directory('.', 'kids_bingo.html')
+@app.route('/kids_bingo.png')
+def serve_kids_bingo_image():
+    return send_from_directory('.', 'kids_bingo.png')
+
 # bingo.png
 @app.route('/bingo.png')
 def serve_bingo_image():
