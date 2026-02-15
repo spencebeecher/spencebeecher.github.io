@@ -1,0 +1,118 @@
+﻿J. Spencer Beecher-Deighan
+
+
+45 N Bartlett Street
+San Francisco, CA 94110
+	(443) 812-1361
+spencebeecher@gmail.com
+	
+
+	
+
+EDUCATION
+	Johns Hopkins University        
+Master of Science in Computer Science
+University Of Maryland        
+Bachelor of Science in Computer Engineering
+	Baltimore, MD
+Spring, 2012
+College Park, MD
+December, 2007
+	
+
+	
+
+RELEVANT
+EXPERIENCE
+	Facebook
+Data Science Manager, Ads Ranking & Infrastructure 
+	Menlo Park, CA
+2015-Present
+	
+
+	
+
+	* Built & supported multiple data teams - recruited team members, grew junior members to senior levels, and developed managers.
+* Oversaw product direction as part of a cross functional leadership group.
+* Supported and Directed the Data Science team in delivering on key projects: Revenue Lever Understanding, A/B Test Platform Improvements, Infrastructure Optimization, Feature Engineering Directions, Product Forecasting.
+* Lead the area in metric definition and goal setting.
+	
+
+	
+
+	Data Scientist & Manager, Ad Review
+	2013-2015
+	
+
+	
+
+	* Led the cross functional team with data - Provided state of the business understanding, A/B testing, built the team’s data infrastructure, performed deep ‘understand’ projects, & defined goals. 
+* Authored a variety of models, performed feature engineering, and made recommendations for infrastructure improvements to aid machine learning.
+* Built and maintained the data team - Defined roadmaps. Interviewed candidates. Recruited team members. Mentored Data Scientists and Operations Analysts. 
+	
+
+	
+
+	
+
+	Texeltek Inc.
+Research Engineer
+	Annapolis Junction, MD
+2011-2013
+	
+
+	
+
+	
+
+	* Led a team in research and analytic development. Served as customer liaison. Responsible for setting milestones, pitching new ideas and delivering solutions.
+* Developed an image processing prototype that leveraged Twitter’s Storm and GPU processors.  This prototype analyzed traffic camera feeds to detect congestion.
+* Authored a variety of Map/Reduce jobs including several analytics focused on large scale graphs and time series analysis.
+* Led development of an analytic framework for streaming anomaly detection.
+* Conducted literature searches to identify technology that aided development.
+	
+
+	
+
+	Johns Hopkins Applied Physics Laboratory
+Software Engineer
+	Laurel, MD
+2008-2011
+	
+
+	
+
+	* Developed cloud computing analytics for the Laboratory for Telecommunications Sciences.
+* Adapted image processing software written in Matlab to execute in Map/Reduce.
+* Managed a small Map/Reduce cluster running Hadoop. Mentored a masters student in    developing an ingest framework for the cluster.
+* Authored web services and browser based visualizations for an internal Computer Network Defense R&D project.
+* Designed and implemented a software architecture that performed analysis on frequent patterns in databases.  Wrote database adapters and web services for the system.
+* Responsible for the complete software life cycle of several web services for a FAA data monitoring system.  Briefed the sponsor and taught a variety of classes to their developers.
+* Developed a computational geometry library specialized to handle boolean operations on amorphous 3D shapes.  Used library to make dynamic visualizations of radio wave coverage areas.
+	
+
+	
+
+	
+
+	
+
+PROGRAMMING
+	Languages (by proficiency): Python, Java, PHP, Scala, C#, C, C++, CUDA
+Software: Accumulo, Gephi, Git, Hadoop, HBase, Hive, Wireshark
+	
+
+	
+
+PUBLICATIONS
+	1.  Patent: Sampling content using machine learning to identify low-quality content. USP#9959412
+2.  B. Perozzi, C. McCubbin, S. Beecher-Deighan, and J. Halbert.  Scalable Graph Clustering with    
+    Pregel.  4th Workshop on Complex Networks,  March 2013.  
+2.  W. Bethea, C. Fink, and S. Beecher-Deighan.  JHU/APL Onto-Mapology Results for OAEI 2006.    
+     International Workshop on Ontology Matching,  2006.  
+	
+
+	
+
+REPOSITORIES
+	github.com/facebookincubator/bootstrapped   github.com/facebookresearch/pysparnn    github.com/spencebeecher/ml_sampler
