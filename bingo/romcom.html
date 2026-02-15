@@ -73,7 +73,7 @@
     <button id="generate-board">Refresh</button>
     <button id="copy-emojis">Share</button>
     <!-- Add button to go to index.html -->
-    <button onclick="resetBoardAndNavigate('/')">
+    <button onclick="resetBoardAndNavigate('index.html')">
         Games
     </button>
 
@@ -242,7 +242,7 @@
             });
             
             boardEmojis += '\n';
-            boardEmojis += 'https://spencebeecher.github.io/romcom.html';
+            boardEmojis += 'https://spencebeecher.github.io/bingo/romcom.html';
 
             navigator.clipboard.writeText(boardEmojis).then(() => {
                 alert('Copied to clipboard!');
