@@ -20,57 +20,61 @@ The definitive reference for statistical learning methods. Dense but invaluable 
 
 A practical reference for choosing and applying the right statistical test. Useful when designing experiments or analyzing A/B tests.
 
+### 4. [The Book of Why: The New Science of Cause and Effect](https://www.amazon.com/Book-Why-Science-Cause-Effect/dp/046509760X) by Judea Pearl and Dana Mackenzie
+
+Pearl's framework for causal inference transforms how we think about data and experimentation. Essential for understanding the difference between correlation and causation in data science.
+
 ## Machine Learning & Big Data
 
-### 4. [Mining of Massive Datasets](http://www.mmds.org/) by Jure Leskovec, Anand Rajaraman, and Jeff Ullman
+### 5. [Mining of Massive Datasets](http://www.mmds.org/) by Jure Leskovec, Anand Rajaraman, and Jeff Ullman
 
 The go-to resource for understanding algorithms and systems that operate at scale. Critical for anyone working with large datasets.
 
-### 5. [Machine Learning Course](https://www.coursera.org/learn/machine-learning) by Andrew Ng
+### 6. [Machine Learning Course](https://www.coursera.org/learn/machine-learning) by Andrew Ng
 
 Andrew Ng's Coursera course remains one of the best introductions to machine learning. Clear explanations and practical exercises make complex topics accessible.
 
-### 6. [Linear Algebra Course](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/) by Gilbert Strang (MIT OpenCourseWare)
+### 7. [Linear Algebra Course](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/) by Gilbert Strang (MIT OpenCourseWare)
 
 Linear algebra is the language of machine learning. Strang's lectures make the subject intuitive and show why it matters for data science.
 
 ## Leadership & Team Building
 
-### 7. [The Carrot Principle](https://www.amazon.com/Carrot-Principle-Managers-Extraordinary-Results/dp/0743297261) by Adrian Gostick and Chester Elton
+### 8. [The Carrot Principle](https://www.amazon.com/Carrot-Principle-Managers-Extraordinary-Results/dp/0743297261) by Adrian Gostick and Chester Elton
 
 Recognition is a powerful tool for motivating teams. This book provides a framework for building high-performing teams through meaningful recognition and positive reinforcement.
 
-### 8. [High Output Management](https://www.amazon.com/High-Output-Management-Andrew-Grove/dp/0679762884) by Andrew Grove
+### 9. [High Output Management](https://www.amazon.com/High-Output-Management-Andrew-Grove/dp/0679762884) by Andrew Grove
 
 Andy Grove's classic on management remains essential reading for anyone leading technical teams. His focus on leveraging output and managing teams efficiently translates directly to data science leadership.
 
 ## Communication & Influence
 
-### 9. [Influence: The Psychology of Persuasion](https://www.amazon.com/Influence-Psychology-Persuasion-Robert-Cialdini/dp/006124189X) by Robert Cialdini
+### 10. [Influence: The Psychology of Persuasion](https://www.amazon.com/Influence-Psychology-Persuasion-Robert-Cialdini/dp/006124189X) by Robert Cialdini
 
 Understanding how to persuade stakeholders with data-driven insights is critical. Cialdini's principles help you frame recommendations in ways that drive action.
 
-### 10. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130) by Edward Tufte
+### 11. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130) by Edward Tufte
 
 This is a great coffee table book that gets you thinking about visualization. I would note though that often the most impactful visualizations are quite simple and accompanied with clear calls to action. 
 
-### 11. [How to Know a Person](https://www.amazon.com/How-Know-Person-Seeing-Others/dp/0593652908) by David Brooks
+### 12. [How to Know a Person](https://www.amazon.com/How-Know-Person-Seeing-Others/dp/0593652908) by David Brooks
 
 Building deep relationships and truly understanding people is essential for effective leadership and collaboration. Brooks provides practical tools for becoming a better listener and connecting meaningfully with others.
 
 ## Innovation & Technology
 
-### 12. [The Innovator's Dilemma](https://www.amazon.com/Innovators-Dilemma-Technologies-Management-Innovation/dp/1633691780) by Clayton Christensen
+### 13. [The Innovator's Dilemma](https://www.amazon.com/Innovators-Dilemma-Technologies-Management-Innovation/dp/1633691780) by Clayton Christensen
 
 Understanding how disruptive innovation works helps you navigate organizational change and position data science initiatives strategically.
 
-### 13. [The Soul of a New Machine](https://www.amazon.com/Soul-New-Machine-Tracy-Kidder/dp/0316491977) by Tracy Kidder
+### 14. [The Soul of a New Machine](https://www.amazon.com/Soul-New-Machine-Tracy-Kidder/dp/0316491977) by Tracy Kidder
 
 A Pulitzer Prize-winning account of building a computer in the late 1970s. It captures the intensity, creativity, and problem-solving spirit that defines great engineering work.
 
 ## Critical Thinking
 
-### 14. [Justice Course](https://www.youtube.com/watch?v=kBdfcR-8hEY&list=PL30C13C91CFFEFEA6) by Michael Sandel (Harvard)
+### 15. [Justice Course](https://www.youtube.com/watch?v=kBdfcR-8hEY&list=PL30C13C91CFFEFEA6) by Michael Sandel (Harvard)
 
 Data scientists make decisions that impact millions. Sandel's course on moral and political philosophy provides frameworks for thinking about the design of systems.
 
