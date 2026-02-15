@@ -3,20 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home</title>
+    <title>{{ title }}</title>
     <style>
       * { box-sizing: border-box; }
-      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 0 1rem; color: #333; }
+      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 0 1rem; color: #333; line-height: 1.7; }
       nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
       nav .logo { font-weight: bold; font-size: 1.2rem; text-decoration: none; color: #111; }
       nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
       nav a { text-decoration: none; color: #555; }
       nav a:hover { color: #000; }
-      article { margin-bottom: 2rem; }
-      article h2 { margin-bottom: 0.25rem; }
-      article h2 a { text-decoration: none; color: #111; }
-      article h2 a:hover { text-decoration: underline; }
-      time { color: #888; font-size: 0.9rem; }
+      header h1 { margin-bottom: 1rem; }
+      article a { color: #0066cc; }
+      article a:hover { text-decoration: none; }
       footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
     </style>
   </head>
@@ -31,20 +29,12 @@
     </nav>
 
     <header>
-      <h1>Blog</h1>
+      <h1>{{ title }}</h1>
     </header>
 
-    <main>
-      {% for p in posts %}
-      <article>
-        <h2><a href="/{{ p.url }}">{{ p.title }}</a></h2>
-        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time></p>{% endif %}
-        {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
-      </article>
-      {% else %}
-      <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
-      {% endfor %}
-    </main>
+    <article>
+      {{ content | safe }}
+    </article>
 
     <footer>
       <p>&copy; Spencer Beecher</p>
