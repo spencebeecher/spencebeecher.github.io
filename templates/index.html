@@ -17,13 +17,15 @@
     </header>
 
     <main>
-      
+      {% for p in posts %}
       <article>
-        <h2><a href="/posts/2026-02-15-welcome.html">Welcome — My Personal Site</a></h2>
-        <p><time>February 15, 2026</time></p>
-        <p>First post. This site is generated from markdown using a small Python script.</p>
+        <h2><a href="/{{ p.url }}">{{ p.title }}</a></h2>
+        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time></p>{% endif %}
+        {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
       </article>
-      
+      {% else %}
+      <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
+      {% endfor %}
     </main>
 
     <footer>

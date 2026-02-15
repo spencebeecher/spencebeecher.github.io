@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ title }}</title>
+    <style>
+      body { font-family: system-ui, -apple-system, Roboto, "Helvetica Neue", Arial; max-width: 800px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6 }
+      header { border-bottom: 1px solid #eee; margin-bottom: 1rem }
+      footer { border-top: 1px solid #eee; margin-top: 2rem; padding-top: 1rem; color: #666 }
+      pre code { background: #f7f7f8; display: block; padding: 0.5rem; overflow: auto }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>{{ title }}</h1>
+      {% if date %}<p><small>{{ date.strftime('%B %d, %Y') }}</small></p>{% endif %}
+      <p><a href="/">Home</a></p>
+    </header>
+
+    <article>
+      {{ content | safe }}
+    </article>
+
+    <footer>
+      <p>Personal site — static blog</p>
+    </footer>
+  </body>
+</html>

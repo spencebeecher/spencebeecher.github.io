@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Games</title>
+
+
+
+    <style>
+        body {
+            background-image: url('bingo.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* Add some basic styling width: 100%;*/
+        table {
+            border-collapse: collapse;
+            width: 380px;
+            height: 400px;
+            margin: auto;
+            margin-left: 0; /* Align table to the left */
+            padding-left: 3px; /* Add padding to the left */
+            padding-right: 3px; /* Add padding to the right */
+            table-layout: fixed; /* Ensure equal width for all cells */
+        }
+        
+        td {
+            border: 1px solid #000;
+            width: 20%; 
+            height: 18%; /* Ensure equal height for all rows */
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            border-right: 1px solid #000;
+            background-color: white; /* Set cell background to white */
+        }
+        .header-row td {
+            height: auto;
+            font-size: 35px;
+            font-weight: bold;
+            background: #264b96;   /* Softer, dark blue */
+            color: #fff;
+        }
+        
+        
+        .marked {
+            background-color: #264b96; /* Softer, dark blue */
+        }
+        #copy-emojis,
+        #generate-board,
+        button[onclick] {
+            font-size: 1.15em;      /* Slightly smaller font */
+            padding: 10px 22px;     /* Slightly less padding */
+            border-radius: 8px;
+            font-weight: bold;
+            background: #264b96;   /* Softer, dark blue */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 18px;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        #copy-emojis:hover,
+        #generate-board:hover,
+        button[onclick]:hover {
+            background: #264b96;
+            box-shadow: 0 0 6px #888;
+        }
+        .bingo-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 2px;
+    background: #fff;         /* Fully opaque white background */
+    border-radius: 6px;
+    color: #222;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.0em;
+    border: 1px solid #888;
+    transition: background 0.2s, box-shadow 0.2s;
+    position: relative;
+    z-index: 1;
+    margin: 6px 0;
+    text-align: center;
+    word-break: break-word;
+}
+    </style>
+</head>
+<body>
+    <button id="copy-emojis">Share</button>
+    <div class="bingo-list">
+        <table>
+            <tr class="header-row">
+                <td>B</td>
+                <td>I</td>
+                <td>N</td>
+                <td>G</td>
+                <td>O</td>
+            </tr>
+            
+                <tr>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./holly.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="christmas.html" class="bingo-link">
+                                    Christmas
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./spooky.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="halloween.html" class="bingo-link">
+                                    Halloween
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./super_spooky.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="spooky.html" class="bingo-link">
+                                    Spooky
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./monster.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="monster.html" class="bingo-link">
+                                    Monster
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./slasher.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="slasher.html" class="bingo-link">
+                                    Slasher
+                                </a>
+                            
+                        </td>
+                    
+                </tr>
+            
+                <tr>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./stranger.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="stranger_things.html" class="bingo-link">
+                                    Stranger things
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./football.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="football.html" class="bingo-link">
+                                    Football
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./romcom.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="romcom.html" class="bingo-link">
+                                    Romcom
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./western.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="western.html" class="bingo-link">
+                                    Western
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./action.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="action.html" class="bingo-link">
+                                    Action
+                                </a>
+                            
+                        </td>
+                    
+                </tr>
+            
+                <tr>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./hockey.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="hockey.html" class="bingo-link">
+                                    Hockey
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                                    background-image: url('./kids_bingo.png');
+                                    background-size: cover;
+                                    background-position: center;
+                                
+                            "
+                        >
+                            
+                                <a href="kids_bingo.html" class="bingo-link">
+                                    Kids bingo
+                                </a>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <span class="bingo-link">FREE</span>
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                </tr>
+            
+                <tr>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                </tr>
+            
+                <tr>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                        
+                        <td
+                            style="
+                                
+                            "
+                        >
+                            
+                                <!-- Blank cell -->
+                            
+                        </td>
+                    
+                </tr>
+            
+        </table>
+    </div>
+    <script>
+document.getElementById('copy-emojis').addEventListener('click', function() {
+    // Collect bingo page names and emojis
+    const ths = Array.from(document.querySelectorAll('.bingo-list th')).map(th => th.textContent.trim()).join('');
+    let boardEmojis = '';
+    boardEmojis += 'Bingo Games!\n';
+    boardEmojis += '🎉🎲🎁🎯🎈\n';
+    boardEmojis += '⬜⬜✅⬜✅\n';
+    boardEmojis += '⬜⬜✅⬜⬜\n';
+    boardEmojis += '✅⬜✅⬜✅\n';
+    boardEmojis += '✅⬜✅✅✅\n';
+    boardEmojis += '✅⬜✅⬜✅\n';
+    boardEmojis += 'https://spencebeecher.github.io/';
+    navigator.clipboard.writeText(boardEmojis).then(() => {
+        alert('Copied to clipboard!');
+    });
+});
+</script>
+</body>
+</html>
