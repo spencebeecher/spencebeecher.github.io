@@ -22,7 +22,7 @@ A practical reference for choosing and applying the right statistical test. Usef
 
 ### 4. [The Book of Why: The New Science of Cause and Effect](https://www.amazon.com/Book-Why-Science-Cause-Effect/dp/046509760X) by Judea Pearl and Dana Mackenzie
 
-Pearl's framework for causal inference transforms how we think about data and experimentation. Essential for understanding the difference between correlation and causation in data science.
+Pearl's framework for causal inference transforms how we think about data and experimentation. Essential for understanding the difference between correlation and causation in data science. For a more technical treatment, see Pearl's earlier book [Causality](https://www.amazon.com/Causality-Reasoning-Inference-Judea-Pearl/dp/052189560X). Also recommended: [Data Analysis Using Regression and Multilevel/Hierarchical Models](https://www.amazon.com/Analysis-Regression-Multilevel-Hierarchical-Models/dp/052168689X) by Gelman and Hill.
 
 ## Machine Learning & Big Data
 

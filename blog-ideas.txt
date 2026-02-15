@@ -4,3 +4,5 @@ Future Blog Post Ideas
 1. Simplify simplify simplify
 2. As an IC what should your expectations for your manager be?
 3. Critical feedback
+4. Causal mechanisms
+5. Localizing/root causing problems
