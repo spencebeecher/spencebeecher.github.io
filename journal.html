@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Misc</title>
+    <title>Journal</title>
     <style>
       * { box-sizing: border-box; }
       body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 0 1rem; color: #333; }
@@ -13,12 +13,10 @@
       nav a { text-decoration: none; color: #555; }
       nav a:hover { color: #000; }
       header h1 { margin-bottom: 1rem; }
-      article { line-height: 1.7; }
-      article a { color: #0066cc; }
-      article a:hover { text-decoration: none; }
-      ul.projects { padding-left: 0; }
-      ul.projects li { list-style: none; margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 4px; }
-      ul.projects li a { font-weight: bold; }
+      article { line-height: 1.7; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid #eee; }
+      article h2 { margin-bottom: 0.25rem; color: #111; }
+      article .date { color: #888; font-size: 0.9rem; margin-bottom: 1rem; }
+      article:last-of-type { border-bottom: none; }
       footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
     </style>
   </head>
@@ -33,21 +31,16 @@
     </nav>
 
     <header>
-      <h1>Misc</h1>
+      <h1>Journal</h1>
     </header>
 
-    <article>
-      <ul class="projects">
-        <li>
-          <a href="/bingo/">Bingo Games</a>
-          <p>Fun bingo card generators for movies, holidays, and more.</p>
-        </li>
-        <li>
-          <a href="/journal.html">Journal</a>
-          <p>Personal journal entries and daily reflections.</p>
-        </li>
-      </ul>
-    </article>
+    <main>
+      <article>
+        <h2>February 16, 2026</h2>
+        <div class="date">Sunday</div>
+        <p>Today I listened to the Justice podcast on Spotify and learned about Aristotle's definition of justice. I taught my wife to vibe code. We had a nice pool day with the dogs.</p>
+      </article>
+    </main>
 
     <footer>
       <p>&copy; Spencer Beecher</p>
