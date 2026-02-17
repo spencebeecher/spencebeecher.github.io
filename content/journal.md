@@ -8,8 +8,8 @@ Later, I taught Erin how to vibe code. It was fun watching her see the flow of i
 
 Wrapped up the day with a relaxing pool session with the dogs. Simple, but exactly what we needed.
 
-Workout: yes
-Breakfast: Peanutbutter toast
-Lunch: Tomato, Avocado, Tortilla Chips
-Dinner: Grilled Chicken and Baked Brocoli 
-Snacks: 1 apple, peanutebutter chocolate, apple & chocolate ganashe 
+* Workout: yes
+* Breakfast: Peanutbutter toast
+* Lunch: Tomato, Avocado, Tortilla Chips
+* Dinner: Grilled Chicken and Baked Brocoli 
+* Snacks: 1 apple, peanutebutter chocolate, apple & chocolate ganashe 
