@@ -42,6 +42,13 @@ def publish():
     else:
         print('No posts/ found in site/, skipping posts copy')
 
+    # copy journal if it exists
+    src_journal = SITE / 'journal.html'
+    if src_journal.exists():
+        dest_journal = ROOT / 'journal.html'
+        shutil.copy2(src_journal, dest_journal)
+        print(f'Wrote {dest_journal}')
+
 
 if __name__ == '__main__':
     publish()

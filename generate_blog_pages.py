@@ -50,6 +50,7 @@ def build():
 
     post_template = env.get_template('post.html')
     index_template = env.get_template('index.html')
+    journal_template = env.get_template('journal.html')
 
     # prepare output
     if OUTPUT_DIR.exists():
@@ -85,6 +86,14 @@ def build():
     # render index
     index_html = index_template.render(posts=posts)
     (OUTPUT_DIR / 'index.html').write_text(index_html, encoding='utf-8')
+
+    # render journal if it exists
+    journal_path = ROOT / 'content' / 'journal.md'
+    if journal_path.exists():
+        journal_html, _ = read_markdown_file(journal_path)
+        rendered_journal = journal_template.render(content=journal_html)
+        (OUTPUT_DIR / 'journal.html').write_text(rendered_journal, encoding='utf-8')
+        print(f'Built journal into {OUTPUT_DIR!s}/journal.html')
 
     print(f'Built {len(posts)} posts into {OUTPUT_DIR!s}')
 
