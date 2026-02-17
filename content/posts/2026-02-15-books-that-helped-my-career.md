@@ -1,5 +1,5 @@
 ---
-title: My Go-To Career Growth Resources (And Why They Matter)
+title: Go-To Career Growth Resources
 date: 2026-02-15
 summary: A curated list of books and courses that shaped my approach to data science, leadership, and technical excellence.
 ---
