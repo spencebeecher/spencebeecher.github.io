@@ -11,3 +11,22 @@ Wrapped up the day with a relaxing pool session with the dogs.
 * Lunch: Tomato, avocado, tortilla chips
 * Dinner: Grilled chicken and baked broccoli
 * Snacks: 1 apple, peanut butter chocolate, apple & chocolate ganache 
+
+## February 19-22, 2026 (Wednesday-Saturday)
+
+Spent the weekend at a lake house in Spicewood playing Dungeons and Dragons with friends! Played my character [Urzak The Librarian](https://www.dndbeyond.com/characters/160186131). 
+
+Did lots of cooking—highlights were pizza using the flour, water, salt, yeast recipe, pancakes, and tacos.
+
+## February 23, 2026 (Sunday)
+
+Hosted a friend in town at the tail end of the D&D session. Went out to Radio, In Plain Sight, and Uchiko for omakase dinner.
+
+## February 24, 2026 (Monday)
+
+Did work, then took the dogs on a walk. 
+
+* Breakfast: Oatmeal
+* Lunch: Tuna fish sandwich
+* Dinner: Chicken kababs, cauliflower
+* Snacks: Peanut butter chocolate
