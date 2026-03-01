@@ -31,6 +31,13 @@ Did work, then took the dogs on a walk.
 * Dinner: Chicken kababs, cauliflower
 * Snacks: Peanut butter chocolate
 
+## February 27, 2026 (Friday)
+
+* Breakfast: Oatmeal
+* Lunch: Tuna fish sandwich
+* Dinner: An unhealthy amount of Chinese food and pad thai
+* Snacks: Peanut butter chocolate
+
 ## February 28, 2026 (Saturday)
 
 Vibe coded with Claude building a D&D helper tool—excited to test it out in future games. Spent some time watching TV by the pool.
@@ -40,3 +47,4 @@ For lunch I made salmon, peppers, and zucchini pita wraps, which turned out real
 * Lunch: Salmon, peppers, zucchini pita wraps
 * Dinner: Crab stuffed shrimp, asparagus, caesar salad, honey brussels sprouts
 * Drinks: 3
+* Snacks: Peanut butter chocolate
