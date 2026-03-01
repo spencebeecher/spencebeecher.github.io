@@ -30,3 +30,13 @@ Did work, then took the dogs on a walk.
 * Lunch: Tuna fish sandwich
 * Dinner: Chicken kababs, cauliflower
 * Snacks: Peanut butter chocolate
+
+## February 28, 2026 (Saturday)
+
+Vibe coded with Claude building a D&D helper tool—excited to test it out in future games. Spent some time watching TV by the pool.
+
+For lunch I made salmon, peppers, and zucchini pita wraps, which turned out really good. In the evening, went out with friends to celebrate their anniversary. Had crab stuffed shrimp, asparagus, caesar salad, honey brussels sprouts, and three drinks.
+
+* Lunch: Salmon, peppers, zucchini pita wraps
+* Dinner: Crab stuffed shrimp, asparagus, caesar salad, honey brussels sprouts
+* Drinks: 3
