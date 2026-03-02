@@ -48,3 +48,19 @@ For lunch I made salmon, peppers, and zucchini pita wraps, which turned out real
 * Dinner: Crab stuffed shrimp, asparagus, caesar salad, honey brussels sprouts
 * Drinks: 3
 * Snacks: Peanut butter chocolate
+
+## March 1, 2026 (Sunday)
+
+Cleaned and packed for our trip.
+
+* Breakfast: Cereal
+* Lunch: Vegetarian pita wraps
+* Dinner: Harvest bowl and a quesadilla
+
+## March 2, 2026 (Monday)
+
+Woke up very early to fly out on vacation, but our flight was cancelled. We'll try again tomorrow.
+
+* Breakfast: Oatmeal
+* Lunch: Tunafish sandwich
+* Dinner: TBD
