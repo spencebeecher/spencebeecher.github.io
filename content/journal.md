@@ -64,3 +64,19 @@ Woke up very early to fly out on vacation, but our flight was cancelled. We'll t
 * Breakfast: Oatmeal
 * Lunch: Tunafish sandwich
 * Dinner: TBD
+
+## March 4, 2026 (Wednesday)
+
+At the beach in Anguilla! It is beautiful here—would definitely recommend it. Up there with some of the best places we have been.
+
+* Breakfast: Small Danish, Lobster Omelette
+* Lunch: Fish Tacos and Sweet Potato Fries
+* Dinner: Vegetables, 3 slices of pizza (12 inch), half a chicken breast, caesar salad, 2 cookies
+
+## March 5, 2026 (Thursday)
+
+Ate breakfast beach side, then visited the on-site spa. Did a sauna and cold plunge.
+
+* Breakfast: Oatmeal & mimosa
+* Lunch: Guacamole
+* Dinner: Lobster Bisque, Brioche rolls, Red snapper with potatoes, Rum punch
