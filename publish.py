@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """
-Static blog generator for personal site.
+Static blog generator and publisher for personal site.
 
 Usage:
   pip install -r requirements.txt
-  python3 generate_blog_pages.py
+  python3 publish.py
 
-Reads markdown files from `content/posts/` and writes HTML files to `site/`.
-Designed for GitHub Pages self-hosting: push `site/` contents to `gh-pages` or configure GitHub Pages to serve from `site/` if desired.
+Reads markdown files from `content/posts/` and `content/journal.md`,
+builds HTML files into `site/`, then publishes to repository root.
 """
-import os
 import shutil
 from datetime import datetime
 from pathlib import Path
@@ -21,6 +20,11 @@ ROOT = Path(__file__).parent
 CONTENT_DIR = ROOT / 'content' / 'posts'
 TEMPLATES_DIR = ROOT / 'templates'
 OUTPUT_DIR = ROOT / 'site'
+
+
+def fail(msg: str):
+    print('ERROR:', msg)
+    exit(1)
 
 
 def slugify(name: str) -> str:
@@ -43,6 +47,7 @@ def read_markdown_file(path: Path):
 
 
 def build():
+    """Generate HTML files from markdown sources."""
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATES_DIR)),
         autoescape=select_autoescape(['html', 'xml']),
@@ -98,7 +103,39 @@ def build():
     print(f'Built {len(posts)} posts into {OUTPUT_DIR!s}')
 
 
+def publish():
+    """Copy generated site/ output to repository root."""
+    if not OUTPUT_DIR.exists():
+        fail('site/ directory not found — run build() first')
+
+    src_index = OUTPUT_DIR / 'index.html'
+    if not src_index.exists():
+        fail('site/index.html not found')
+
+    dest_index = ROOT / 'index.html'
+    shutil.copy2(src_index, dest_index)
+    print(f'Wrote {dest_index}')
+
+    src_posts = OUTPUT_DIR / 'posts'
+    dest_posts = ROOT / 'posts'
+    if src_posts.exists():
+        if dest_posts.exists():
+            shutil.rmtree(dest_posts)
+        shutil.copytree(src_posts, dest_posts)
+        print(f'Copied posts to {dest_posts}')
+    else:
+        print('No posts/ found in site/, skipping posts copy')
+
+    # copy journal if it exists
+    src_journal = OUTPUT_DIR / 'journal.html'
+    if src_journal.exists():
+        dest_journal = ROOT / 'journal.html'
+        shutil.copy2(src_journal, dest_journal)
+        print(f'Wrote {dest_journal}')
+
+
 if __name__ == '__main__':
     CONTENT_DIR.mkdir(parents=True, exist_ok=True)
     TEMPLATES_DIR.mkdir(parents=True, exist_ok=True)
     build()
+    publish()
