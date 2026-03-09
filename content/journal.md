@@ -80,3 +80,12 @@ Ate breakfast beach side, then visited the on-site spa. Did a sauna and cold plu
 * Breakfast: Oatmeal & mimosa
 * Lunch: Guacamole
 * Dinner: Lobster Bisque, Brioche rolls, Red snapper with potatoes, Rum punch
+
+## March 8, 2026 (Sunday)
+
+Flying back home today. Anguilla was beautiful.
+
+Stayed at Belmond Hotel Cap Juluca and it was top-notch. I would highly recommend it.
+
+* Breakfast: Johnnycake & lox, almond croissant, salad
+* Dinner: 1 chicken breast, 2 chocolate mousse desserts
