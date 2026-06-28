@@ -11,43 +11,52 @@
      Pure vanilla HTML/CSS/JS. No network, no build step, runs offline.
      --------------------------------------------------------------------- */
   :root{
-    --felt:#0b5d34; --felt2:#0a4f2d; --ink:#11251a; --paper:#f4f1e8;
-    --line:rgba(255,255,255,.14);
+    /* action + semantic hues (kept constant across themes for consistency) */
     --hit:#c0392b; --stand:#2e8b57; --double:#2563b8; --split:#d98a16; --surr:#7b54c0;
-    --good:#34c759; --bad:#ff453a; --gold:#f5c542;
-    --tap: rgba(255,255,255,.08);
+    --ink:#11251a; --paper:#f4f1e8;
+    /* themeable surfaces — defaults reproduce the Casino-Green look.
+       applyTheme() overrides these on document.documentElement at runtime. */
+    --felt:#0b5d34; --felt2:#0a4f2d; --bg-hi:#0f7a45;
+    --text:#f4f4ef; --text-dim:rgba(255,255,255,.55);
+    --surface:rgba(0,0,0,.16); --header-bg:rgba(7,52,30,.96); --nav-ink:#dfe9e2;
+    --line:rgba(255,255,255,.14); --tap:rgba(255,255,255,.08);
+    --card-bg:#fbfbf7; --card-ink:#1a1a1a; --card-border:#d9d6cc;
+    --input-bg:#0e3d24; --input-ink:#ffffff; --switch-bg:#0e3d24;
+    --grid-lab-bg:#0a4f2d; --code-bg:rgba(0,0,0,.25);
+    --gold:#f5c542; --gold-ink:#f5c542; --on-gold:#222;
+    --good:#34c759; --bad:#ff453a;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    background:radial-gradient(circle at 50% -10%, #0f7a45, var(--felt) 55%, var(--felt2));
+    background:radial-gradient(circle at 50% -10%, var(--bg-hi), var(--felt) 55%, var(--felt2));
     background-attachment:fixed;
-    color:#f4f4ef; min-height:100vh; line-height:1.45;
+    color:var(--text); min-height:100vh; line-height:1.45;
     padding:0 0 env(safe-area-inset-bottom);
   }
   header.top{
     position:sticky; top:0; z-index:30;
-    background:rgba(7,52,30,.96); backdrop-filter:blur(6px);
+    background:var(--header-bg); backdrop-filter:blur(6px);
     border-bottom:1px solid var(--line);
     padding:calc(.5rem + env(safe-area-inset-top)) .6rem .4rem;
   }
   .title{display:flex; align-items:center; gap:.5rem; justify-content:center; font-weight:700; letter-spacing:.5px;}
-  .title .s{color:var(--gold);}
+  .title .s{color:var(--gold-ink);}
   nav.tabs{display:flex; gap:.3rem; margin-top:.45rem; justify-content:center; flex-wrap:wrap;}
   nav.tabs button{
     flex:1 1 auto; min-width:64px; max-width:130px;
-    background:var(--tap); color:#dfe9e2; border:1px solid var(--line);
+    background:var(--tap); color:var(--nav-ink); border:1px solid var(--line);
     border-radius:10px; padding:.5rem .4rem; font-size:.82rem; font-weight:600;
     cursor:pointer; touch-action:manipulation;
   }
-  nav.tabs button.active{background:var(--gold); color:#222; border-color:var(--gold);}
+  nav.tabs button.active{background:var(--gold); color:var(--on-gold); border-color:var(--gold);}
   main{max-width:680px; margin:0 auto; padding:.7rem .7rem 5.5rem;}
   .view{display:none;} .view.active{display:block; animation:fade .18s ease;}
   @keyframes fade{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
 
   /* table felt panel */
-  .panel{background:rgba(0,0,0,.16); border:1px solid var(--line); border-radius:16px; padding:.85rem; margin-bottom:.8rem;}
+  .panel{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:.85rem; margin-bottom:.8rem;}
   .lbl{font-size:.72rem; text-transform:uppercase; letter-spacing:1.4px; opacity:.7; margin:0 0 .3rem;}
   .row{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;}
   .spread{justify-content:space-between;}
@@ -55,10 +64,10 @@
   /* cards */
   .hand{display:flex; gap:.4rem; flex-wrap:wrap; min-height:74px; align-items:center;}
   .card{
-    width:48px; height:68px; background:#fbfbf7; color:#1a1a1a; border-radius:8px;
+    width:48px; height:68px; background:var(--card-bg); color:var(--card-ink); border-radius:8px;
     box-shadow:0 2px 5px rgba(0,0,0,.35); display:flex; flex-direction:column;
     justify-content:space-between; padding:4px 5px; font-weight:700; flex:0 0 auto;
-    border:1px solid #d9d6cc;
+    border:1px solid var(--card-border);
   }
   .card .r{font-size:1.05rem; line-height:1;}
   .card .s{font-size:1.15rem; text-align:right; line-height:1;}
@@ -88,9 +97,9 @@
   .act.surrender{background:var(--surr);}
   button.big{
     width:100%; border:none; border-radius:12px; padding:.95rem; font-size:1rem; font-weight:700;
-    background:var(--gold); color:#222; cursor:pointer; touch-action:manipulation; min-height:52px; margin-top:.2rem;
+    background:var(--gold); color:var(--on-gold); cursor:pointer; touch-action:manipulation; min-height:52px; margin-top:.2rem;
   }
-  button.ghost{background:var(--tap); color:#eaf3ee; border:1px solid var(--line);}
+  button.ghost{background:var(--tap); color:var(--text); border:1px solid var(--line);}
 
   /* feedback */
   .fb{border-radius:12px; padding:.7rem .8rem; margin-top:.7rem; border:1px solid var(--line); font-size:.92rem;}
@@ -101,13 +110,13 @@
   .fb .sub{margin-top:.5rem; font-size:.85rem;}
   .fb .sub .opt{display:flex; gap:.4rem; padding:.12rem 0;}
   .fb .sub .opt .g{width:1.1em; flex:0 0 auto;}
-  .fb .pick{color:var(--gold); font-weight:600;}
+  .fb .pick{color:var(--gold-ink); font-weight:600;}
   .fb .deep{margin-top:.55rem; padding-top:.5rem; border-top:1px dashed var(--line); font-size:.85rem; opacity:.95;}
   .fb .deep li{margin:.15rem 0;}
   .yes{color:var(--good);} .nope{color:var(--bad);}
 
   .stat{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.9rem;}
-  .stat b{color:var(--gold);}
+  .stat b{color:var(--gold-ink);}
   .pill{display:inline-block; background:var(--tap); border:1px solid var(--line); border-radius:999px; padding:.15rem .6rem; font-size:.78rem;}
   .banner{background:rgba(245,197,66,.16); border:1px solid rgba(245,197,66,.5); border-radius:10px; padding:.45rem .6rem; font-size:.85rem; margin-bottom:.6rem;}
   .note{font-size:.78rem; opacity:.75; margin-top:.4rem;}
@@ -118,7 +127,7 @@
   table.grid{border-collapse:collapse; font-size:.74rem; margin:0 auto; min-width:100%;}
   table.grid th, table.grid td{padding:.18rem; text-align:center; white-space:nowrap;}
   table.grid th{opacity:.85; font-weight:600;}
-  table.grid td.lab{text-align:left; padding-right:.4rem; font-weight:600; opacity:.95; position:sticky; left:0; background:var(--felt2);}
+  table.grid td.lab{text-align:left; padding-right:.4rem; font-weight:600; opacity:.95; position:sticky; left:0; background:var(--grid-lab-bg);}
   table.grid td.cell{width:22px; height:22px; color:#fff; font-weight:700; border:1px solid rgba(0,0,0,.18); border-radius:3px;}
   td.H{background:var(--hit);} td.S{background:var(--stand);} td.D{background:var(--double);}
   td.P{background:var(--split);} td.R{background:var(--surr);}
@@ -126,27 +135,36 @@
   .legend span{display:inline-flex; align-items:center; gap:.3rem;}
   .sw{width:14px; height:14px; border-radius:3px; display:inline-block;}
   .matrix td.cell{font-size:.7rem; border-radius:0;}
-  .acc-hi{color:var(--good);} .acc-mid{color:var(--gold);} .acc-lo{color:var(--bad);}
+  .acc-hi{color:var(--good);} .acc-mid{color:var(--gold-ink);} .acc-lo{color:var(--bad);}
 
   /* settings */
   .set{display:flex; justify-content:space-between; align-items:center; gap:.8rem; padding:.55rem 0; border-bottom:1px solid var(--line);}
   .set:last-child{border-bottom:none;}
-  .set label{font-size:.9rem;} .set .hint{font-size:.74rem; opacity:.6; display:block;}
+  .set-l{flex:1 1 auto; min-width:0;}
+  .set label{font-size:.9rem;}
+  .set .hint{display:block; font-size:.74rem; line-height:1.35; opacity:.7; margin-top:.18rem; max-width:46ch;}
   .set select, .set input[type=number]{
-    background:#0e3d24; color:#fff; border:1px solid var(--line); border-radius:8px; padding:.5rem; font-size:.9rem; min-width:84px; text-align:center;
+    background:var(--input-bg); color:var(--input-ink); border:1px solid var(--line); border-radius:8px; padding:.5rem; font-size:.9rem; min-width:84px; text-align:center;
   }
+  .set input[type=color]{
+    -webkit-appearance:none; appearance:none; width:56px; height:38px; padding:0; flex:0 0 auto;
+    background:var(--input-bg); border:1px solid var(--line); border-radius:8px; cursor:pointer; touch-action:manipulation;
+  }
+  .set input[type=color]::-webkit-color-swatch-wrapper{padding:3px;}
+  .set input[type=color]::-webkit-color-swatch{border:none; border-radius:5px;}
+  .set input[type=color]::-moz-color-swatch{border:none; border-radius:5px;}
   .switch{position:relative; width:50px; height:30px; flex:0 0 auto;}
   .switch input{opacity:0; width:0; height:0;}
-  .slider{position:absolute; inset:0; background:#0e3d24; border:1px solid var(--line); border-radius:999px; transition:.15s; cursor:pointer;}
-  .slider:before{content:""; position:absolute; width:22px; height:22px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.15s;}
+  .slider{position:absolute; inset:0; background:var(--switch-bg); border:1px solid var(--line); border-radius:999px; transition:.15s; cursor:pointer;}
+  .slider:before{content:""; position:absolute; width:22px; height:22px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.15s; box-shadow:0 1px 2px rgba(0,0,0,.45);}
   .switch input:checked + .slider{background:var(--gold);}
-  .switch input:checked + .slider:before{transform:translateX(20px); background:#222;}
+  .switch input:checked + .slider:before{transform:translateX(20px); background:var(--on-gold);}
 
-  .selftest{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.8rem; white-space:pre-wrap; background:rgba(0,0,0,.25); padding:.6rem; border-radius:8px; margin-top:.5rem; max-height:240px; overflow:auto;}
+  .selftest{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.8rem; white-space:pre-wrap; background:var(--code-bg); padding:.6rem; border-radius:8px; margin-top:.5rem; max-height:240px; overflow:auto;}
   .sparkwrap{margin-top:.4rem;}
   canvas{max-width:100%; display:block;}
   footer{text-align:center; font-size:.72rem; opacity:.55; padding:1rem 0 2rem;}
-  a{color:var(--gold);}
+  a{color:var(--gold-ink);}
 </style>
 </head>
 <body>
@@ -199,7 +217,7 @@
     <div id="money-rulewarn"></div>
     <div class="panel">
       <div class="row spread">
-        <div><p class="lbl">Bankroll</p><div style="font-size:1.5rem;font-weight:700;color:var(--gold)" id="money-bankroll">$50</div></div>
+        <div><p class="lbl">Bankroll</p><div style="font-size:1.5rem;font-weight:700;color:var(--gold-ink)" id="money-bankroll">$50</div></div>
         <div style="text-align:right">
           <p class="lbl">Record</p>
           <div style="font-size:.85rem" id="money-record">W 0 / L 0 / Push 0</div>
@@ -943,7 +961,8 @@ const DEFAULTS={
   numDecks:6, dealerHitsSoft17:false, blackjackPayout:1.5, das:true,
   lateSurrender:true, maxSplitHands:4, resplitAllowed:true, splitAcesOneCard:true,
   offerInsurance:true, startingBankroll:50, baseBet:1, penetration:0.75,
-  showTotals:false, deepDefault:false, insuranceDrill:false
+  showTotals:false, deepDefault:false, insuranceDrill:false,
+  theme:"green", customBase:"#0b5d34", customAccent:"#f5c542"
 };
 const LS={ settings:"bj_settings", log:"bj_coach_log", money:"bj_money" };
 function lsGet(key, fallback){
@@ -1029,6 +1048,97 @@ function actionButtons(container, options, onChoose){
     wrap.appendChild(b);
   }
   container.appendChild(wrap);
+}
+
+/* =====================================================================
+   11b. Theme system  (CSS-variable driven; presets + custom colors)
+   ===================================================================== */
+// Each theme maps CSS custom properties -> values, plus a `meta` color for
+// the address-bar theme-color. Action hues (--hit/--stand/...) stay constant.
+const THEMES={
+  green:{
+    "--felt":"#0b5d34","--felt2":"#0a4f2d","--bg-hi":"#0f7a45",
+    "--text":"#f4f4ef","--text-dim":"rgba(255,255,255,.55)",
+    "--surface":"rgba(0,0,0,.16)","--header-bg":"rgba(7,52,30,.96)","--nav-ink":"#dfe9e2",
+    "--line":"rgba(255,255,255,.14)","--tap":"rgba(255,255,255,.08)",
+    "--card-bg":"#fbfbf7","--card-ink":"#1a1a1a","--card-border":"#d9d6cc",
+    "--input-bg":"#0e3d24","--input-ink":"#ffffff","--switch-bg":"#0e3d24",
+    "--grid-lab-bg":"#0a4f2d","--code-bg":"rgba(0,0,0,.25)",
+    "--gold":"#f5c542","--gold-ink":"#f5c542","--on-gold":"#222",
+    "--good":"#34c759","--bad":"#ff453a", meta:"#0b5d34"
+  },
+  dark:{
+    "--felt":"#1b1d22","--felt2":"#141519","--bg-hi":"#272a31",
+    "--text":"#ececf0","--text-dim":"rgba(236,236,240,.5)",
+    "--surface":"rgba(255,255,255,.05)","--header-bg":"rgba(20,21,25,.96)","--nav-ink":"#ccd0d6",
+    "--line":"rgba(255,255,255,.12)","--tap":"rgba(255,255,255,.06)",
+    "--card-bg":"#f4f3ee","--card-ink":"#1a1a1a","--card-border":"#cfccc2",
+    "--input-bg":"#2a2d33","--input-ink":"#f0f0f3","--switch-bg":"#3a3d44",
+    "--grid-lab-bg":"#1b1d22","--code-bg":"rgba(0,0,0,.35)",
+    "--gold":"#f5c542","--gold-ink":"#f5c542","--on-gold":"#1c1c1c",
+    "--good":"#34c759","--bad":"#ff453a", meta:"#141519"
+  },
+  light:{
+    "--felt":"#e9e6dd","--felt2":"#dad6ca","--bg-hi":"#f6f4ec",
+    "--text":"#1d2a22","--text-dim":"rgba(29,42,34,.62)",
+    "--surface":"rgba(0,0,0,.05)","--header-bg":"rgba(244,241,233,.96)","--nav-ink":"#33403a",
+    "--line":"rgba(0,0,0,.14)","--tap":"rgba(0,0,0,.05)",
+    "--card-bg":"#ffffff","--card-ink":"#1a1a1a","--card-border":"#cccabf",
+    "--input-bg":"#ffffff","--input-ink":"#1d2a22","--switch-bg":"#8f8c7d",
+    "--grid-lab-bg":"#e2ded2","--code-bg":"rgba(0,0,0,.06)",
+    "--gold":"#f5c542","--gold-ink":"#6f5310","--on-gold":"#222",
+    "--good":"#0a6b2f","--bad":"#b51f14", meta:"#e9e6dd"
+  }
+};
+// --- tiny color helpers ---
+function hx(n){ n=Math.max(0,Math.min(255,Math.round(n))); return n.toString(16).padStart(2,"0"); }
+function parseHex(h){ h=String(h||"").replace("#",""); if (h.length===3) h=h.split("").map(c=>c+c).join(""); const n=parseInt(h||"0",16)||0; return [(n>>16)&255,(n>>8)&255,n&255]; }
+function toHex(rgb){ return "#"+hx(rgb[0])+hx(rgb[1])+hx(rgb[2]); }
+function mixCol(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
+function lighten(rgb,t){ return mixCol(rgb,[255,255,255],t); }
+function darken(rgb,t){ return mixCol(rgb,[0,0,0],t); }
+function rgbaStr(rgb,a){ return `rgba(${Math.round(rgb[0])},${Math.round(rgb[1])},${Math.round(rgb[2])},${a})`; }
+function relLum(rgb){ const f=c=>{ c/=255; return c<=0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4); }; return 0.2126*f(rgb[0])+0.7152*f(rgb[1])+0.0722*f(rgb[2]); }
+
+// Derive a coherent, legible scheme from a base + accent color.
+function customThemeVars(baseHex, accentHex){
+  const base=parseHex(baseHex), accent=parseHex(accentHex);
+  const dark = relLum(base) < 0.45;
+  const text = dark ? [244,244,239] : [28,40,34];
+  const felt2 = darken(base, 0.10);
+  const hi = lighten(base, dark ? 0.14 : 0.10);
+  const accLight = relLum(accent) > 0.5;
+  return {
+    "--felt":toHex(base), "--felt2":toHex(felt2), "--bg-hi":toHex(hi),
+    "--text":toHex(text), "--text-dim":rgbaStr(text,0.55),
+    "--surface": dark ? "rgba(255,255,255,.06)" : "rgba(0,0,0,.05)",
+    "--header-bg": rgbaStr(dark ? darken(base,0.25) : lighten(base,0.35), 0.96),
+    "--nav-ink":toHex(text),
+    "--line": dark ? "rgba(255,255,255,.14)" : "rgba(0,0,0,.14)",
+    "--tap": dark ? "rgba(255,255,255,.08)" : "rgba(0,0,0,.05)",
+    "--card-bg":"#fbfbf7", "--card-ink":"#1a1a1a", "--card-border":"#d9d6cc",
+    "--input-bg": dark ? toHex(darken(base,0.3)) : "#ffffff", "--input-ink":toHex(text),
+    "--switch-bg": dark ? toHex(lighten(base,0.18)) : "#8f8c7d",
+    "--grid-lab-bg": toHex(dark ? darken(base,0.05) : lighten(base,0.18)),
+    "--code-bg": dark ? "rgba(0,0,0,.25)" : "rgba(0,0,0,.06)",
+    "--gold": toHex(accent),
+    "--gold-ink": dark ? toHex(accent) : toHex(darken(accent,0.42)),
+    "--on-gold": accLight ? "#222" : "#fff",
+    "--good": dark ? "#34c759" : "#0a6b2f",
+    "--bad": dark ? "#ff453a" : "#b51f14",
+    meta: toHex(base)
+  };
+}
+function activeThemeVars(){
+  if (settings.theme==="custom") return customThemeVars(settings.customBase, settings.customAccent);
+  return THEMES[settings.theme] || THEMES.green;
+}
+function applyTheme(){
+  const vars=activeThemeVars();
+  const root=document.documentElement;
+  for (const k in vars){ if (k!=="meta") root.style.setProperty(k, vars[k]); }
+  const meta=document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", vars.meta);
 }
 
 /* =====================================================================
@@ -1574,7 +1684,7 @@ function renderStats(){
       const tr=el("tr"); tr.appendChild(el("td","lab",lb));
       for (const u of UPCARD_VALUES){
         const acc=ds.accuracy(lb,u);
-        if (acc==null){ const td=el("td","cell"); td.textContent="·"; td.style.background="transparent"; td.style.color="#9fb"; tr.appendChild(td); continue; }
+        if (acc==null){ const td=el("td","cell"); td.textContent="·"; td.style.background="transparent"; td.style.color="var(--text-dim)"; tr.appendChild(td); continue; }
         const td=el("td","cell"); td.style.background="transparent"; td.style.border="none";
         td.textContent=Math.round(acc);
         td.className="cell "+(acc>=85?"acc-hi":acc<60?"acc-lo":"acc-mid");
@@ -1607,14 +1717,18 @@ function drawSpark(entries){
   for (let i=0;i<flags.length;i++){ const chunk=flags.slice(Math.max(0,i-window+1), i+1); series.push(chunk.reduce((a,b)=>a+b,0)/chunk.length*100); }
   $("stats-sparklbl").textContent = series.length ? `rolling-${window} accuracy over ${series.length} hands (now ${Math.round(series[series.length-1])}%)` : "Play some hands to see your trend.";
   if (series.length<2) return;
-  // axes
-  ctx.strokeStyle="rgba(255,255,255,.2)"; ctx.lineWidth=1;
+  // axes (read theme colors so they stay legible on any background)
+  const cs=getComputedStyle(document.documentElement);
+  const axisCol=(cs.getPropertyValue("--line")||"rgba(255,255,255,.2)").trim();
+  const labelCol=(cs.getPropertyValue("--text-dim")||"rgba(255,255,255,.55)").trim();
+  const lineCol=(cs.getPropertyValue("--good")||"#34c759").trim();
+  ctx.strokeStyle=axisCol; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(28,4); ctx.lineTo(28,H-16); ctx.lineTo(W-4,H-16); ctx.stroke();
-  ctx.fillStyle="rgba(255,255,255,.55)"; ctx.font="10px sans-serif";
+  ctx.fillStyle=labelCol; ctx.font="10px sans-serif";
   ctx.fillText("100",4,12); ctx.fillText("0",16,H-18);
   // line
   const x0=30, x1=W-6, y0=8, y1=H-18;
-  ctx.strokeStyle="#34c759"; ctx.lineWidth=2; ctx.beginPath();
+  ctx.strokeStyle=lineCol; ctx.lineWidth=2; ctx.beginPath();
   series.forEach((v,i)=>{
     const x=x0 + (series.length===1?0:(i/(series.length-1))*(x1-x0));
     const y=y1 - (v/100)*(y1-y0);
@@ -1632,27 +1746,56 @@ $("stats-reset").addEventListener("click", ()=>{
    17. SETTINGS
    ===================================================================== */
 const SETTING_DEFS=[
-  {k:"numDecks", t:"Number of decks", type:"select", opts:[1,2,4,6,8]},
-  {k:"dealerHitsSoft17", t:"Dealer hits soft 17", type:"bool", hint:"Default off = dealer stands on soft 17 (S17)"},
-  {k:"blackjackPayout", t:"Blackjack payout", type:"select", opts:[[1.5,"3:2"],[1.2,"6:5"],[1,"1:1"],[2,"2:1"]]},
-  {k:"das", t:"Double after split", type:"bool"},
-  {k:"lateSurrender", t:"Late surrender", type:"bool"},
-  {k:"maxSplitHands", t:"Max hands from splitting", type:"select", opts:[2,3,4]},
-  {k:"resplitAllowed", t:"Re-splitting allowed", type:"bool", hint:"Split aces always get one card"},
-  {k:"splitAcesOneCard", t:"Split aces get one card", type:"bool"},
-  {k:"offerInsurance", t:"Offer insurance", type:"bool"},
-  {k:"startingBankroll", t:"Starting bankroll ($)", type:"num", min:5, max:100000},
-  {k:"baseBet", t:"Base bet ($)", type:"num", min:1, max:10000},
-  {k:"penetration", t:"Shoe penetration", type:"select", opts:[[0.5,"50%"],[0.6,"60%"],[0.75,"75%"],[0.85,"85%"]]},
-  {k:"showTotals", t:"Show running hand total", type:"bool", hint:"Default hidden — do the math yourself"},
-  {k:"deepDefault", t:"Deep explanations by default", type:"bool"},
-  {k:"insuranceDrill", t:"Coach: drill the insurance call", type:"bool"}
+  {k:"numDecks", t:"Number of decks", type:"select", opts:[1,2,4,6,8], hint:"How many 52-card decks in the shoe. Casinos usually use 6."},
+  {k:"dealerHitsSoft17", t:"Dealer hits soft 17", type:"bool", hint:"On = dealer draws on soft 17 (worse for you). Default: stands (S17)."},
+  {k:"blackjackPayout", t:"Blackjack payout", type:"select", opts:[[1.5,"3:2"],[1.2,"6:5"],[1,"1:1"],[2,"2:1"]], hint:"Pays 3:2 by default; 6:5 is a worse, common modern rule."},
+  {k:"das", t:"Double after split", type:"bool", hint:"On = you may double down after splitting a pair. Default: on."},
+  {k:"lateSurrender", t:"Late surrender", type:"bool", hint:"On = forfeit half your bet to fold a bad hand. Default: on."},
+  {k:"maxSplitHands", t:"Max hands from splitting", type:"select", opts:[2,3,4], hint:"Most hands you can end up with after splitting pairs. Default: 4."},
+  {k:"resplitAllowed", t:"Re-splitting allowed", type:"bool", hint:"On = split again if a split hand makes another pair. Default: on."},
+  {k:"splitAcesOneCard", t:"Split aces get one card", type:"bool", hint:"On = each split ace receives exactly one more card. Default: on."},
+  {k:"offerInsurance", t:"Offer insurance", type:"bool", hint:"On = offer the insurance side bet when the dealer shows an Ace."},
+  {k:"startingBankroll", t:"Starting bankroll ($)", type:"num", min:5, max:100000, hint:"Chips you begin the money game with. Default: $50."},
+  {k:"baseBet", t:"Base bet ($)", type:"num", min:1, max:10000, hint:"Amount wagered on each money-game hand. Default: $1."},
+  {k:"penetration", t:"Shoe penetration", type:"select", opts:[[0.5,"50%"],[0.6,"60%"],[0.75,"75%"],[0.85,"85%"]], hint:"How deep into the shoe before it reshuffles. Default: 75%."},
+  {k:"showTotals", t:"Show running hand total", type:"bool", hint:"On = display your hand total. Default off — do the math yourself."},
+  {k:"deepDefault", t:"Deep explanations by default", type:"bool", hint:"On = show the extra 'deeper why' breakdown by default. Default: off."},
+  {k:"insuranceDrill", t:"Coach: drill the insurance call", type:"bool", hint:"On = coach quizzes the insurance decision on dealer Aces. Default: off."}
 ];
+function settingRowShell(title, hint){
+  const row=el("div","set");
+  const left=el("div","set-l"); left.appendChild(el("label",null,title));
+  if (hint) left.appendChild(el("span","hint",hint));
+  row.appendChild(left);
+  return row;
+}
+function colorRow(title, key, hint){
+  const row=settingRowShell(title, hint);
+  const inp=el("input"); inp.type="color"; inp.value=settings[key]||DEFAULTS[key];
+  inp.addEventListener("input",()=>{ settings[key]=inp.value; saveSettings(); applyTheme(); });
+  row.appendChild(inp);
+  return row;
+}
+function renderThemeControls(box){
+  const row=settingRowShell("Theme","Casino Green (default), Dark, Light, or a Custom color scheme.");
+  const sel=el("select");
+  for (const [v,lab] of [["green","Casino Green"],["dark","Dark"],["light","Light"],["custom","Custom"]]){
+    const op=el("option",null,lab); op.value=v; if (settings.theme===v) op.selected=true; sel.appendChild(op);
+  }
+  sel.addEventListener("change",()=>{ settings.theme=sel.value; saveSettings(); applyTheme(); renderSettings(); });
+  row.appendChild(sel);
+  box.appendChild(row);
+  if (settings.theme==="custom"){
+    box.appendChild(colorRow("Base / background color","customBase","Sets the table background; text auto-adjusts for readable contrast."));
+    box.appendChild(colorRow("Accent (highlight) color","customAccent","Highlight color for buttons, tabs, and active items."));
+  }
+}
 function renderSettings(){
   const box=$("settings-list"); box.innerHTML="";
+  renderThemeControls(box);
   for (const d of SETTING_DEFS){
     const row=el("div","set");
-    const left=el("div"); left.appendChild(el("label",null,d.t));
+    const left=el("div","set-l"); left.appendChild(el("label",null,d.t));
     if (d.hint) left.appendChild(el("span","hint",d.hint));
     row.appendChild(left);
     if (d.type==="bool"){
@@ -1683,7 +1826,7 @@ function afterSettingChange(){
   if (mg.shoe && mg.shoe.numDecks!==settings.numDecks) mg.shoe=null;
 }
 $("settings-defaults").addEventListener("click",()=>{
-  if (confirm("Restore all settings to defaults?")){ settings=Object.assign({}, DEFAULTS); saveSettings(); afterSettingChange(); renderSettings(); }
+  if (confirm("Restore all settings to defaults?")){ settings=Object.assign({}, DEFAULTS); saveSettings(); applyTheme(); afterSettingChange(); renderSettings(); }
 });
 $("settings-selftest").addEventListener("click",()=>{
   const r=runSelfTest();
@@ -1700,6 +1843,7 @@ $("settings-selftest").addEventListener("click",()=>{
 function init(){
   // first run safety: ensure money bankroll exists
   if (typeof money.bankroll!=="number") money=moneyDefaults();
+  applyTheme();
   coachNext();
   renderMoney();
   // ?test => run self-test and surface the result immediately
