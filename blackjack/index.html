@@ -107,6 +107,52 @@
   body.lefty #coach-controls, body.lefty #money-controls{margin-left:0; margin-right:auto;}
   #coach-controls .actions, #money-controls .actions{grid-template-columns:1fr 1fr;}
 
+  /* ---------------------------------------------------------------------
+     Mobile: pin the coach/money action cluster to the bottom of the screen
+     so it is ALWAYS reachable without scrolling (Split is the tallest case:
+     5 buttons in 2 columns = 3 rows). The board above scrolls internally.
+     body.fitview is toggled on (coach/money only) by showView()/init(), so
+     settings/cheat/stats keep ordinary full-page scrolling. dvh keeps the
+     bar safe from the address bar; env(safe-area-inset-bottom) clears the
+     home indicator. Desktop (wider than the 680px column) is untouched.
+     --------------------------------------------------------------------- */
+  @media (max-width:680px){
+    body.fitview{
+      display:flex; flex-direction:column;
+      height:100vh; height:100dvh;          /* dvh: dynamic, address-bar safe */
+      overflow:hidden;                       /* the board scrolls, not the page */
+      padding-bottom:0;                      /* the dock owns the bottom inset */
+    }
+    body.fitview main{
+      flex:1 1 auto; min-height:0;
+      display:flex; flex-direction:column;
+      overflow:hidden; padding-bottom:0;
+    }
+    body.fitview footer{display:none;}       /* credits line: hidden in fit mode */
+    body.fitview .view.active{
+      flex:1 1 auto; min-height:0;
+      display:flex; flex-direction:column; overflow:hidden;
+    }
+    /* scrollable board region: dealer/hand, bankroll/record, feedback, etc. */
+    body.fitview .view.active > .board{
+      flex:1 1 auto; min-height:0;
+      overflow-y:auto; -webkit-overflow-scrolling:touch;
+      padding-bottom:.4rem;
+    }
+    /* pinned, non-scrolling control cluster (keeps its left/right 2-col anchor) */
+    body.fitview .view.active > .dock{
+      flex:0 0 auto;
+      margin:0 -.7rem;                       /* span full width (cancel main padding) */
+      padding:.5rem .7rem calc(.45rem + env(safe-area-inset-bottom));
+      border-top:1px solid var(--line);
+      background:var(--header-bg); backdrop-filter:blur(6px);
+    }
+    /* trim vertical padding so the board fits comfortably on short phones */
+    body.fitview .board > .panel{padding:.6rem .7rem; margin-bottom:.5rem;}
+    body.fitview .board > .panel:last-child{margin-bottom:0;}
+    body.fitview .hand{min-height:0;}
+  }
+
   /* feedback */
   .fb{border-radius:12px; padding:.7rem .8rem; margin-top:.7rem; border:1px solid var(--line); font-size:.92rem;}
   .fb.ok{background:rgba(52,199,89,.14); border-color:rgba(52,199,89,.5);}
@@ -188,6 +234,7 @@
 <main>
   <!-- ===================== COACH ===================== -->
   <section id="view-coach" class="view active">
+   <div class="board">
     <div id="coach-rulewarn"></div>
     <div id="coach-banner"></div>
     <div class="panel">
@@ -204,7 +251,6 @@
       <div id="coach-player" class="hand"></div>
     </div>
 
-    <div id="coach-controls"></div>
     <div id="coach-feedback"></div>
 
     <div class="panel" style="margin-top:.8rem">
@@ -216,10 +262,13 @@
         <button class="pill" id="coach-skip" style="cursor:pointer;border:none">Skip ▸</button>
       </div>
     </div>
+   </div>
+   <div class="dock"><div id="coach-controls"></div></div>
   </section>
 
   <!-- ===================== MONEY ===================== -->
   <section id="view-money" class="view">
+   <div class="board">
     <div id="money-rulewarn"></div>
     <div class="panel">
       <div class="row spread">
@@ -245,8 +294,6 @@
       <div id="money-hands"></div>
     </div>
 
-    <div id="money-controls"></div>
-
     <div class="panel" style="margin-top:.6rem">
       <div class="row spread">
         <label class="row" style="gap:.5rem;font-size:.82rem">
@@ -257,6 +304,8 @@
       </div>
       <div id="money-mistakes"></div>
     </div>
+   </div>
+   <div class="dock"><div id="money-controls"></div></div>
   </section>
 
   <!-- ===================== CHEAT SHEET ===================== -->
@@ -1157,6 +1206,8 @@ function showView(name){
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
   $("view-"+name).classList.add("active");
   document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("active", b.dataset.view===name));
+  // coach/money pin their controls (no-scroll layout); other views scroll normally
+  document.body.classList.toggle("fitview", name==="coach" || name==="money");
   window.scrollTo(0,0);
   if (name==="cheat") renderCheatSheet();
   if (name==="stats") renderStats();
@@ -1856,6 +1907,7 @@ function init(){
   if (typeof money.bankroll!=="number") money=moneyDefaults();
   applyTheme();
   applyHandedness();
+  document.body.classList.toggle("fitview", currentView==="coach" || currentView==="money");
   coachNext();
   renderMoney();
   // ?test => run self-test and surface the result immediately
