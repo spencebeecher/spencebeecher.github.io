@@ -101,6 +101,12 @@
   }
   button.ghost{background:var(--tap); color:var(--text); border:1px solid var(--line);}
 
+  /* one-handed thumb reach: anchor the action cluster to a side, force 2 columns.
+     Default = right side (right-handed); body.lefty mirrors it to the left. */
+  #coach-controls, #money-controls{max-width:22rem; margin-left:auto; margin-right:0;}
+  body.lefty #coach-controls, body.lefty #money-controls{margin-left:0; margin-right:auto;}
+  #coach-controls .actions, #money-controls .actions{grid-template-columns:1fr 1fr;}
+
   /* feedback */
   .fb{border-radius:12px; padding:.7rem .8rem; margin-top:.7rem; border:1px solid var(--line); font-size:.92rem;}
   .fb.ok{background:rgba(52,199,89,.14); border-color:rgba(52,199,89,.5);}
@@ -962,6 +968,7 @@ const DEFAULTS={
   lateSurrender:true, maxSplitHands:4, resplitAllowed:true, splitAcesOneCard:true,
   offerInsurance:true, startingBankroll:50, baseBet:1, penetration:0.75,
   showTotals:false, deepDefault:false, insuranceDrill:false,
+  leftHanded:false,
   theme:"green", customBase:"#0b5d34", customAccent:"#f5c542"
 };
 const LS={ settings:"bj_settings", log:"bj_coach_log", money:"bj_money" };
@@ -1746,6 +1753,7 @@ $("stats-reset").addEventListener("click", ()=>{
    17. SETTINGS
    ===================================================================== */
 const SETTING_DEFS=[
+  {k:"leftHanded", t:"Left-handed button layout", type:"bool", hint:"Put the action buttons on the left side (default: right) so your thumb can reach them one-handed."},
   {k:"numDecks", t:"Number of decks", type:"select", opts:[1,2,4,6,8], hint:"How many 52-card decks in the shoe. Casinos usually use 6."},
   {k:"dealerHitsSoft17", t:"Dealer hits soft 17", type:"bool", hint:"On = dealer draws on soft 17 (worse for you). Default: stands (S17)."},
   {k:"blackjackPayout", t:"Blackjack payout", type:"select", opts:[[1.5,"3:2"],[1.2,"6:5"],[1,"1:1"],[2,"2:1"]], hint:"Pays 3:2 by default; 6:5 is a worse, common modern rule."},
@@ -1820,8 +1828,11 @@ function renderSettings(){
     box.appendChild(row);
   }
 }
+// Move the action-button cluster to the player's preferred thumb side.
+function applyHandedness(){ document.body.classList.toggle("lefty", !!settings.leftHanded); }
 function afterSettingChange(){
   $("coach-deep").checked=settings.deepDefault;
+  applyHandedness();
   // a deck-count change rebuilds the shoe next deal
   if (mg.shoe && mg.shoe.numDecks!==settings.numDecks) mg.shoe=null;
 }
@@ -1844,6 +1855,7 @@ function init(){
   // first run safety: ensure money bankroll exists
   if (typeof money.bankroll!=="number") money=moneyDefaults();
   applyTheme();
+  applyHandedness();
   coachNext();
   renderMoney();
   // ?test => run self-test and surface the result immediately
