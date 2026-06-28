@@ -1231,14 +1231,14 @@ document.addEventListener("keydown", e=>{
    ===================================================================== */
 const coach={
   scenario:null, options:[], chosen:null, optimal:null, phase:"decide",
-  pending:[], fromFollowup:false, lastSig:null,
+  pending:[], fromFollowup:false, lastSig:null, recent:[], lastResult:null,
   session:{played:0, correct:0}, dstats:statsFromLog(coachLog), insuranceDone:false
 };
 $("coach-deep").checked=settings.deepDefault;
 $("coach-deep").addEventListener("change", toggleDeep);
 $("coach-skip").addEventListener("click", coachNext);
 
-function toggleDeep(){ if (coach.phase==="feedback") renderCoach(); }
+function toggleDeep(){ if (coach.lastResult) renderCoach(); }
 
 function renderRuleWarn(){
   const box=$("coach-rulewarn");
@@ -1258,15 +1258,25 @@ function coachNext(){
     coach.scenario=scenarioFor(label,up); coach.fromFollowup=true;
     banner=`Contrast drill — watch where the rule flips (${coach.pending.length} more)`;
   } else {
-    const weak=weakSpotPick(coach.dstats);
-    if (weak){ coach.scenario=scenarioFor(weak[0], weak[1]); }
-    else {
-      let s=generateScenario(); let tries=0;
-      while (scenarioSignature(s)===coach.lastSig && tries<20){ s=generateScenario(); tries++; }
-      coach.scenario=s;
+    // pick a hand that isn't one of the recent situations, so we don't keep
+    // re-showing the same total/upcard with only different suits or card order
+    let chosen=null;
+    for (let i=0;i<4 && !chosen;i++){
+      const weak=weakSpotPick(coach.dstats);
+      if (!weak) break;
+      const s=scenarioFor(weak[0], weak[1]);
+      if (!coach.recent.includes(scenarioSignature(s))) chosen=s;
     }
+    if (!chosen){
+      let s=generateScenario(), tries=0;
+      while (coach.recent.includes(scenarioSignature(s)) && tries<40){ s=generateScenario(); tries++; }
+      chosen=s;
+    }
+    coach.scenario=chosen;
   }
   coach.lastSig=scenarioSignature(coach.scenario);
+  coach.recent.push(coach.lastSig);
+  if (coach.recent.length>8) coach.recent.shift();
   coach.banner=banner;
   // Insurance drill on a dealer Ace.
   if (settings.insuranceDrill && coach.scenario.dealer_up.rank==="A") coach.phase="insurance";
@@ -1283,16 +1293,17 @@ function legalCoachOptions(){
 
 function coachChoose(action){
   const {player, dealer_up}=coach.scenario;
-  coach.chosen=action;
-  coach.optimal=bestAction(player, dealer_up, true, true, settings.lateSurrender);
-  const ok=action===coach.optimal;
+  const optimal=bestAction(player, dealer_up, true, true, settings.lateSurrender);
+  const ok=action===optimal;
   coach.session.played++; if (ok) coach.session.correct++;
   coach.dstats.record(situationLabel(player), dealer_up.value, ok);
-  appendHandLog(player, dealer_up, action, coach.optimal, ok, false);
+  appendHandLog(player, dealer_up, action, optimal, ok, false);
   if (!ok && !coach.fromFollowup)
     coach.pending=contrastFollowups(situationLabel(player), dealer_up.value, coach.dstats);
-  coach.phase="feedback";
-  renderCoach();
+  // stash the answer to show briefly above the next hand, then advance with no pause
+  coach.lastResult={player, dealer_up, chosen:action, optimal, ok,
+                    options:legalCoachOptions(), surr:settings.lateSurrender};
+  coachNext();
 }
 function coachInsurance(took){
   const [ok,msg]=checkInsurance(took);
@@ -1347,13 +1358,29 @@ function feedbackPanel(player, dealerUp, options, chosen, optimal, canDouble, ca
   return panel;
 }
 
+// Brief result of the just-answered hand, shown above the next one.
+// "Deeper why" expands it into the full explanation.
+function lastAnswerPanel(r){
+  const lbl=situationLabel(r.player)+" vs "+upLabel(r.dealer_up.value);
+  if ($("coach-deep").checked){
+    const box=el("div");
+    box.appendChild(el("p","lbl","Last hand — "+lbl));
+    box.appendChild(feedbackPanel(r.player, r.dealer_up, r.options, r.chosen, r.optimal, true, true, r.surr));
+    return box;
+  }
+  const panel=el("div","fb "+(r.ok?"ok":"no"));
+  panel.innerHTML = r.ok
+    ? `<span class="yes">✓</span> ${lbl} → <b>${r.optimal}</b>`
+    : `<span class="nope">✗</span> ${lbl} → <b>${r.optimal}</b> (you played ${r.chosen})`;
+  return panel;
+}
 function renderCoach(){
   const {player, dealer_up}=coach.scenario;
   renderRuleWarn();
   $("coach-banner").innerHTML="";
   if (coach.banner) $("coach-banner").appendChild(el("div","banner",coach.banner));
   renderHand($("coach-dealer"), [dealer_up], false);
-  const showTot = settings.showTotals && coach.phase==="feedback";
+  const showTot = settings.showTotals;
   renderHand($("coach-player"), player, showTot);
   $("coach-acc").textContent = coach.session.played ? Math.round(coach.session.correct/coach.session.played*100)+"%" : "0%";
   $("coach-count").textContent = coach.session.correct+" / "+coach.session.played;
@@ -1380,17 +1407,11 @@ function renderCoach(){
   }
 
   if (coach.phase==="decide"){
+    if (coach.lastResult) fb.appendChild(lastAnswerPanel(coach.lastResult));
     coach.options=legalCoachOptions();
     actionButtons(ctrl, coach.options, coachChoose);
     return;
   }
-
-  // feedback for the main decision (shown in all post-decision phases)
-  fb.appendChild(feedbackPanel(player, dealer_up, legalCoachOptions(), coach.chosen, coach.optimal,
-                               true, true, settings.lateSurrender));
-
-  const next=el("button","big","Next hand  ▸"); next.addEventListener("click",coachNext);
-  ctrl.appendChild(next);
 }
 
 /* =====================================================================
