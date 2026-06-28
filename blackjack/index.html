@@ -910,12 +910,6 @@ function contrastFollowups(label, missedUp, dstats, limit=5){
   if (prior.length>1) add(prior[1]);
   return seq.slice(0,limit);
 }
-function dealSplitHand(pairRank){
-  const baseRank = pairRank==="10" ? rng.choice(["10","J","Q","K"]) : pairRank;
-  const base=card(baseRank);
-  while (true){ const n=card(rng.choice(RANKS)); if (n.value!==base.value) return [base, n]; }
-}
-
 /* =====================================================================
    7. Reference strategy table + self-test (310 cells)
    ===================================================================== */
@@ -1238,14 +1232,13 @@ document.addEventListener("keydown", e=>{
 const coach={
   scenario:null, options:[], chosen:null, optimal:null, phase:"decide",
   pending:[], fromFollowup:false, lastSig:null,
-  splitHand:null, splitOptions:null, splitChosen:null, splitOptimal:null,
   session:{played:0, correct:0}, dstats:statsFromLog(coachLog), insuranceDone:false
 };
 $("coach-deep").checked=settings.deepDefault;
 $("coach-deep").addEventListener("change", toggleDeep);
 $("coach-skip").addEventListener("click", coachNext);
 
-function toggleDeep(){ if (coach.phase==="feedback"||coach.phase==="splitFeedback") renderCoach(); }
+function toggleDeep(){ if (coach.phase==="feedback") renderCoach(); }
 
 function renderRuleWarn(){
   const box=$("coach-rulewarn");
@@ -1257,7 +1250,7 @@ function renderRuleWarn(){
 
 function coachNext(){
   coach.dstats=statsFromLog(coachLog);
-  coach.chosen=null; coach.optimal=null; coach.splitChosen=null; coach.insuranceDone=false;
+  coach.chosen=null; coach.optimal=null; coach.insuranceDone=false;
   coach.fromFollowup=false;
   let banner=null;
   if (coach.pending.length){
@@ -1298,24 +1291,7 @@ function coachChoose(action){
   appendHandLog(player, dealer_up, action, coach.optimal, ok, false);
   if (!ok && !coach.fromFollowup)
     coach.pending=contrastFollowups(situationLabel(player), dealer_up.value, coach.dstats);
-  // Double-after-split drill for a split non-ace pair.
-  if (action===SPLIT && player[0].value!==11){
-    const prank = player[0].value===10 ? "10" : player[0].rank;
-    coach.splitHand=dealSplitHand(prank);
-    coach.splitOptions=[HIT,STAND,DOUBLE,SURRENDER];
-    coach.phase="split";
-  } else {
-    coach.phase="feedback";
-  }
-  renderCoach();
-}
-function coachSplitChoose(action){
-  coach.splitChosen=action;
-  coach.splitOptimal=bestAction(coach.splitHand, coach.scenario.dealer_up, true, false, false);
-  const ok=action===coach.splitOptimal;
-  coach.session.played++; if (ok) coach.session.correct++;
-  appendHandLog(coach.splitHand, coach.scenario.dealer_up, action, coach.splitOptimal, ok, true);
-  coach.phase="splitFeedback";
+  coach.phase="feedback";
   renderCoach();
 }
 function coachInsurance(took){
@@ -1327,9 +1303,8 @@ function coachInsurance(took){
 }
 function coachKey(act){
   if (coach.phase==="decide" && coach.options.includes(act)) coachChoose(act);
-  else if (coach.phase==="split" && coach.splitOptions.includes(act)) coachSplitChoose(act);
 }
-function coachEnter(){ if (coach.phase==="feedback"||coach.phase==="splitFeedback") coachNext(); }
+function coachEnter(){ if (coach.phase==="feedback") coachNext(); }
 
 function feedbackPanel(player, dealerUp, options, chosen, optimal, canDouble, canSplit, canSurrender){
   const deep=$("coach-deep").checked;
@@ -1378,7 +1353,7 @@ function renderCoach(){
   $("coach-banner").innerHTML="";
   if (coach.banner) $("coach-banner").appendChild(el("div","banner",coach.banner));
   renderHand($("coach-dealer"), [dealer_up], false);
-  const showTot = settings.showTotals && (coach.phase==="feedback"||coach.phase==="splitFeedback");
+  const showTot = settings.showTotals && coach.phase==="feedback";
   renderHand($("coach-player"), player, showTot);
   $("coach-acc").textContent = coach.session.played ? Math.round(coach.session.correct/coach.session.played*100)+"%" : "0%";
   $("coach-count").textContent = coach.session.correct+" / "+coach.session.played;
@@ -1414,22 +1389,6 @@ function renderCoach(){
   fb.appendChild(feedbackPanel(player, dealer_up, legalCoachOptions(), coach.chosen, coach.optimal,
                                true, true, settings.lateSurrender));
 
-  if (coach.phase==="split"){
-    const sp=el("div","panel"); sp.style.marginTop=".7rem";
-    sp.appendChild(el("p","lbl","After the split — play this hand (double-after-split allowed)"));
-    const hd=el("div","hand"); renderHand(hd, coach.splitHand, settings.showTotals); sp.appendChild(hd);
-    fb.appendChild(sp);
-    actionButtons(ctrl, coach.splitOptions, coachSplitChoose);
-    return;
-  }
-  if (coach.phase==="splitFeedback"){
-    const sp=el("div","panel"); sp.style.marginTop=".7rem";
-    sp.appendChild(el("p","lbl","Split hand"));
-    const hd=el("div","hand"); renderHand(hd, coach.splitHand, settings.showTotals); sp.appendChild(hd);
-    fb.appendChild(sp);
-    fb.appendChild(feedbackPanel(coach.splitHand, dealer_up, coach.splitOptions, coach.splitChosen,
-                                 coach.splitOptimal, true, false, false));
-  }
   const next=el("button","big","Next hand  ▸"); next.addEventListener("click",coachNext);
   ctrl.appendChild(next);
 }
