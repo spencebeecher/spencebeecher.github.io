@@ -89,3 +89,13 @@ Stayed at Belmond Hotel Cap Juluca and it was top-notch. I would highly recommen
 
 * Breakfast: Johnnycake & lox, almond croissant, salad
 * Dinner: 1 chicken breast, 2 chocolate mousse desserts
+
+## April 25, 2026 (Saturday)
+
+Mostly hung around outside all day and watched TV—caught some hockey.
+
+Tried my hand at quick-pickling: shallots in red wine vinegar and habaneros in apple cider vinegar. The apple cider vinegar version was the winner.
+
+* Breakfast: Cereal
+* Lunch: Oatmeal with nuts and fruit
+* Dinner: Chicken tacos with verde and habanero
