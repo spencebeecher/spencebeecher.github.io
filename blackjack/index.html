@@ -108,46 +108,34 @@
   #coach-controls .actions, #money-controls .actions{grid-template-columns:1fr 1fr;}
 
   /* ---------------------------------------------------------------------
-     Mobile: pin the coach/money action cluster to the bottom of the screen
-     so it is ALWAYS reachable without scrolling (Split is the tallest case:
-     5 buttons in 2 columns = 3 rows). The board above scrolls internally.
-     body.fitview is toggled on (coach/money only) by showView()/init(), so
-     settings/cheat/stats keep ordinary full-page scrolling. dvh keeps the
-     bar safe from the address bar; env(safe-area-inset-bottom) clears the
-     home indicator. Desktop (wider than the 680px column) is untouched.
+     Mobile (≤680px): the coach/money play views scroll normally with the
+     page, with the action cluster sitting directly beneath the board.
+
+     We deliberately do NOT pin the dock to the viewport bottom. Pinning (via
+     a fixed-height flex column + overflow:hidden) caused two bugs on phones:
+       (1) a big blank gap above the buttons whenever the board was short, and
+       (2) on short screens the tallest dock (Split = 5 buttons / 3 rows) plus
+           the board exceeded the viewport, and overflow:hidden hid the dock
+           below the fold with no way to scroll to it.
+     Normal flow keeps every button reachable (just scroll) and removes the
+     gap. body.fitview is still toggled on for coach/money (by showView()/
+     init()); here it only trims spacing and separates the dock.
      --------------------------------------------------------------------- */
   @media (max-width:680px){
-    body.fitview{
-      display:flex; flex-direction:column;
-      height:100vh; height:100dvh;          /* dvh: dynamic, address-bar safe */
-      overflow:hidden;                       /* the board scrolls, not the page */
-      padding-bottom:0;                      /* the dock owns the bottom inset */
-    }
-    body.fitview main{
-      flex:1 1 auto; min-height:0;
-      display:flex; flex-direction:column;
-      overflow:hidden; padding-bottom:0;
-    }
-    body.fitview footer{display:none;}       /* credits line: hidden in fit mode */
-    body.fitview .view.active{
-      flex:1 1 auto; min-height:0;
-      display:flex; flex-direction:column; overflow:hidden;
-    }
-    /* scrollable board region: dealer/hand, bankroll/record, feedback, etc. */
-    body.fitview .view.active > .board{
-      flex:1 1 auto; min-height:0;
-      overflow-y:auto; -webkit-overflow-scrolling:touch;
-      padding-bottom:.4rem;
-    }
-    /* pinned, non-scrolling control cluster (keeps its left/right 2-col anchor) */
+    /* coach/money: tighten the page's bottom padding (the old pinned layout
+       reserved 5.5rem) so there's no big empty zone under the buttons, and
+       hide the credits line to keep the play view focused. */
+    body.fitview main{padding-bottom:1.1rem;}
+    body.fitview footer{display:none;}
+    /* action cluster: a clear separator from the board; keep its right-anchored
+       2-column layout (set above); clear the home indicator at the bottom. */
     body.fitview .view.active > .dock{
-      flex:0 0 auto;
-      margin:0 -.7rem;                       /* span full width (cancel main padding) */
-      padding:.5rem .7rem calc(.45rem + env(safe-area-inset-bottom));
+      margin-top:.7rem;
+      padding-top:.7rem;
+      padding-bottom:env(safe-area-inset-bottom);
       border-top:1px solid var(--line);
-      background:var(--header-bg); backdrop-filter:blur(6px);
     }
-    /* trim vertical padding so the board fits comfortably on short phones */
+    /* trim vertical padding so more fits per screen on short phones */
     body.fitview .board > .panel{padding:.6rem .7rem; margin-bottom:.5rem;}
     body.fitview .board > .panel:last-child{margin-bottom:0;}
     body.fitview .hand{min-height:0;}
