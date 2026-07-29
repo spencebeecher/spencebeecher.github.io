@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e8dbbd">
+<meta name="description" content="Answer a handful of everyday dilemmas and find your D&D alignment, from Lawful Good to Chaotic Evil, alongside famous characters who share it.">
+<title>Alignment Test</title>
+<style>
+  /* =====================================================================
+     D&D Alignment Test — a self-contained single-file page.
+     Pure vanilla HTML/CSS/JS. No network, no build step, runs offline.
+     Design: an illuminated-manuscript "moral compass" laid over Spencer's
+     site. Display face = a system calligraphic serif (Palatino/Iowan);
+     body/UI = the site's Helvetica. Signature = the 3x3 alignment matrix,
+     which teaches the axes up top and lights the user's cell at the reveal.
+     ===================================================================== */
+  :root{
+    --parchment:#e8dbbd; --panel:#f4ecd6; --panel-2:#efe4c8;
+    --ink:#2b2012; --ink-soft:#6a563b; --ink-faint:#8c775a;
+    --wax:#8b2332; --wax-deep:#641823;
+    --gilt:#a2823c; --gilt-lit:#d8b968; --gilt-deep:#7c6026;
+    --pine:#35513f;   /* Good pole */
+    --indigo:#38456e; /* Lawful pole */
+    --line:rgba(43,32,18,.22); --line-soft:rgba(43,32,18,.12);
+    --paper-hi:rgba(255,255,255,.55);
+    --display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+    --ui:Helvetica,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--ui);
+    color:var(--ink);
+    line-height:1.55;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #f0e6cb 0%, var(--parchment) 46%, #ddcda6 100%)
+      fixed;
+    min-height:100vh;
+    padding-bottom:env(safe-area-inset-bottom);
+    overflow-x:hidden;
+  }
+  /* faint paper grain (inline SVG turbulence, no network) */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    opacity:.06; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  body > *{position:relative; z-index:1;}
+
+  /* ---- site nav (kept structurally identical to the rest of the site) ---- */
+  nav.site{
+    max-width:900px; margin:0 auto; padding:1rem 1rem;
+    display:flex; justify-content:space-between; align-items:center; gap:1rem;
+    border-bottom:1px solid var(--line);
+  }
+  nav.site .logo{ font-weight:bold; font-size:1.2rem; text-decoration:none; color:var(--ink); }
+  nav.site ul{ list-style:none; margin:0; padding:0; display:flex; gap:1.25rem; flex-wrap:wrap; justify-content:flex-end; }
+  nav.site a{ text-decoration:none; color:var(--ink-soft); }
+  nav.site a:hover{ color:var(--ink); }
+
+  main.sheet{ max-width:720px; margin:0 auto; padding:1.4rem clamp(.9rem,4vw,1.4rem) 2rem; }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; animation:rise .4s ease both; }
+  @keyframes rise{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+
+  /* ---- shared type ---- */
+  .eyebrow{ font-size:.72rem; letter-spacing:.28em; text-transform:uppercase; color:var(--wax); font-weight:700; }
+  h1.title{ font-family:var(--display); font-weight:600; font-size:clamp(2.2rem,9vw,3.5rem); line-height:1.02; margin:.35rem 0 .5rem; letter-spacing:.01em; }
+  .lede{ font-size:clamp(1rem,3.4vw,1.12rem); color:var(--ink-soft); max-width:44ch; }
+  .lede b{ color:var(--ink); font-weight:600; }
+
+  .rule{ display:flex; align-items:center; gap:.7rem; color:var(--gilt); margin:1.25rem 0; font-size:.9rem; }
+  .rule::before,.rule::after{ content:""; height:1px; background:var(--line); flex:1; }
+
+  /* ---- cards / panels ---- */
+  .card{
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line); border-radius:14px;
+    padding:clamp(1rem,4vw,1.5rem);
+    box-shadow:0 1px 0 var(--paper-hi) inset, 0 8px 26px rgba(43,32,18,.10);
+  }
+
+  /* ---- the alignment matrix (signature element) ---- */
+  .matrix-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:.9rem; }
+  .matrix-cap{ display:flex; gap:.9rem; flex-wrap:wrap; font-size:.74rem; color:var(--ink-soft); margin-top:.6rem; }
+  .matrix-cap b{ color:var(--ink); font-weight:600; }
+  .matrix{ display:grid; grid-template-columns:auto 1fr 1fr 1fr; gap:.28rem; min-width:288px; }
+  .matrix .corner{}
+  .matrix .colhead, .matrix .rowhead{
+    font-family:var(--ui); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); font-weight:700; display:flex; align-items:center; justify-content:center; text-align:center;
+  }
+  .matrix .rowhead{ padding-right:.35rem; justify-content:flex-end; }
+  .matrix .cell{
+    border:1px solid var(--line); border-radius:7px;
+    padding:.5rem .28rem; text-align:center; min-width:0;
+    font-family:var(--display); font-size:clamp(.62rem,2.7vw,.82rem); line-height:1.14;
+    color:var(--ink-soft); background:rgba(255,255,255,.28);
+  }
+  .matrix .cell .arch{ display:block; font-family:var(--ui); font-size:.58rem; letter-spacing:.02em; color:var(--ink-faint); margin-top:.15rem; }
+  .matrix .cell.on{
+    color:var(--ink); font-weight:600;
+    background:radial-gradient(120% 120% at 50% 0%, rgba(216,185,104,.5), rgba(139,35,50,.16));
+    border-color:var(--gilt);
+    box-shadow:0 0 0 2px var(--gilt), 0 0 20px rgba(216,185,104,.55);
+  }
+  .matrix .cell.on .seal{ display:block; color:var(--wax); font-size:.9rem; line-height:1; margin-bottom:.1rem; }
+
+  /* ---- buttons ---- */
+  .btn{
+    font-family:var(--ui); font-weight:700; font-size:1rem; letter-spacing:.01em;
+    border:1px solid var(--wax-deep); border-radius:10px; cursor:pointer;
+    background:linear-gradient(180deg,var(--wax),var(--wax-deep)); color:#f6ecd2;
+    padding:.85rem 1.4rem; min-height:52px; touch-action:manipulation;
+    box-shadow:0 2px 0 rgba(0,0,0,.28); transition:transform .08s ease, box-shadow .08s ease;
+  }
+  .btn:active{ transform:translateY(1px); box-shadow:0 1px 0 rgba(0,0,0,.28); }
+  .btn[disabled]{ opacity:.4; pointer-events:none; }
+  .btn.gilt{ background:linear-gradient(180deg,var(--gilt-lit),var(--gilt)); color:var(--ink); border-color:var(--gilt-deep); box-shadow:0 2px 0 rgba(0,0,0,.2); }
+  .btn.ghost{ background:transparent; color:var(--ink-soft); border-color:var(--line); box-shadow:none; }
+  .btn.ghost:hover{ color:var(--ink); }
+  .btn.wide{ width:100%; }
+  .btn-row{ display:flex; gap:.7rem; flex-wrap:wrap; margin-top:1.4rem; }
+
+  /* ---- quiz ---- */
+  .progress-head{ display:flex; justify-content:space-between; align-items:baseline; gap:.6rem; margin-bottom:.5rem; }
+  .progress-lbl{ font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; }
+  .progress-lbl.tb{ color:var(--wax); }
+  .progress-num{ font-family:var(--display); font-size:1.1rem; color:var(--ink-faint); }
+  .progress{ height:9px; background:rgba(43,32,18,.12); border:1px solid var(--line); border-radius:99px; overflow:hidden; }
+  .progress > i{ display:block; height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--gilt),var(--wax)); transition:width .35s ease; }
+
+  .q-text{ font-family:var(--display); font-weight:600; font-size:clamp(1.35rem,5.4vw,1.85rem); line-height:1.22; margin:1.2rem 0 .3rem; }
+  .q-hint{ font-size:.78rem; color:var(--ink-faint); margin:0 0 1rem; }
+
+  .opts{ display:flex; flex-direction:column; gap:.55rem; }
+  .opt{
+    display:flex; align-items:center; gap:.75rem; width:100%; text-align:left;
+    padding:.8rem .9rem; min-height:54px;
+    border:1px solid var(--line); border-radius:11px; cursor:pointer;
+    background:rgba(255,255,255,.32); color:var(--ink); font-size:1rem; line-height:1.3;
+    transition:border-color .12s ease, background .12s ease, box-shadow .12s ease;
+  }
+  .opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+  .opt .dot{ width:20px; height:20px; border-radius:50%; border:2px solid var(--ink-faint); flex:0 0 auto; position:relative; transition:border-color .12s ease; }
+  .opt .txt{ flex:1 1 auto; }
+  .opt:hover{ border-color:var(--gilt); }
+  .opt.sel{ border-color:var(--gilt); background:linear-gradient(180deg, rgba(216,185,104,.22), rgba(139,35,50,.08)); box-shadow:0 0 0 1px var(--gilt) inset; }
+  .opt.sel .dot{ border-color:var(--wax); }
+  .opt.sel .dot::after{ content:""; position:absolute; inset:3px; border-radius:50%; background:var(--wax); }
+  .opt:focus-within{ outline:3px solid rgba(56,69,110,.5); outline-offset:2px; }
+
+  /* ---- results ---- */
+  .verdict{ text-align:center; }
+  .verdict .seal{ font-size:1.7rem; color:var(--gilt); line-height:1; }
+  .result-name{ font-family:var(--display); font-weight:600; font-size:clamp(2.1rem,8.6vw,3.4rem); line-height:1.03; margin:.15rem 0 .1rem; }
+  .result-title{ font-family:var(--display); font-style:italic; color:var(--wax); font-size:clamp(1.15rem,4.6vw,1.55rem); }
+  .result-desc{ font-size:clamp(1rem,3.4vw,1.1rem); color:var(--ink-soft); margin:1rem auto 0; max-width:48ch; }
+
+  .meters{ display:flex; flex-direction:column; gap:1rem; margin-top:.4rem; }
+  .meter .poles{ display:flex; justify-content:space-between; align-items:baseline; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .meter .poles .active{ color:var(--ink); font-weight:700; }
+  .meter .val{ font-family:var(--display); font-size:1.05rem; color:var(--ink); }
+  .meter .track{ position:relative; height:14px; border-radius:99px; border:1px solid var(--line); margin:.4rem 0 .15rem; }
+  .meter.moral .track{ background:linear-gradient(90deg, var(--pine), var(--panel) 50%, var(--wax)); }
+  .meter.ethical .track{ background:linear-gradient(90deg, var(--indigo), var(--panel) 50%, var(--gilt)); }
+  .meter .mark{ position:absolute; top:50%; width:16px; height:16px; transform:translate(-50%,-50%) rotate(45deg); background:var(--panel); border:2px solid var(--ink); box-shadow:0 1px 4px rgba(0,0,0,.4); transition:left .5s cubic-bezier(.2,.7,.2,1); }
+  .meter .tick{ position:absolute; top:-3px; bottom:-3px; width:1px; left:50%; background:var(--line); }
+
+  .sub-h{ font-family:var(--ui); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--wax); font-weight:700; margin:0 0 .6rem; }
+  .chips{ display:flex; flex-wrap:wrap; gap:.5rem; }
+  .chip{ font-family:var(--display); font-size:.98rem; padding:.4rem .85rem; border:1px solid var(--gilt); border-radius:99px; background:rgba(162,130,60,.12); color:var(--ink); }
+
+  .share-line{ font-size:.82rem; color:var(--ink-faint); margin-top:.7rem; }
+
+  footer.site{ max-width:900px; margin:2.5rem auto 0; padding:1rem; border-top:1px solid var(--line); color:var(--ink-faint); font-size:.85rem; }
+
+  @media (max-width:420px){
+    nav.site ul{ gap:.9rem; }
+    .chip{ font-size:.9rem; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+  <nav class="site">
+    <a class="logo" href="/">Spencer Beecher</a>
+    <ul>
+      <li><a href="/">Blog</a></li>
+      <li><a href="/misc.html">Misc</a></li>
+      <li><a href="/about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <main class="sheet">
+
+    <!-- ===================== INTRO ===================== -->
+    <section id="screen-intro" class="screen active">
+      <p class="eyebrow">✦ A Moral Compass ✦</p>
+      <h1 class="title">What's Your Alignment?</h1>
+      <p class="lede">Dungeons &amp; Dragons plots every character on two axes: how you treat <b>people</b> (Good ↔ Evil) and how you treat <b>rules</b> (Lawful ↔ Chaotic). Cross them and you get the nine classic alignments &mdash; from Lawful Good to Chaotic Evil.</p>
+
+      <div class="matrix-wrap card" style="margin-top:1.2rem">
+        <div class="matrix" id="intro-matrix" aria-hidden="true"></div>
+        <div class="matrix-cap">
+          <span><b>Columns</b> &mdash; how you treat rules</span>
+          <span><b>Rows</b> &mdash; how you treat people</span>
+        </div>
+      </div>
+
+      <p class="lede" style="margin-top:1.2rem">Answer a handful of very ordinary dilemmas &mdash; no dice, no rulebook, no knowledge of D&amp;D required. There are no right answers, only honest ones.</p>
+
+      <div class="btn-row">
+        <button class="btn" id="begin-btn">Begin the test ▸</button>
+      </div>
+    </section>
+
+    <!-- ===================== QUIZ ===================== -->
+    <section id="screen-quiz" class="screen">
+      <div class="progress-head">
+        <span class="progress-lbl" id="prog-lbl">Question 1 of 8</span>
+        <span class="progress-num" id="prog-num">1</span>
+      </div>
+      <div class="progress"><i id="prog-bar"></i></div>
+
+      <h2 class="q-text" id="q-text"></h2>
+      <p class="q-hint">Pick the one closest to how you'd really act.</p>
+      <div class="opts" id="q-opts" role="radiogroup" aria-label="Answer options"></div>
+
+      <div class="btn-row" style="justify-content:space-between">
+        <button class="btn ghost" id="back-btn">◂ Back</button>
+        <button class="btn" id="next-btn" disabled>Next ▸</button>
+      </div>
+    </section>
+
+    <!-- ===================== RESULT ===================== -->
+    <section id="screen-result" class="screen">
+      <div class="verdict">
+        <div class="seal">✦</div>
+        <p class="eyebrow">Your alignment</p>
+        <div class="result-name" id="res-name">True Neutral</div>
+        <div class="result-title" id="res-title">The Balancer</div>
+        <p class="result-desc" id="res-desc"></p>
+      </div>
+
+      <div class="rule">✦</div>
+
+      <div class="card">
+        <div class="meters">
+          <div class="meter moral">
+            <div class="poles"><span id="m-good">Good</span><span class="val" id="m-val">0</span><span id="m-evil">Evil</span></div>
+            <div class="track"><span class="tick"></span><span class="mark" id="m-mark"></span></div>
+          </div>
+          <div class="meter ethical">
+            <div class="poles"><span id="e-law">Lawful</span><span class="val" id="e-val">0</span><span id="e-chaos">Chaotic</span></div>
+            <div class="track"><span class="tick"></span><span class="mark" id="e-mark"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1.4rem">
+        <p class="sub-h">Kindred spirits</p>
+        <div class="chips" id="res-chars"></div>
+      </div>
+
+      <div class="card" style="margin-top:1.4rem">
+        <p class="sub-h">Where you land</p>
+        <div class="matrix-wrap">
+          <div class="matrix" id="result-matrix" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn gilt" id="copy-btn">Copy my result</button>
+        <button class="btn ghost" id="retake-btn">Retake the test</button>
+      </div>
+      <p class="share-line" id="share-line"></p>
+    </section>
+
+  </main>
+
+  <footer class="site"><p>&copy; Spencer Beecher</p></footer>
+
+<script>
+/*===ENGINE-START===  (pure logic — no DOM — extracted verbatim by the node test) */
+var AlignmentEngine = (function(){
+  "use strict";
+
+  /* --- Questions. Score s is that option's contribution to its axis.
+         Good and Lawful are POSITIVE. Options are listed leftmost-first.
+         Core items always shown; tie-breakers pulled only when an axis is
+         undecided. (Curated bank; core moral + ethical interleaved.)      --- */
+  const BASE = [
+    { id:"M1", axis:"moral", text:"The self-checkout doesn't scan one of your items. You notice after bagging. Nobody's watching.", options:[
+      {t:"Go back and pay for it", s:2},
+      {t:"Would, if a staffer were nearby", s:1},
+      {t:"Shrug — chalk it up to karma", s:0},
+      {t:"Free stuff is free stuff", s:-1},
+      {t:"Honestly? Sometimes I'd try it on purpose", s:-2} ]},
+
+    { id:"L1", axis:"ethical", text:"3 a.m. Empty street for miles — no cars, no cameras. The crosswalk is red.", options:[
+      {t:"Wait for the walk signal anyway", s:2},
+      {t:"Wait, mostly", s:1},
+      {t:"Glance and go", s:0},
+      {t:"Just cross", s:-1},
+      {t:"I jaywalk in broad daylight too", s:-2} ]},
+
+    { id:"M2", axis:"moral", text:"The person in line behind you gets declined — they're $7 short and clearly mortified.", options:[
+      {t:"Cover it, wave off the thanks", s:2},
+      {t:"Cover it if it's quick", s:1},
+      {t:"Offer sympathy, not cash", s:0},
+      {t:"Stay out of it", s:-1},
+      {t:"Enjoy the little drama", s:-2} ]},
+
+    { id:"L2", axis:"ethical", text:"Your dream vacation is…", options:[   /* REVERSE: chaotic pole on the left */
+      {t:"Land with no plan and wing the entire thing", s:-2},
+      {t:"A couple of anchors, mostly loose", s:-1},
+      {t:"Half-planned", s:0},
+      {t:"A detailed itinerary", s:1},
+      {t:"Hour-by-hour, color-coded spreadsheet", s:2} ]},
+
+    { id:"M3", axis:"moral", text:"Someone who was genuinely cruel to you years ago is now publicly failing — career tanked, humiliated.", options:[  /* REVERSE: evil pole on the left */
+      {t:"I'll admit it feels great", s:-2},
+      {t:"A little satisfying", s:-1},
+      {t:"I don't really care", s:0},
+      {t:"I feel kind of bad for them", s:1},
+      {t:"I'd actually help if they asked", s:2} ]},
+
+    { id:"L3", axis:"ethical", text:"A rule at work is clearly dumb and slows everyone down. Following it helps no one today.", options:[
+      {t:"Follow it — rules keep things fair and predictable", s:2},
+      {t:"Follow it, but push to change it", s:1},
+      {t:"Depends who's watching", s:0},
+      {t:"Quietly ignore it", s:-1},
+      {t:"Rules like that are made to be broken", s:-2} ]},
+
+    { id:"M4", axis:"moral", text:"A job pays double — but your work would quietly make a faraway community's life a bit worse, and you'd never see it.", options:[
+      {t:"Couldn't do it — I'd feel it", s:2},
+      {t:"Probably pass", s:1},
+      {t:"Depends how much worse", s:0},
+      {t:"Likely take it", s:-1},
+      {t:"Out of sight, out of mind — easy yes", s:-2} ]},
+
+    { id:"L4", axis:"ethical", text:"You told friends you'd come to a thing. The day arrives and you're just not feeling it — they won't be mad.", options:[
+      {t:"Go anyway — I said I would", s:2},
+      {t:"Go, but briefly", s:1},
+      {t:"Depends on the day", s:0},
+      {t:"Bail with a nice text", s:-1},
+      {t:"Ghost and “reschedule soon”", s:-2} ]}
+  ];
+
+  /* --- Adaptive tie-breaker pools: at most 2 drawn per axis, only when
+         that axis lands near the Neutral boundary after the core items. --- */
+  const TB = {
+    moral:[
+      { id:"M5", axis:"moral", text:"A cashier hands you $20 too much in change.", options:[
+        {t:"Hand it right back", s:2},
+        {t:"Return it if I catch it before leaving", s:1},
+        {t:"Depends if I'm in a rush", s:0},
+        {t:"Their mistake, my luck", s:-1},
+        {t:"I count my change hoping for this", s:-2} ]},
+      { id:"M6", axis:"moral", text:"A group project: the quiet teammate did the best work but won't speak up, and the boss assumes it was all you.", options:[
+        {t:"Correct them, name your teammate", s:2},
+        {t:"Share the credit", s:1},
+        {t:"Stay vague", s:0},
+        {t:"Accept the praise, say nothing", s:-1},
+        {t:"Lean in — I earned the room", s:-2} ]},
+      { id:"M7", axis:"moral", text:"You're already late and someone drops their whole bag of groceries across the sidewalk.", options:[
+        {t:"Stop and help pick it all up", s:2},
+        {t:"Grab a few and go", s:1},
+        {t:"Ask if they're okay, keep moving", s:0},
+        {t:"Step around", s:-1},
+        {t:"Honestly, I'd want to film it", s:-2} ]}
+    ],
+    ethical:[
+      { id:"L5", axis:"ethical", text:"“We've always done it this way” is…", options:[
+        {t:"usually wisdom worth respecting", s:2},
+        {t:"worth a listen", s:1},
+        {t:"neither here nor there", s:0},
+        {t:"a bit of a red flag", s:-1},
+        {t:"the most dangerous sentence there is", s:-2} ]},
+      { id:"L6", axis:"ethical", text:"Your daily life runs on…", options:[   /* REVERSE: chaotic pole on the left */
+        {t:"whatever I feel like that day", s:-2},
+        {t:"loose habits", s:-1},
+        {t:"some structure", s:0},
+        {t:"solid routines", s:1},
+        {t:"the same reliable schedule, and I like it that way", s:2} ]},
+      { id:"L7", axis:"ethical", text:"Board games or pickup sports with friends — the rules are…", options:[
+        {t:"as written, always", s:2},
+        {t:"as written, with agreed exceptions", s:1},
+        {t:"whatever the group wants", s:0},
+        {t:"house rules, loosely enforced", s:-1},
+        {t:"something I'll bend to keep it fun (or to win)", s:-2} ]}
+    ]
+  };
+
+  const QALL = BASE.concat(TB.moral, TB.ethical);
+  const QBYID = {}; QALL.forEach(function(q){ QBYID[q.id] = q; });
+
+  const MAX_TB_PER_AXIS = 2;
+  const DECISIVE = 5;   /* |axis score| >= 5 (on the -8..+8 scale) => decided */
+
+  /* Per-axis score, NORMALIZED to a -8..+8-equivalent regardless of how many
+     questions were shown (core-only = 4 items => this equals the raw sum),
+     then rounded so the displayed number and the classification always agree. */
+  function axisScore(answers, axis){
+    var f = answers.filter(function(a){ return a.axis===axis; });
+    if (!f.length) return 0;
+    var sum = f.reduce(function(n,a){ return n + a.s; }, 0);
+    return Math.round(sum / f.length * 4);
+  }
+  function classifyMoral(score){ return score>=3 ? "Good"   : score<=-3 ? "Evil"    : "Neutral"; }
+  function classifyEthical(score){ return score>=3 ? "Lawful" : score<=-3 ? "Chaotic" : "Neutral"; }
+  function alignmentName(moral, ethical){
+    return (moral==="Neutral" && ethical==="Neutral") ? "True Neutral" : (ethical + " " + moral);
+  }
+
+  /* Next tie-breaker to ask given everything answered so far. Caps at 2 per
+     axis and stops as soon as the axis becomes decisive. */
+  function nextTieBreaker(answers){
+    var askedIds = answers.map(function(a){ return a.id; });
+    function used(id){ return askedIds.indexOf(id) !== -1; }
+    function countUsed(pool){ return pool.filter(function(q){ return used(q.id); }).length; }
+    function firstUnused(pool){ for(var i=0;i<pool.length;i++){ if(!used(pool[i].id)) return pool[i]; } return null; }
+
+    if (countUsed(TB.moral) < MAX_TB_PER_AXIS && Math.abs(axisScore(answers,"moral")) < DECISIVE){
+      var m = firstUnused(TB.moral); if (m) return m;
+    }
+    if (countUsed(TB.ethical) < MAX_TB_PER_AXIS && Math.abs(axisScore(answers,"ethical")) < DECISIVE){
+      var e = firstUnused(TB.ethical); if (e) return e;
+    }
+    return null;
+  }
+
+  /* Single source of truth for "what's next". Pure fn of answers-so-far.
+     Returns a question object, or null when the test is complete. */
+  function nextQuestion(answers){
+    var askedIds = answers.map(function(a){ return a.id; });
+    for (var i=0;i<BASE.length;i++){ if (askedIds.indexOf(BASE[i].id) === -1) return BASE[i]; }
+    return nextTieBreaker(answers);
+  }
+
+  var ALIGNMENTS = {
+    "Lawful Good":   { title:"The Crusader",   chars:["Superman","Captain America","Ned Stark","Brienne of Tarth"],
+      desc:"You do the right thing, and you do it by the book. Honor, duty, and compassion all pull the same way for you, and you trust that fair systems make for a fair world. The danger: a rule can become a cage the moment it stops serving people." },
+    "Neutral Good":  { title:"The Benefactor", chars:["Gandalf","Spider-Man","Wonder Woman","Samwise Gamgee"],
+      desc:"Helping people is the whole point; the method is negotiable. You'll work inside the rules or quietly around them, whatever actually does the most good. Kindness is your compass, not procedure." },
+    "Chaotic Good":  { title:"The Rebel",      chars:["Robin Hood","Han Solo","Katniss Everdeen","Moana"],
+      desc:"Good heart, allergic to authority. You back people over institutions and your own conscience over any rulebook. When the law and what's right part ways, you already know which one you're following." },
+    "Lawful Neutral":{ title:"The Judge",      chars:["Judge Dredd","Stannis Baratheon","Inspector Javert"],
+      desc:"Order above all. You believe a consistent, fair system matters more than any single outcome, and you hold yourself to it as strictly as everyone else. The code is the code." },
+    "True Neutral":  { title:"The Balancer",   chars:["Treebeard","Tom Bombadil","The Dude"],
+      desc:"You take each situation on its own terms, with no thumb on the scale for law, chaos, good, or evil. Pragmatic and hard to rattle, you'd rather keep things in balance than crusade for anything." },
+    "Chaotic Neutral":{title:"The Free Spirit",chars:["Jack Sparrow","Deadpool","Catwoman","Loki"],
+      desc:"Freedom first. You answer to yourself, follow your whims, and bristle at anyone telling you who to be. You're not out to help or to harm — just unwilling to be fenced in." },
+    "Lawful Evil":   { title:"The Tyrant",     chars:["Darth Vader","Tywin Lannister","Dolores Umbridge","Emperor Palpatine"],
+      desc:"You play ruthlessly, but you play by rules — your own, or ones you can exploit. Order, hierarchy, and control are simply tools, and you wield them without much sentiment about who gets hurt." },
+    "Neutral Evil":  { title:"The Malefactor", chars:["Voldemort","Cersei Lannister","Gus Fring"],
+      desc:"You look out for yourself, and there aren't many lines you won't cross if the payoff is right. Not chaotic, not principled — just self-interest, efficiently pursued." },
+    "Chaotic Evil":  { title:"The Destroyer",  chars:["The Joker","Ramsay Bolton","Hannibal Lecter"],
+      desc:"Unbound and unbothered by conscience. You do what you want, when you want, and the wreckage isn't your concern. The most dangerous kind of free." }
+  };
+
+  var MORAL_ROW = { Good:0, Neutral:1, Evil:2 };
+  var ETH_COL   = { Lawful:0, Neutral:1, Chaotic:2 };
+
+  function resolve(answers){
+    var mS = axisScore(answers,"moral"), eS = axisScore(answers,"ethical");
+    var moral = classifyMoral(mS), ethical = classifyEthical(eS);
+    var name = alignmentName(moral, ethical);
+    var a = ALIGNMENTS[name];
+    return {
+      moralSum:mS, ethicalSum:eS, moral:moral, ethical:ethical,
+      name:name, title:a.title, desc:a.desc, chars:a.chars,
+      row:MORAL_ROW[moral], col:ETH_COL[ethical], count:answers.length
+    };
+  }
+
+  var api = {
+    BASE:BASE, TB:TB, QALL:QALL, QBYID:QBYID, DECISIVE:DECISIVE, MAX_TB_PER_AXIS:MAX_TB_PER_AXIS,
+    axisScore:axisScore, classifyMoral:classifyMoral, classifyEthical:classifyEthical,
+    alignmentName:alignmentName, nextTieBreaker:nextTieBreaker, nextQuestion:nextQuestion,
+    resolve:resolve, ALIGNMENTS:ALIGNMENTS, MORAL_ROW:MORAL_ROW, ETH_COL:ETH_COL
+  };
+  if (typeof globalThis !== "undefined") globalThis.AlignmentEngine = api;
+  return api;
+})();
+/*===ENGINE-END===*/
+
+(function(){
+  "use strict";
+  if (typeof document === "undefined") return;   /* node import guard */
+  var E = AlignmentEngine;
+
+  function $(id){ return document.getElementById(id); }
+  function el(tag, cls){ var n=document.createElement(tag); if(cls) n.className=cls; return n; }
+  function show(screen){
+    ["screen-intro","screen-quiz","screen-result"].forEach(function(s){
+      $(s).classList.toggle("active", s===screen);
+    });
+    window.scrollTo(0,0);
+  }
+  function fmt(n){ return n>0 ? "+"+n : ""+n; }
+
+  var MORAL_ROW_LBL = ["Good","Neutral","Evil"];
+  var ETH_COL_LBL   = ["Lawful","Neutral","Chaotic"];
+
+  /* ---- build a 3x3 alignment matrix; hi = {row,col} to light a cell ---- */
+  function buildMatrix(container, hi){
+    container.innerHTML = "";
+    container.appendChild(el("div","corner"));
+    ETH_COL_LBL.forEach(function(lbl){ var h=el("div","colhead"); h.textContent=lbl; container.appendChild(h); });
+    for(var r=0;r<3;r++){
+      var rh=el("div","rowhead"); rh.textContent=MORAL_ROW_LBL[r]; container.appendChild(rh);
+      for(var c=0;c<3;c++){
+        var moral=MORAL_ROW_LBL[r], ethical=ETH_COL_LBL[c];
+        var name=E.alignmentName(moral,ethical);
+        var cell=el("div","cell");
+        var lit = hi && hi.row===r && hi.col===c;
+        if(lit){
+          cell.classList.add("on");
+          var seal=el("span","seal"); seal.textContent="✦"; cell.appendChild(seal);
+        }
+        var nm=document.createElement("span"); nm.textContent=name; cell.appendChild(nm);
+        var arch=el("span","arch"); arch.textContent=E.ALIGNMENTS[name].title; cell.appendChild(arch);
+        container.appendChild(cell);
+      }
+    }
+  }
+
+  /* ---- quiz state ----
+     record: ordered array of {id, axis, s, idx} for answered questions.
+     viewIdx: which position we're currently viewing (== record.length => a fresh one). */
+  var record = [];
+  var viewIdx = 0;
+  var currentQ = null;
+  var currentSel = null;
+
+  function answersBefore(idx){ return record.slice(0, idx); }
+
+  function updateProgress(){
+    var lbl = $("prog-lbl"), num = $("prog-num"), bar = $("prog-bar");
+    var n = viewIdx + 1;
+    if (viewIdx < E.BASE.length){
+      lbl.textContent = "Question " + n + " of " + E.BASE.length;
+      lbl.classList.remove("tb");
+      bar.style.width = (n / E.BASE.length * 100) + "%";
+    } else {
+      lbl.textContent = "Bonus tie-breaker";
+      lbl.classList.add("tb");
+      bar.style.width = "100%";
+    }
+    num.textContent = n;
+  }
+
+  function render(){
+    updateProgress();
+    var savedIdx = null;
+    if (viewIdx < record.length){
+      currentQ = E.QBYID[record[viewIdx].id];
+      savedIdx = record[viewIdx].idx;
+    } else {
+      currentQ = E.nextQuestion(record);
+      if (!currentQ){ showResult(); return; }
+    }
+    currentSel = savedIdx;
+
+    $("q-text").textContent = currentQ.text;
+    var box = $("q-opts"); box.innerHTML = "";
+    currentQ.options.forEach(function(opt, i){
+      var lab = el("label","opt");
+      var input = el("input"); input.type="radio"; input.name="opt-"+currentQ.id; input.value=i;
+      if (i===savedIdx){ input.checked=true; lab.classList.add("sel"); }
+      var dot = el("span","dot");
+      var txt = el("span","txt"); txt.textContent = opt.t;
+      lab.appendChild(input); lab.appendChild(dot); lab.appendChild(txt);
+      input.addEventListener("change", function(){ selectOption(i); });
+      box.appendChild(lab);
+    });
+
+    var next = $("next-btn");
+    next.disabled = (savedIdx === null);
+    updateNextLabel();
+    $("back-btn").textContent = viewIdx === 0 ? "◂ Intro" : "◂ Back";
+  }
+
+  function selectOption(i){
+    currentSel = i;
+    var labs = $("q-opts").querySelectorAll(".opt");
+    labs.forEach(function(l, idx){ l.classList.toggle("sel", idx===i); });
+    $("next-btn").disabled = false;
+    updateNextLabel();
+  }
+
+  function updateNextLabel(){
+    var next = $("next-btn");
+    if (currentSel === null){ next.textContent = "Next ▸"; return; }
+    var trial = answersBefore(viewIdx).concat([{
+      id:currentQ.id, axis:currentQ.axis, s:currentQ.options[currentSel].s, idx:currentSel
+    }]);
+    next.textContent = E.nextQuestion(trial) ? "Next ▸" : "Reveal my alignment ✦";
+  }
+
+  function goNext(){
+    if (currentSel === null) return;
+    var ans = { id:currentQ.id, axis:currentQ.axis, s:currentQ.options[currentSel].s, idx:currentSel };
+    if (viewIdx < record.length){
+      if (record[viewIdx].idx === currentSel){
+        viewIdx++;                             /* unchanged: keep the tail intact */
+      } else {
+        record = record.slice(0, viewIdx);     /* changed: recompute the tail */
+        record.push(ans); viewIdx++;
+      }
+    } else {
+      record.push(ans); viewIdx++;
+    }
+    render();
+  }
+
+  function goBack(){
+    if (viewIdx === 0){ show("screen-intro"); return; }
+    viewIdx--; render();
+  }
+
+  function startQuiz(){
+    record = []; viewIdx = 0;
+    show("screen-quiz");
+    render();
+  }
+
+  /* ---- results ---- */
+  var shareText = "";
+  function showResult(){
+    var res = E.resolve(record);
+
+    $("res-name").textContent = res.name;
+    $("res-title").textContent = "“" + res.title + "”";
+    $("res-desc").textContent = res.desc;
+
+    /* meters: Good/Lawful on the left => left% = (8 - score)/16 */
+    $("m-mark").style.left = ((8 - res.moralSum)   / 16 * 100) + "%";
+    $("e-mark").style.left = ((8 - res.ethicalSum) / 16 * 100) + "%";
+    $("m-val").textContent = fmt(res.moralSum)   + " · " + res.moral;
+    $("e-val").textContent = fmt(res.ethicalSum) + " · " + res.ethical;
+    $("m-good").classList.toggle("active", res.moral==="Good");
+    $("m-evil").classList.toggle("active", res.moral==="Evil");
+    $("e-law").classList.toggle("active", res.ethical==="Lawful");
+    $("e-chaos").classList.toggle("active", res.ethical==="Chaotic");
+
+    var chars = $("res-chars"); chars.innerHTML="";
+    res.chars.forEach(function(name){ var c=el("span","chip"); c.textContent=name; chars.appendChild(c); });
+
+    buildMatrix($("result-matrix"), { row:res.row, col:res.col });
+
+    var url = location.origin + location.pathname;
+    shareText = "I'm " + res.name + " (“" + res.title + "”) — Good/Evil " + fmt(res.moralSum) +
+                ", Law/Chaos " + fmt(res.ethicalSum) + ". What's your D&D alignment? " + url;
+    $("share-line").textContent = "Answered " + res.count + " questions.";
+
+    show("screen-result");
+  }
+
+  function copyResult(){
+    var btn = $("copy-btn");
+    function ok(){ var t=btn.textContent; btn.textContent="Copied ✓"; setTimeout(function(){ btn.textContent=t; }, 1600); }
+    function fallback(){
+      try{
+        var ta=el("textarea"); ta.value=shareText; ta.style.position="fixed"; ta.style.opacity="0";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        document.execCommand("copy"); document.body.removeChild(ta); ok();
+      }catch(e){ btn.textContent="Copy failed"; }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(shareText).then(ok, fallback);
+    } else { fallback(); }
+  }
+
+  /* ---- optional in-browser self-test: /alignment/?test ---- */
+  function selfTest(){
+    function sim(picker){
+      var ans=[], q;
+      while((q = E.nextQuestion(ans))){
+        var idx = picker(q);
+        ans.push({ id:q.id, axis:q.axis, s:q.options[idx].s, idx:idx });
+        if (ans.length > 16) throw new Error("did not terminate");
+      }
+      return E.resolve(ans);
+    }
+    var r=[];
+    r.push(["leftmost",  sim(function(){ return 0; })]);
+    r.push(["rightmost", sim(function(q){ return q.options.length-1; })]);
+    r.push(["middle",    sim(function(){ return 2; })]);
+    console.log("Alignment self-test:");
+    r.forEach(function(x){ console.log("  "+x[0]+" => "+x[1].name+"  ("+x[1].count+" q, moral "+x[1].moralSum+", ethical "+x[1].ethicalSum+")"); });
+  }
+
+  /* ---- wire up ---- */
+  buildMatrix($("intro-matrix"), null);
+  $("begin-btn").addEventListener("click", startQuiz);
+  $("next-btn").addEventListener("click", goNext);
+  $("back-btn").addEventListener("click", goBack);
+  $("retake-btn").addEventListener("click", function(){ startQuiz(); });
+  $("copy-btn").addEventListener("click", copyResult);
+  if (location.search.indexOf("test") >= 0) selfTest();
+
+})();
+</script>
+</body>
+</html>
