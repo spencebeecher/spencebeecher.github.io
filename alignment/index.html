@@ -84,8 +84,10 @@
 
   /* ---- the alignment matrix (signature element) ---- */
   .matrix-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:.9rem; }
-  .matrix-cap{ display:flex; gap:.9rem; flex-wrap:wrap; font-size:.74rem; color:var(--ink-soft); margin-top:.6rem; }
-  .matrix-cap b{ color:var(--ink); font-weight:600; }
+  /* ---- intro: two neutral dimension pills (high-level, non-judgemental) ---- */
+  .dims{ display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.7rem; margin:1.7rem 0 .3rem; }
+  .dim{ font-family:var(--display); font-size:clamp(1rem,3.6vw,1.2rem); color:var(--ink); padding:.55rem 1.05rem; border:1px solid var(--gilt); border-radius:99px; background:rgba(162,130,60,.1); }
+  .dim-sep{ color:var(--gilt); font-size:1.05rem; }
   .matrix{ display:grid; grid-template-columns:auto 1fr 1fr 1fr; gap:.28rem; min-width:288px; }
   .matrix .corner{}
   .matrix .colhead, .matrix .rowhead{
@@ -202,17 +204,15 @@
     <section id="screen-intro" class="screen active">
       <p class="eyebrow">✦ A Moral Compass ✦</p>
       <h1 class="title">What's Your Alignment?</h1>
-      <p class="lede">Dungeons &amp; Dragons plots every character on two axes: how you treat <b>people</b> (Good ↔ Evil) and how you treat <b>rules</b> (Lawful ↔ Chaotic). Cross them and you get the nine classic alignments &mdash; from Lawful Good to Chaotic Evil.</p>
+      <p class="lede">This quick test places you on two simple scales: how you tend to treat <b>people</b>, and how you tend to treat <b>rules</b>. Together they point to your Dungeons &amp; Dragons alignment.</p>
 
-      <div class="matrix-wrap card" style="margin-top:1.2rem">
-        <div class="matrix" id="intro-matrix" aria-hidden="true"></div>
-        <div class="matrix-cap">
-          <span><b>Columns</b> &mdash; how you treat rules</span>
-          <span><b>Rows</b> &mdash; how you treat people</span>
-        </div>
+      <div class="dims" aria-hidden="true">
+        <span class="dim">How you treat people</span>
+        <span class="dim-sep">✦</span>
+        <span class="dim">How you treat rules</span>
       </div>
 
-      <p class="lede" style="margin-top:1.2rem">Answer a handful of very ordinary dilemmas &mdash; no dice, no rulebook, no knowledge of D&amp;D required. There are no right answers, only honest ones.</p>
+      <p class="lede" style="margin-top:1.4rem">You'll answer a handful of very ordinary, everyday dilemmas &mdash; no dice, no rulebook, no knowledge of D&amp;D required. There are no right answers, only honest ones, so go with your gut. Your result is revealed at the end.</p>
 
       <div class="btn-row">
         <button class="btn" id="begin-btn">Begin the test ▸</button>
@@ -698,7 +698,6 @@ var AlignmentEngine = (function(){
   }
 
   /* ---- wire up ---- */
-  buildMatrix($("intro-matrix"), null);
   $("begin-btn").addEventListener("click", startQuiz);
   $("next-btn").addEventListener("click", goNext);
   $("back-btn").addEventListener("click", goBack);
