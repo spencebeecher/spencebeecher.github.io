@@ -177,6 +177,55 @@
   .matrix td.cell{font-size:.7rem; border-radius:0;}
   .acc-hi{color:var(--good);} .acc-mid{color:var(--gold-ink);} .acc-lo{color:var(--bad);}
 
+  /* ---------------------------------------------------------------------
+     Fill-In game — same grid look as the cheat sheet, but cells start blank
+     and are editable. Filled cells reuse the td.H/S/D/P/R action colors so
+     the finished chart matches the read-only cheat sheet exactly.
+     --------------------------------------------------------------------- */
+  .fi-cell{background:var(--surface); cursor:pointer; position:relative; user-select:none; -webkit-user-select:none;}
+  table.grid td.fi-cell{width:30px; height:30px; font-size:.82rem;}
+  .fi-cell.fi-sel{outline:2px solid var(--gold-ink); outline-offset:-2px; z-index:2;}   /* selection: no layout shift */
+  .fi-cell.fi-ok{box-shadow:inset 0 0 0 2px var(--good);}
+  .fi-cell.fi-bad{box-shadow:inset 0 0 0 2px var(--bad);}
+  .fi-was{position:absolute; top:0; right:1px; font-size:.5rem; line-height:1; text-decoration:line-through; color:#fff; text-shadow:0 0 2px rgba(0,0,0,.85); pointer-events:none;}
+  .fi-status{display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin:.2rem 0 .1rem;}
+  #fillin-score{font-weight:700;}
+  .fi-dock{position:sticky; bottom:0; z-index:20; background:var(--header-bg); backdrop-filter:blur(6px); border-top:1px solid var(--line); margin:.7rem -.7rem 0; padding:.55rem .7rem calc(.55rem + env(safe-area-inset-bottom));}
+  .fi-palette{display:grid; grid-template-columns:repeat(6,1fr); gap:.4rem;}
+  .fi-palette .act{min-height:44px; padding:.5rem .2rem; font-size:1.05rem;}
+  .fi-palette .act .k{font-size:.56rem; opacity:.85;}
+  .fi-clear{border:1px solid var(--line); border-radius:12px; background:var(--tap); color:var(--text); font-weight:700; font-size:.9rem; cursor:pointer; touch-action:manipulation; min-height:44px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;}
+  .fi-clear .k{font-size:.56rem; opacity:.75; font-weight:600;}
+  .fi-clear:active{transform:translateY(1px);}
+  .fi-actions{display:grid; grid-template-columns:1fr 1fr 1fr; gap:.4rem; margin-top:.5rem;}
+  .fi-actions .big{margin-top:0; font-size:.88rem; padding:.7rem .3rem;}
+
+  /* ---------------------------------------------------------------------
+     Pick-a-Table guide — quick "look for / avoid" checklist plus one short
+     section per rule, each tagged with its approximate house-edge impact.
+     --------------------------------------------------------------------- */
+  .tg-hero{font-size:1.05rem; font-weight:700; text-align:center; padding:.65rem .6rem; border:1px solid rgba(245,197,66,.5); background:rgba(245,197,66,.14); border-radius:12px; margin:.2rem 0 .9rem;}
+  .tg-hero .s{color:var(--gold-ink);}
+  .tg-cols{display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin:.4rem 0 .2rem;}
+  .tg-col{border:1px solid var(--line); border-radius:12px; padding:.55rem .7rem; background:var(--surface);}
+  .tg-col h4{margin:0 0 .35rem; font-size:.9rem;}
+  .tg-col.look h4{color:var(--good);}
+  .tg-col.avoid h4{color:var(--bad);}
+  .tg-list{list-style:none; margin:0; padding:0; font-size:.84rem;}
+  .tg-list li{padding:.22rem 0 .22rem 1.3rem; position:relative; line-height:1.35;}
+  .tg-col.look .tg-list li:before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700;}
+  .tg-col.avoid .tg-list li:before{content:"✕"; position:absolute; left:0; color:var(--bad); font-weight:700;}
+  .tg-rule{padding:.75rem 0; border-bottom:1px solid var(--line);}
+  .tg-rule:last-child{border-bottom:none;}
+  .tg-rule h4{margin:0 0 .3rem; font-size:.95rem; display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap;}
+  .tg-rule p{margin:.25rem 0 0; font-size:.86rem; opacity:.92;}
+  .tg-rule p + p{margin-top:.35rem;}
+  .edge{display:inline-block; border-radius:999px; padding:.1rem .5rem; font-size:.72rem; font-weight:700; border:1px solid var(--line); white-space:nowrap;}
+  .edge.good{color:var(--good); border-color:rgba(52,199,89,.5); background:rgba(52,199,89,.12);}
+  .edge.bad{color:var(--bad); border-color:rgba(255,69,58,.5); background:rgba(255,69,58,.12);}
+  .edge.warn{color:var(--gold-ink); border-color:rgba(245,197,66,.5); background:rgba(245,197,66,.14);}
+  @media(max-width:520px){ .tg-cols{grid-template-columns:1fr;} }
+
   /* settings */
   .set{display:flex; justify-content:space-between; align-items:center; gap:.8rem; padding:.55rem 0; border-bottom:1px solid var(--line);}
   .set:last-child{border-bottom:none;}
@@ -214,6 +263,8 @@
     <button data-view="coach" class="active">Coach</button>
     <button data-view="money">Play</button>
     <button data-view="cheat">Cheat</button>
+    <button data-view="fillin">Fill-In</button>
+    <button data-view="table">Table</button>
     <button data-view="stats">Stats</button>
     <button data-view="settings">Settings</button>
   </nav>
@@ -304,6 +355,119 @@
       <div class="legend" id="cheat-legend"></div>
       <div id="cheat-grids"></div>
       <div class="note" id="cheat-facts"></div>
+    </div>
+  </section>
+
+  <!-- ===================== FILL-IN ===================== -->
+  <section id="view-fillin" class="view">
+    <div class="panel">
+      <h3 style="margin:.1rem 0">Fill in the chart</h3>
+      <p class="note">Rebuild basic strategy from memory. Tap a cell, then pick a letter — or type <b>h s d p r</b>. Arrows move, <b>Tab</b> jumps to the next blank, <b>Backspace</b> clears. Fill what you can, then check.</p>
+      <div class="fi-status">
+        <span class="pill" id="fillin-progress">0 / 0 filled</span>
+        <span class="pill" id="fillin-score" hidden></span>
+      </div>
+      <div id="fillin-grids"></div>
+      <div class="legend" id="fillin-legend"></div>
+    </div>
+    <div class="dock fi-dock">
+      <div class="fi-palette" id="fillin-palette"></div>
+      <div class="fi-actions">
+        <button class="big" id="fillin-check">Check answers</button>
+        <button class="big ghost" id="fillin-reveal">Reveal answers</button>
+        <button class="big ghost" id="fillin-reset">Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PICK A TABLE ===================== -->
+  <section id="view-table" class="view">
+    <div class="panel">
+      <h3 style="margin:.1rem 0">How to pick a table</h3>
+      <p class="note">Table rules quietly move the house edge. Percentages below are the approximate change to the house edge for a basic-strategy player — lower is better. Payout dwarfs everything else.</p>
+      <div class="tg-hero">Rule #1: <span class="s">3:2 or walk away.</span></div>
+
+      <div class="tg-cols">
+        <div class="tg-col look">
+          <h4>Look for</h4>
+          <ul class="tg-list">
+            <li><b>3:2</b> blackjack payout</li>
+            <li><b>S17</b> — dealer stands on soft 17</li>
+            <li><b>DAS</b> — double after split allowed</li>
+            <li>Late <b>surrender</b> offered</li>
+            <li>Double on <b>any two cards</b></li>
+            <li><b>Re-split</b> allowed, incl. aces, and draw to split aces</li>
+            <li><b>Fewer decks</b> (single/double), all else equal</li>
+            <li>Hand shuffle or a standard shoe</li>
+          </ul>
+        </div>
+        <div class="tg-col avoid">
+          <h4>Avoid</h4>
+          <ul class="tg-list">
+            <li><b>6:5</b> (or 1:1 "even money") blackjack — the biggest trap</li>
+            <li>"Single deck" that secretly pays <b>6:5</b></li>
+            <li><b>H17</b> — dealer hits soft 17</li>
+            <li>No DAS, no surrender</li>
+            <li>Doubling limited to <b>9–11</b> (or 10–11 only)</li>
+            <li><b>Continuous shuffle machines</b> (CSMs)</li>
+            <li><b>Side bets</b> (5%+ house edge)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Rule of thumb: check the felt for the payout first. A good 3:2 shoe runs well under a 1% house edge with basic strategy; a 6:5 table roughly doubles that before any other rule.</p>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin:.1rem 0">Every rule, explained</h3>
+
+      <div class="tg-rule">
+        <h4>Blackjack payout: 3:2 vs 6:5 <span class="edge bad">6:5 ≈ +1.4%</span></h4>
+        <p>The single most important rule. A natural blackjack should pay 3:2 — a $10 bet wins $15. A 6:5 table pays only $12 on that same blackjack, and 1:1 ("even money") pays just $10. Since you make a blackjack about once every 21 hands, shorting the payout adds roughly <b>1.4%</b> to the house edge — more than every other rule below combined.</p>
+        <p>The trap: "single deck" tables are often 6:5. Fewer decks help, but never enough to make up for a 6:5 payout. Always read the felt: if it says 6:5, walk away.</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Soft 17: S17 vs H17 <span class="edge bad">H17 ≈ +0.2%</span></h4>
+        <p>A "soft 17" is an ace plus a six (counts as 7 or 17). Under S17 the dealer stands on it; under H17 the dealer draws another card. Letting the dealer hit soft 17 gives them extra chances to improve, costing you about <b>0.2%</b>. Prefer tables that say "dealer stands on all 17s."</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Double after split (DAS) <span class="edge good">allowed ≈ −0.14%</span></h4>
+        <p>After you split a pair, DAS lets you double down on the resulting hands when the new two-card total is strong. It's a free option that only helps you, worth about <b>0.14%</b> in your favor. No-DAS tables take that option away.</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Late surrender <span class="edge good">available ≈ −0.08%</span></h4>
+        <p>Surrender lets you fold a bad hand — like hard 16 vs a dealer 10 — and forfeit only half your bet instead of risking the whole thing. "Late" means it's offered after the dealer checks for blackjack. Used correctly on a few specific hands, it's worth roughly <b>0.07–0.10%</b> in your favor. Rare, but a plus when you find it.</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Doubling: any two cards vs 9–11 only <span class="edge bad">restricted ≈ +0.1–0.2%</span></h4>
+        <p>The best rule lets you double down on any two-card total. Restricting doubles to hard 9–11 (or worse, 10–11 only) removes profitable doubles like soft hands and costs you roughly <b>0.1–0.2%</b> depending on how tight the limit is. Look for "double on any two cards."</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Number of decks <span class="edge good">fewer ≈ −0.2 to −0.5%</span></h4>
+        <p>All else equal, fewer decks lower the house edge: single deck is best, then double deck, with 6- and 8-deck shoes the worst. The swing from an 8-deck shoe to single deck is roughly <b>0.5%</b> in your favor (double deck saves about 0.2%).</p>
+        <p>The catch: casinos know this, so low-deck games are the ones most likely to pay 6:5. A single-deck 6:5 game is worse than a 6-deck 3:2 game. Deck count only matters once the payout is 3:2.</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Splitting &amp; aces: re-split, re-split aces, draw to split aces <span class="edge good">each ≈ −0.03 to −0.14%</span></h4>
+        <p>Generous split rules each shave a little off the edge: being allowed to re-split pairs (up to 3–4 hands), to re-split aces (RSA), and to draw more than one card to split aces all help. Drawing to split aces is the biggest of these at about <b>0.14%</b>; the others are smaller. Most tables give split aces just one card each and no re-split — a table that doesn't restrict them is a bonus.</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Continuous shuffle machines (CSMs) <span class="edge warn">more hands/hour</span></h4>
+        <p>A CSM feeds cards back into the shuffler after every round, so there's no shoe to finish and dealing never pauses. The per-hand edge barely changes, but you play far more hands per hour — often 20% or more — so your expected hourly loss rises with the volume. A hand-shuffled or standard shoe game deals slower and keeps more money in your pocket over time.</p>
+      </div>
+
+      <div class="tg-rule">
+        <h4>Side bets <span class="edge bad">≈ 5%+ house edge</span></h4>
+        <p>Bets like "21+3," "Perfect Pairs," and insurance are separate wagers with house edges typically <b>5% and up</b> — many times worse than the main game. They're designed to look exciting and take your money quickly. Skip them entirely, including insurance, and bet only the base game.</p>
+      </div>
+
+      <p class="note">Quick checklist, in order: 3:2 payout → S17 → DAS → late surrender → double any two → re-split rules → fewer decks → no CSM → no side bets. Get the payout right first; everything else is fine-tuning.</p>
     </div>
   </section>
 
@@ -1074,15 +1238,24 @@ const ACT_META={
   [HIT]:{cls:"hit",key:"↓"}, [STAND]:{cls:"stand",key:"↑"}, [DOUBLE]:{cls:"double",key:"→"},
   [SPLIT]:{cls:"split",key:"/"}, [SURRENDER]:{cls:"surrender",key:"←"}
 };
+// Fixed slot order for the play dock. All five always render so the dock's
+// height never changes as legal actions shift; actions that aren't currently
+// legal render disabled (dimmed via button.act[disabled], not clickable, not
+// focusable) instead of being removed.
+const ACTION_ORDER=[HIT, STAND, DOUBLE, SPLIT, SURRENDER];
 function actionButtons(container, options, onChoose){
   container.innerHTML="";
-  const wrap=el("div","actions"+(options.length<=2?" few":""));
-  for (const opt of options){
+  const wrap=el("div","actions");
+  for (const opt of ACTION_ORDER){
     const m=ACT_META[opt];
     const b=el("button","act "+m.cls);
     b.appendChild(el("span",null,opt));
     b.appendChild(el("span","k",m.key));
-    b.addEventListener("click",()=>onChoose(opt));
+    if (options.includes(opt)){
+      b.addEventListener("click",()=>onChoose(opt));
+    } else {
+      b.disabled=true; b.tabIndex=-1; b.setAttribute("aria-disabled","true");
+    }
     wrap.appendChild(b);
   }
   container.appendChild(wrap);
@@ -1192,6 +1365,7 @@ function showView(name){
   document.body.classList.toggle("fitview", name==="coach" || name==="money");
   window.scrollTo(0,0);
   if (name==="cheat") renderCheatSheet();
+  if (name==="fillin") showFillin();
   if (name==="stats") renderStats();
   if (name==="settings") renderSettings();
   if (name==="money") renderMoney();
@@ -1211,6 +1385,8 @@ document.addEventListener("keydown", e=>{
   } else if (currentView==="money"){
     if (act){ e.preventDefault(); moneyKey(act); }
     else if (e.key==="Enter"||e.key===" "){ e.preventDefault(); moneyEnter(); }
+  } else if (currentView==="fillin"){
+    fillinKey(e);
   }
 });
 
@@ -1688,6 +1864,230 @@ function renderCheatSheet(){
     "Chance the next card is a ten-value: ~30.8%. Average card value: 6.54 (ace=11) / 5.85 (ace=1).";
 }
 function swColor(code){ return ({H:"--hit",S:"--stand",D:"--double",P:"--split",R:"--surr"})[code]; }
+
+/* =====================================================================
+   15b. FILL-IN GAME  (blank basic-strategy chart the user completes)
+   ---------------------------------------------------------------------
+   Correct answers come from the SAME source as the read-only cheat sheet:
+   bestAction()/ACTION_CODE, which call hardAction/softAction/shouldSplit.
+   So a graded fill-in cell can never disagree with the Cheat tab.
+   ===================================================================== */
+const fillin={ built:false, tables:[], flat:[], sel:null, checked:false };
+const FI_KEYCODE={h:"H", s:"S", d:"D", p:"P", r:"R"};
+const FI_PALETTE=[["H",HIT],["S",STAND],["D",DOUBLE],["P",SPLIT],["R",SURRENDER]];
+
+// Same rows/columns the cheat sheet renders (Hard 8–17, Soft A,2–A,9, pairs).
+function fillinTableDefs(){
+  const hard=[]; for (let t=8;t<=17;t++) hard.push(["Hard "+t, hardHandCards(t)]);
+  const soft=[]; for (let x=2;x<=9;x++) soft.push(["A,"+x, [mkCard("A","♠"), mkCard(String(x),"♥")]]);
+  const pairs=[]; for (const r of ["2","3","4","5","6","7","8","9","10","A"]) pairs.push([r==="A"?"A,A":r+","+r, [mkCard(r,"♠"), mkCard(r,"♥")]]);
+  return [
+    {key:"hard", title:"Hard totals (5–7 hit, 18+ stand)", defs:hard},
+    {key:"soft", title:"Soft totals (ace = 11)", defs:soft},
+    {key:"pair", title:"Pairs — split chart", defs:pairs}
+  ];
+}
+function buildFillin(){
+  const host=$("fillin-grids"); host.innerHTML="";
+  fillin.tables=[]; fillin.flat=[]; fillin.sel=null; fillin.checked=false;
+  fillinTableDefs().forEach((tdef, ti)=>{
+    const wrap=el("div"); wrap.style.marginTop=".6rem";
+    wrap.appendChild(el("p","lbl",tdef.title));
+    const gw=el("div","gridwrap"); const table=el("table","grid");
+    const thead=el("tr"); thead.appendChild(el("th",null,""));
+    for (const u of UPCARD_VALUES) thead.appendChild(el("th",null,upLabel(u)));
+    table.appendChild(thead);
+    const rows=[];
+    tdef.defs.forEach(([label, cards], ri)=>{
+      const tr=el("tr"); tr.appendChild(el("td","lab",label));
+      const row=[];
+      UPCARD_VALUES.forEach((u, ci)=>{
+        const correct=ACTION_CODE[bestAction(cards, dealerCardFor(u))];   // same source as cheat sheet
+        const td=el("td","cell fi-cell");
+        const cell={td, code:"", correct, t:ti, r:ri, c:ci};
+        td.addEventListener("click",()=>selectCell(cell));
+        tr.appendChild(td); row.push(cell); fillin.flat.push(cell);
+      });
+      rows.push(row); table.appendChild(tr);
+    });
+    gw.appendChild(table); wrap.appendChild(gw); host.appendChild(wrap);
+    fillin.tables.push({key:tdef.key, rows});
+  });
+  fillin.built=true;
+  selectCell(fillin.flat[0]);        // let keyboard users start immediately
+  $("fillin-score").hidden=true;
+  updateFillinProgress();
+}
+function buildFillinPalette(){
+  const host=$("fillin-palette"); host.innerHTML="";
+  for (const [code,act] of FI_PALETTE){
+    const b=el("button","act "+ACT_META[act].cls);
+    b.appendChild(el("span",null,code));
+    b.appendChild(el("span","k",act));
+    b.addEventListener("click",()=>fillinSetSelected(code));
+    host.appendChild(b);
+  }
+  const clr=el("button","fi-clear");
+  clr.appendChild(el("span",null,"Clear")); clr.appendChild(el("span","k","⌫ Del"));
+  clr.addEventListener("click",()=>{ if (fillin.sel) setCellCode(fillin.sel,""); });
+  host.appendChild(clr);
+}
+function buildFillinLegend(){
+  const leg=$("fillin-legend"); if (!leg) return; leg.innerHTML="";
+  const items=[["H",HIT,"hit"],["S",STAND,"stand"],["D",DOUBLE,"double"],["P",SPLIT,"split"],["R",SURRENDER,"surrender"]];
+  const cs=getComputedStyle(document.documentElement);
+  for (const [code,,name] of items){
+    const s=el("span"); const sw=el("span","sw"); sw.style.background=cs.getPropertyValue(swColor(code));
+    s.appendChild(sw); s.appendChild(document.createTextNode(" "+code+" "+name)); leg.appendChild(s);
+  }
+}
+function showFillin(){
+  if (!fillin.built){ buildFillinPalette(); buildFillin(); }
+  buildFillinLegend();               // rebuild swatches in case the theme changed
+}
+function selectCell(cell){
+  if (fillin.sel && fillin.sel.td) fillin.sel.td.classList.remove("fi-sel");
+  fillin.sel=cell||null;
+  if (fillin.sel){ fillin.sel.td.classList.add("fi-sel"); fillin.sel.td.scrollIntoView({block:"nearest"}); }
+}
+// Un-graded appearance for a cell (used on edit; clears any prior grade marks).
+function paintCell(cell){
+  const td=cell.td;
+  td.className="cell fi-cell";
+  td.textContent = cell.code || "";
+  if (cell.code) td.classList.add(cell.code);   // reuse td.H/S/D/P/R action colors
+  if (fillin.sel===cell) td.classList.add("fi-sel");
+}
+function setCellCode(cell, code){
+  cell.code=code||"";
+  paintCell(cell);
+  updateFillinProgress();
+}
+function fillinSetSelected(code){
+  if (!fillin.sel) selectCell(fillin.flat[0]);
+  if (!fillin.sel) return;
+  setCellCode(fillin.sel, code);
+  advanceNext();
+}
+function advanceNext(){
+  if (!fillin.flat.length) return;
+  const i = fillin.sel ? fillin.flat.indexOf(fillin.sel) : -1;
+  selectCell(fillin.flat[(i+1)%fillin.flat.length]);
+}
+function advanceToNextBlank(){
+  const n=fillin.flat.length; if (!n) return;
+  const i = fillin.sel ? fillin.flat.indexOf(fillin.sel) : -1;
+  for (let step=1; step<=n; step++){
+    const cand=fillin.flat[(i+step)%n];
+    if (!cand.code){ selectCell(cand); return; }
+  }
+}
+function moveSel(key){
+  const cell=fillin.sel; if (!cell) return;
+  let {t,r,c}=cell; const cols=UPCARD_VALUES.length;
+  if (key==="ArrowRight") c=Math.min(c+1, cols-1);
+  else if (key==="ArrowLeft") c=Math.max(c-1, 0);
+  else if (key==="ArrowDown"){
+    if (r+1<fillin.tables[t].rows.length) r++;
+    else if (t+1<fillin.tables.length){ t++; r=0; }
+  } else if (key==="ArrowUp"){
+    if (r-1>=0) r--;
+    else if (t-1>=0){ t--; r=fillin.tables[t].rows.length-1; }
+  }
+  const target=fillin.tables[t].rows[r][c];
+  if (target) selectCell(target);
+}
+function updateFillinProgress(){
+  const total=fillin.flat.length;
+  const filled=fillin.flat.reduce((s,c)=>s+(c.code?1:0),0);
+  $("fillin-progress").textContent = filled+" / "+total+" filled";
+}
+function fillinCheck(){
+  let filled=0, correct=0;
+  for (const cell of fillin.flat){
+    const td=cell.td;
+    const was=td.querySelector(".fi-was"); if (was) was.remove();
+    td.classList.remove("fi-ok","fi-bad");
+    if (!cell.code) continue;                    // blanks are left ungraded
+    filled++;
+    if (cell.code===cell.correct){
+      correct++;
+      td.className="cell fi-cell "+cell.code; td.textContent=cell.code;
+      td.classList.add("fi-ok");
+    } else {
+      td.className="cell fi-cell "+cell.correct; td.textContent=cell.correct;   // show the correct answer
+      td.classList.add("fi-bad");
+      td.appendChild(el("span","fi-was", cell.code));                           // your struck-through answer
+    }
+    if (fillin.sel===cell) td.classList.add("fi-sel");
+  }
+  fillin.checked=true;
+  const pct = filled ? Math.round(correct/filled*100) : 0;
+  const score=$("fillin-score"); score.hidden=false;
+  score.classList.remove("acc-hi","acc-mid","acc-lo");
+  if (filled){
+    score.textContent = correct+"/"+filled+" · "+pct+"%";
+    score.classList.add(pct>=85?"acc-hi":pct<60?"acc-lo":"acc-mid");
+  } else {
+    score.textContent = "Fill in some cells first";
+  }
+}
+function fillinReveal(){
+  for (const cell of fillin.flat){
+    const td=cell.td;
+    const was=td.querySelector(".fi-was"); if (was) was.remove();
+    cell.code=cell.correct;
+    td.className="cell fi-cell "+cell.correct; td.textContent=cell.correct;
+    if (fillin.sel===cell) td.classList.add("fi-sel");
+  }
+  fillin.checked=false;
+  $("fillin-score").hidden=true;
+  updateFillinProgress();
+}
+function fillinReset(){
+  for (const cell of fillin.flat){
+    cell.code="";
+    const td=cell.td;
+    td.className="cell fi-cell"; td.textContent="";
+    if (fillin.sel===cell) td.classList.add("fi-sel");
+  }
+  fillin.checked=false;
+  $("fillin-score").hidden=true;
+  updateFillinProgress();
+}
+function fillinKey(e){
+  const onButton = e.target && e.target.tagName==="BUTTON";
+  const k=e.key;
+  const lc = (k && k.length===1) ? k.toLowerCase() : k;
+  if (FI_KEYCODE[lc]){
+    e.preventDefault();
+    if (!fillin.sel) selectCell(fillin.flat[0]);
+    if (fillin.sel){ setCellCode(fillin.sel, FI_KEYCODE[lc]); advanceNext(); }
+    return;
+  }
+  if (k==="Backspace"||k==="Delete"){
+    e.preventDefault();
+    if (fillin.sel) setCellCode(fillin.sel, "");
+    return;
+  }
+  if (k==="ArrowRight"||k==="ArrowLeft"||k==="ArrowUp"||k==="ArrowDown"){
+    e.preventDefault();
+    if (!fillin.sel) selectCell(fillin.flat[0]); else moveSel(k);
+    return;
+  }
+  if (k==="Tab"||k==="Enter"){
+    if (onButton) return;                        // don't hijack Enter/Tab on the buttons
+    if (k==="Tab" && !fillin.sel) return;        // don't trap Tab before the grid is in use
+    e.preventDefault();
+    if (!fillin.sel) selectCell(fillin.flat[0]);
+    advanceToNextBlank();
+    return;
+  }
+  if (k==="Escape"){ if (fillin.sel){ e.preventDefault(); selectCell(null); } }
+}
+$("fillin-check").addEventListener("click", fillinCheck);
+$("fillin-reveal").addEventListener("click", fillinReveal);
+$("fillin-reset").addEventListener("click", fillinReset);
 
 /* =====================================================================
    16. STATS
