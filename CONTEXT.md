@@ -45,14 +45,6 @@ as `food-diary.md`. `publish.py` still builds a journal page if
 `content/journal.md` ever reappears, and `templates/journal.html` stays because
 the build loads it unconditionally.
 
-## February 16, 2026 (Sunday)
-
-Your journal entry content here...
-
-## February 15, 2026 (Saturday)
-
-Previous entry...
-```
 
 ### Editing Static Pages
 - `about.html`, `misc.html` are static HTML files in repo root
