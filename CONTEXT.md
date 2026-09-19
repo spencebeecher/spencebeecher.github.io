@@ -9,16 +9,14 @@ This is Spencer Beecher's personal website hosted at https://spencebeecher.githu
 **Repository Structure:**
 - `/bingo/` - Standalone bingo game generator (previously the entire repo, now a sub-page)
 - `/content/posts/` - Markdown files for blog posts
-- `/content/journal.md` - Markdown file for journal entries (continuous page, not individual posts)
 - `/templates/` - Jinja2 templates (index.html, post.html, page.html, journal.html)
 - `/site/` - Generated intermediate output directory (not deployed to root)
 - `/posts/` - Generated blog post HTML files (deployed to repo root)
 - `/assets/` - Static assets (images, PDFs, etc.)
 - `index.html` - Generated blog index (deployed to repo root)
 - `about.html` - Static about page
-- `misc.html` - Static misc/projects page (links to bingo and journal)
-- `journal.html` - Generated journal page (deployed to repo root)
-- `generate_blog_pages.py` - Converts markdown posts and journal to HTML
+- `misc.html` - Static misc/projects page (links to the side projects)
+- `generate_blog_pages.py` - Converts markdown posts to HTML
 - `publish_site_root.py` - Copies generated site/ files to repo root
 - `blog-ideas.txt` - Future blog post topics
 
@@ -31,8 +29,8 @@ python3 generate_blog_pages.py && python3 publish_site_root.py && git add -A && 
 ```
 
 This:
-1. Generates HTML from markdown posts and journal into `site/`
-2. Copies `site/index.html`, `site/posts/`, and `site/journal.html` to repo root
+1. Generates HTML from markdown posts into `site/`
+2. Copies `site/index.html` and `site/posts/` to repo root
 3. Commits all changes
 4. Pushes to GitHub (triggers GitHub Pages deployment)
 
@@ -41,15 +39,12 @@ This:
 2. Include YAML frontmatter: `title`, `date`, `summary`
 3. Run "publish" workflow
 
-### Adding a Journal Entry
-1. Edit `content/journal.md`
-2. Add new entries at the **top** of the file
-3. Use format: `## Month Day, Year (Day of Week)` for entry headers
-4. Write entry content in standard markdown
-5. Run "publish" workflow
+### The journal is gone
+It was a food diary, and on 2026-09-19 it moved to the private `recipes` repo
+as `food-diary.md`. `publish.py` still builds a journal page if
+`content/journal.md` ever reappears, and `templates/journal.html` stays because
+the build loads it unconditionally.
 
-**Example:**
-```markdown
 ## February 16, 2026 (Sunday)
 
 Your journal entry content here...
