@@ -1,24 +1,24 @@
 ---
-title: Living Legends: an RPG where the rules are code and the AI only narrates
+title: Living Legends, the RPG I'm building
 date: 2026-09-19
-summary: What I'm building: a tabletop role-playing game with a generated, hand-inked world, built day to day by two AI agents that play it and fix it.
+summary: A role-playing game I've been working on since March, with a generated world map and two AI agents that play it and fix it.
 ---
 
-Living Legends is a tabletop role-playing game I've been building since March. It runs on the D&D 5e rules (the open SRD), and it has one firm rule of its own: **the rules engine decides everything, and the language model only narrates.** Every roll, every shift in how far a character trusts you, every secret they give up is computed and replayable from a seed. The model turns those outcomes into prose inside a contract listing what it may and may not say, so it can't invent a fact or hand over a secret you didn't earn.
+Since March I've been building Living Legends, a role-playing game that runs on the D&D 5e rules (the open SRD). The main design rule is that the rules engine makes every decision and the language model only writes the narration. Rolls, how much a character trusts you and which secrets they'll give up are all worked out in code, and the mechanics can be replayed exactly from a seed. The model gets the outcome along with a list of what it's allowed to say, so it can't make up facts or hand you a secret you didn't earn.
 
-Characters aren't scripted. Each is built from tags like `STUBBORN`, `INNKEEPER` and `PROTECT_LOVED_ONES` that carry behaviour and move the difficulty of your checks, and each keeps secrets behind escalating checks that trust makes easier. Push too hard on the same angle and they get annoyed, mechanically. The scope is deliberately small for now: one town of about a thousand people and the land around it.
+Each character is built from tags like `STUBBORN`, `INNKEEPER` and `PROTECT_LOVED_ONES`, which shape how they act and make checks against them easier or harder. Their secrets sit behind harder and harder checks, and those get easier as the character comes to trust you. If you keep trying the same approach, each repeat makes the next roll 2 points harder and costs you some of their trust. For now I've kept the scope small on purpose: one town of about a thousand people and the countryside around it.
 
 ![A generated world map: continents, rivers, mountains, forests and towns](../assets/living-legends/map.jpg)
 
-*Thunderdale, one generated world: 26 places (2 cities, 11 towns and 13 market towns) holding 53,170 people across roughly 150 km.*
+*Thunderdale, one of the generated worlds: 26 places (2 cities, 11 towns and 13 market towns) and 53,170 people, about 150 km across.*
 
 ## The map
 
-The world is generated, then drawn in a hand-inked style. A heightmap becomes continents; rivers start in the snowfields and join on their way to the sea; the number of towns comes from the land area at about the population density of England around 1300, and each is sized by rank. Roads are routed to avoid climbing, merge when they head for the same town, and get a town of their own where three of them cross.
+The world map is generated, then drawn to look hand-inked. A heightmap becomes the continents. Rivers start in the snowfields and join up on their way to the sea. The number of towns depends on how much land there is, at roughly the population density of England around 1300, and each town is sized by its rank. Roads avoid climbing where they can and merge when they're headed to the same place, and where three roads cross, a town grows at the junction. A lot of my time on the map has gone into the mountains: the hatching, how thick the outlines are, and keeping trees off them.
 
 ![A close-up of hatched mountains, a coastal city and towns](../assets/living-legends/detail.jpg)
 
-*Up close: hatched mountains with snow caps, forests coloured by kind, a ringed dot for a city and plain dots for towns.*
+*Close up: hatched mountains with snow caps, forests coloured by type, a ringed dot for a city and plain dots for towns.*
 
 ![A small town at a road junction](../assets/living-legends/crossroads.jpg)
 
@@ -26,12 +26,12 @@ The world is generated, then drawn in a hand-inked style. A heightmap becomes co
 
 ![The same map before and after sizing towns by land area](../assets/living-legends/before-after.jpg)
 
-*The same world before and after sizing towns by land area: ten places became twenty-five, with roads out to the ones beside them.*
+*The same world before and after I started sizing towns by land area. Ten places became twenty-five, and the new ones got roads to their neighbours.*
 
-You can [explore the map](../assets/living-legends/thunderdale-atlas.html): hover a town for its name, click it for its population and the roads that reach it.
+There's also an [interactive version of the map](../assets/living-legends/thunderdale-atlas.html). Hover over a town to see its name, or click it for its population and the roads that reach it.
 
-## Who builds it
+## How it gets built
 
-Most of the day-to-day work is done by two AI agents with separate jobs. A **playtester**, running on a local language model, plays the game unattended, talking, rolling checks and fighting, and writes down where it got stuck or confused. A **fixer**, an AI coding agent (Claude Code), reads those findings one at a time and turns each into a tested change on its own branch. Merging into the main line stays my job, and neither agent grades its own work. Since March that has come to about 1,700 commits and over 700 test files.
+Most of the day-to-day work is done by two AI agents. The first is a playtester that runs on a local language model. It plays the game on its own, talking to characters, making checks and getting into fights, and it writes down where it got stuck or confused. The second is a fixer, Claude Code, which works through those notes one at a time and turns each one into a change with a test, on its own branch. The playtester never touches the code and the fixer never plays, so neither one judges its own work. Merging into the main branch is still my job. Since March that's added up to about 1,700 commits and more than 700 test files.
 
-Next is the milestone the small scope was chosen for: one town, its 41 trades and 60 named people, playable end to end.
+Next up is the goal I picked the small scope for: getting one town, with its 41 trades and 60 named characters, playable from start to finish.
