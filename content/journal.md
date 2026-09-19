@@ -106,11 +106,43 @@ Tried my hand at quick-pickling: shallots in red wine vinegar and habaneros in a
 
 ## August 27, 2026 (Thursday)
 
-* Cooked: Cherry tomatoes cooked down with olive oil and garlic into a sauce
+* Dinner: Cherry tomatoes cooked down with olive oil and garlic into a sauce
 
 ## August 28, 2026 (Friday)
 
 * Dinner: Salads, no meat, with homemade Caesar dressing
+
+## August 30, 2026 (Sunday)
+
+* Breakfast: Sourdough waffles with whipped cream
+* Dinner: White bean bruschetta with arugula and tomato
+
+## September 5, 2026 (Saturday)
+
+Started a raspberry shrub: raspberries macerated in sugar, cut with apple cider vinegar.
+
+* Dinner: Grilled salmon gyros on flatbread with homemade tzatziki (grilled chicken for Erin)
+
+## September 6, 2026 (Sunday)
+
+* Dinner: Panzanella with grilled chicken
+
+## September 7, 2026 (Monday)
+
+Baked a pie with a butter crust.
+
+## September 8, 2026 (Tuesday)
+
+* Dinner: Black bean tostadas
+
+## September 9, 2026 (Wednesday)
+
+* Lunch: Black bean tostadas
+* Dinner: Grilled salmon
+
+## September 10, 2026 (Thursday)
+
+* Dinner: Green goddess chicken salad sandwiches, with a chicken I roasted
 
 ## September 15, 2026 (Tuesday)
 
