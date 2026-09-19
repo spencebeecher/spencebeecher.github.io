@@ -99,3 +99,27 @@ Tried my hand at quick-pickling: shallots in red wine vinegar and habaneros in a
 * Breakfast: Cereal
 * Lunch: Oatmeal with nuts and fruit
 * Dinner: Chicken tacos with verde and habanero
+
+## August 23, 2026 (Sunday)
+
+* Dinner: Chicken piccata with roasted broccoli (lemon, garlic, parmesan)
+
+## August 27, 2026 (Thursday)
+
+* Cooked: Cherry tomatoes cooked down with olive oil and garlic into a sauce
+
+## August 28, 2026 (Friday)
+
+* Dinner: Salads, no meat, with homemade Caesar dressing
+
+## September 15, 2026 (Tuesday)
+
+* Dinner: Chicken and tomato pasta
+
+## September 16, 2026 (Wednesday)
+
+* Dinner: Chicken and tomato pasta
+
+## September 17, 2026 (Thursday)
+
+* Dinner: Chicken and panzanella
