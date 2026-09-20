@@ -1,10 +1,11 @@
 ---
 title: Living Legends, the RPG I'm building
+tag: Living Legends
 date: 2026-09-19
 summary: A role-playing game I've been working on since March, with a generated world map and two AI agents that play it and fix it.
 ---
 
-Since March I've been building Living Legends, a role-playing game that runs on the D&D 5e rules (the open SRD). The main design rule is that the rules engine makes every decision and the language model only writes the narration. Rolls, how much a character trusts you and which secrets they'll give up are all worked out in code, and the mechanics can be replayed exactly from a seed. The model gets the outcome along with a list of what it's allowed to say, so it can't make up facts or hand you a secret you didn't earn.
+Since March I've been building Living Legends, a role-playing game that runs on the D&D 5e rules (the open SRD). The main design rule is that the rules engine makes every decision and the language model only writes the narration. Rolls, how much a character trusts you, which secrets they'll give up: all of it is worked out in code, and it replays exactly from a seed. The model gets the outcome and a list of what it's allowed to say. It can't invent a fact or hand you a secret you didn't earn.
 
 Each character is built from tags like `STUBBORN`, `INNKEEPER` and `PROTECT_LOVED_ONES`, which shape how they act and make checks against them easier or harder. Their secrets sit behind harder and harder checks, and those get easier as the character comes to trust you. If you keep trying the same approach, each repeat makes the next roll 2 points harder and costs you some of their trust. For now I've kept the scope small on purpose: one town of about a thousand people and the countryside around it.
 
@@ -32,6 +33,6 @@ There's also an [interactive version of the map](../assets/living-legends/thunde
 
 ## How it gets built
 
-Most of the day-to-day work is done by two AI agents. The first is a playtester that runs on a local language model. It plays the game on its own, talking to characters, making checks and getting into fights, and it writes down where it got stuck or confused. The second is a fixer, Claude Code, which works through those notes one at a time and turns each one into a change with a test, on its own branch. The playtester never touches the code and the fixer never plays, so neither one judges its own work. Merging into the main branch is still my job. Since March that's added up to about 1,700 commits and more than 700 test files.
+Most of the day-to-day work is done by two AI agents. The first is a playtester that runs on a local language model. It plays the game on its own, talking to characters, making checks and getting into fights, and it writes down where it got stuck or confused. The second is a fixer, Claude Code. It takes those notes one at a time and turns each into a change with a test, on its own branch. The playtester never touches the code and the fixer never plays, so neither one judges its own work. Merging into the main branch is still my job. Since March that's added up to about 1,700 commits and more than 700 test files.
 
 Next up is the goal I picked the small scope for: getting one town, with its 41 trades and 60 named characters, playable from start to finish.

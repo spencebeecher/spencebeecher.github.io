@@ -14,6 +14,9 @@
       nav a:hover { color: #000; }
       header h1 { margin-bottom: 0.25rem; }
       header .date { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+      header .tag { display: inline-block; font-size: 0.8rem; color: #555; background: #f2f2f2;
+                    border-radius: 999px; padding: 0.15rem 0.6rem; text-decoration: none; margin-left: 0.4rem; }
+      header .tag:hover { color: #111; }
       article h2, article h3, article h4 { margin-top: 1.5rem; }
       article a { color: #0066cc; }
       article a:hover { text-decoration: none; }
@@ -37,49 +40,48 @@
 
     <header>
       <h1>Go-To Career Growth Resources</h1>
-      <p class="date">February 15, 2026</p>
+      <p class="date">February 15, 2026<a class="tag" href="/?tag=Data%20Science">Data Science</a></p>
     </header>
 
     <article>
-      <p>As a data scientist, success requires a blend of technical depth and soft skills. You need strong programming ability (Python is often good enough), statistical knowledge, probability theory, and machine learning expertise. But equally important is the ability to lead teams, influence decisions with data, and communicate insights effectively. I would note that even if you aren't a manager you should have a baseline understanding of management. Here are the books and courses that have been most valuable in my career.</p>
+      <p>Data science asks for two different kinds of skill. There is the technical half: programming (Python is usually enough), statistics, probability and machine learning. Then there is the half that decides whether any of it gets used — leading a team, making a case with data, and explaining a result to someone who will act on it. I would note that even if you aren't a manager, you should understand management.</p>
+<p>Here is what helped me, hard skills first.</p>
 <h2>Statistical Foundations</h2>
 <h3>1. <a href="https://www.amazon.com/All-Statistics-Statistical-Inference-Springer/dp/0387402721">All of Statistics</a> by Larry Wasserman</h3>
-<p>A concise, rigorous introduction to statistical theory. Essential for building the mathematical foundation every data scientist needs.</p>
+<p>Statistical theory in one short, rigorous volume. It is the book that fills in the maths under everything else on this list.</p>
 <h3>2. <a href="https://www.amazon.com/Elements-Statistical-Learning-Prediction-Statistics/dp/0387848576">The Elements of Statistical Learning</a> by Trevor Hastie, Robert Tibshirani, and Jerome Friedman</h3>
-<p>The definitive reference for statistical learning methods. Dense but invaluable for understanding the theory behind modern machine learning.</p>
+<p>The reference for statistical learning methods. Dense — I use it to look things up rather than to read straight through.</p>
 <h3>3. <a href="https://www.amazon.com/100-Statistical-Tests-Gopal-Kanji/dp/1849203539">100 Statistical Tests</a> by Gopal K. Kanji</h3>
-<p>A practical reference for choosing and applying the right statistical test. Useful when designing experiments or analyzing A/B tests.</p>
+<p>A lookup table for picking the right test. Where I go when designing an experiment or reading an A/B test.</p>
 <h3>4. <a href="https://www.amazon.com/Book-Why-Science-Cause-Effect/dp/046509760X">The Book of Why: The New Science of Cause and Effect</a> by Judea Pearl and Dana Mackenzie</h3>
-<p>Pearl's framework for causal inference transforms how we think about data and experimentation. Essential for understanding the difference between correlation and causation in data science. For a more technical treatment, see Pearl's earlier book <a href="https://www.amazon.com/Causality-Reasoning-Inference-Judea-Pearl/dp/052189560X">Causality</a>. Also recommended: <a href="https://www.amazon.com/Analysis-Regression-Multilevel-Hierarchical-Models/dp/052168689X">Data Analysis Using Regression and Multilevel/Hierarchical Models</a> by Gelman and Hill.</p>
+<p>Pearl gives you a way to say what causes what, rather than what moves with what. It changed how I think about experiments. For the technical treatment, see his earlier <a href="https://www.amazon.com/Causality-Reasoning-Inference-Judea-Pearl/dp/052189560X">Causality</a>. Also worth reading: <a href="https://www.amazon.com/Analysis-Regression-Multilevel-Hierarchical-Models/dp/052168689X">Data Analysis Using Regression and Multilevel/Hierarchical Models</a> by Gelman and Hill.</p>
 <h2>Machine Learning &amp; Big Data</h2>
 <h3>5. <a href="http://www.mmds.org/">Mining of Massive Datasets</a> by Jure Leskovec, Anand Rajaraman, and Jeff Ullman</h3>
-<p>The go-to resource for understanding algorithms and systems that operate at scale. Critical for anyone working with large datasets.</p>
+<p>Algorithms and systems for data that does not fit on one machine. Free online.</p>
 <h3>6. <a href="https://www.coursera.org/learn/machine-learning">Machine Learning Course</a> by Andrew Ng</h3>
-<p>Andrew Ng's Coursera course remains one of the best introductions to machine learning. Clear explanations and practical exercises make complex topics accessible.</p>
+<p>Still the clearest introduction I know of, and the exercises are the part that teaches.</p>
 <h3>7. <a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/">Linear Algebra Course</a> by Gilbert Strang (MIT OpenCourseWare)</h3>
-<p>Linear algebra is the language of machine learning. Strang's lectures make the subject intuitive and show why it matters for data science.</p>
+<p>Linear algebra is the language machine learning is written in. Strang shows you what the operations are doing, not just how to do them.</p>
 <h2>Leadership &amp; Team Building</h2>
 <h3>8. <a href="https://www.amazon.com/Carrot-Principle-Managers-Extraordinary-Results/dp/0743297261">The Carrot Principle</a> by Adrian Gostick and Chester Elton</h3>
-<p>Recognition is a powerful tool for motivating teams. This book provides a framework for building high-performing teams through meaningful recognition and positive reinforcement.</p>
+<p>Recognition, treated as a tool with a method rather than a nice gesture.</p>
 <h3>9. <a href="https://www.amazon.com/High-Output-Management-Andrew-Grove/dp/0679762884">High Output Management</a> by Andrew Grove</h3>
-<p>Andy Grove's classic on management remains essential reading for anyone leading technical teams. His focus on leveraging output and managing teams efficiently translates directly to data science leadership.</p>
+<p>Grove's argument is that a manager's output is the output of their team, so the job is finding the actions with the most leverage. That transfers directly to running a data science team.</p>
 <h2>Communication &amp; Influence</h2>
 <h3>10. <a href="https://www.amazon.com/Influence-Psychology-Persuasion-Robert-Cialdini/dp/006124189X">Influence: The Psychology of Persuasion</a> by Robert Cialdini</h3>
-<p>Understanding how to persuade stakeholders with data-driven insights is critical. Cialdini's principles help you frame recommendations in ways that drive action.</p>
+<p>An analysis is worth nothing until someone acts on it. Cialdini is about how a recommendation gets framed so that happens.</p>
 <h3>11. <a href="https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130">The Visual Display of Quantitative Information</a> by Edward Tufte</h3>
-<p>This is a great coffee table book that gets you thinking about visualization. I would note though that often the most impactful visualizations are quite simple and accompanied with clear calls to action. </p>
+<p>This is a great coffee table book that gets you thinking about visualization. I would note though that often the most impactful visualizations are quite simple and accompanied with clear calls to action.</p>
 <h3>12. <a href="https://www.amazon.com/How-Know-Person-Seeing-Others/dp/0593652908">How to Know a Person</a> by David Brooks</h3>
-<p>Building deep relationships and truly understanding people is essential for effective leadership and collaboration. Brooks provides practical tools for becoming a better listener and connecting meaningfully with others.</p>
+<p>Brooks is on listening, and on what it takes to actually understand the person across from you. Most of leading people runs through that.</p>
 <h2>Innovation &amp; Technology</h2>
 <h3>13. <a href="https://www.amazon.com/Innovators-Dilemma-Technologies-Management-Innovation/dp/1633691780">The Innovator's Dilemma</a> by Clayton Christensen</h3>
-<p>Understanding how disruptive innovation works helps you navigate organizational change and position data science initiatives strategically.</p>
+<p>Why good companies lose to worse products, and how to place a data science bet inside one.</p>
 <h3>14. <a href="https://www.amazon.com/Soul-New-Machine-Tracy-Kidder/dp/0316491977">The Soul of a New Machine</a> by Tracy Kidder</h3>
-<p>A Pulitzer Prize-winning account of building a computer in the late 1970s. It captures the intensity, creativity, and problem-solving spirit that defines great engineering work.</p>
+<p>Kidder followed a team building a computer in the late 1970s. It won a Pulitzer, and it is the best description I have read of what engineering work actually feels like.</p>
 <h2>Critical Thinking</h2>
 <h3>15. <a href="https://www.youtube.com/watch?v=kBdfcR-8hEY&amp;list=PL30C13C91CFFEFEA6">Justice Course</a> by Michael Sandel (Harvard)</h3>
-<p>Data scientists make decisions that impact millions. Sandel's course on moral and political philosophy provides frameworks for thinking about the design of systems.</p>
-<hr />
-<p>These resources have shaped how I approach technical problems, lead teams, and communicate insights. Whether you're starting out or looking to level up, I hope you find them as valuable as I have.</p>
+<p>The systems we build make decisions about people. Sandel is where I go for how to think about the ones that are not technical questions at all.</p>
     </article>
 
     <footer>

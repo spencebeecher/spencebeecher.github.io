@@ -14,6 +14,9 @@
       nav a:hover { color: #000; }
       header h1 { margin-bottom: 0.25rem; }
       header .date { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+      header .tag { display: inline-block; font-size: 0.8rem; color: #555; background: #f2f2f2;
+                    border-radius: 999px; padding: 0.15rem 0.6rem; text-decoration: none; margin-left: 0.4rem; }
+      header .tag:hover { color: #111; }
       article h2, article h3, article h4 { margin-top: 1.5rem; }
       article a { color: #0066cc; }
       article a:hover { text-decoration: none; }
@@ -37,11 +40,11 @@
 
     <header>
       <h1>Living Legends, the RPG I&#39;m building</h1>
-      <p class="date">September 19, 2026</p>
+      <p class="date">September 19, 2026<a class="tag" href="/?tag=Living%20Legends">Living Legends</a></p>
     </header>
 
     <article>
-      <p>Since March I've been building Living Legends, a role-playing game that runs on the D&amp;D 5e rules (the open SRD). The main design rule is that the rules engine makes every decision and the language model only writes the narration. Rolls, how much a character trusts you and which secrets they'll give up are all worked out in code, and the mechanics can be replayed exactly from a seed. The model gets the outcome along with a list of what it's allowed to say, so it can't make up facts or hand you a secret you didn't earn.</p>
+      <p>Since March I've been building Living Legends, a role-playing game that runs on the D&amp;D 5e rules (the open SRD). The main design rule is that the rules engine makes every decision and the language model only writes the narration. Rolls, how much a character trusts you, which secrets they'll give up: all of it is worked out in code, and it replays exactly from a seed. The model gets the outcome and a list of what it's allowed to say. It can't invent a fact or hand you a secret you didn't earn.</p>
 <p>Each character is built from tags like <code>STUBBORN</code>, <code>INNKEEPER</code> and <code>PROTECT_LOVED_ONES</code>, which shape how they act and make checks against them easier or harder. Their secrets sit behind harder and harder checks, and those get easier as the character comes to trust you. If you keep trying the same approach, each repeat makes the next roll 2 points harder and costs you some of their trust. For now I've kept the scope small on purpose: one town of about a thousand people and the countryside around it.</p>
 <p><img alt="A generated world map: continents, rivers, mountains, forests and towns" src="../assets/living-legends/map.jpg" /></p>
 <p><em>Thunderdale, one of the generated worlds: 26 places (2 cities, 11 towns and 13 market towns) and 53,170 people, about 150 km across.</em></p>
@@ -55,7 +58,7 @@
 <p><em>The same world before and after I started sizing towns by land area. Ten places became twenty-five, and the new ones got roads to their neighbours.</em></p>
 <p>There's also an <a href="../assets/living-legends/thunderdale-atlas.html">interactive version of the map</a>. Hover over a town to see its name, or click it for its population and the roads that reach it.</p>
 <h2>How it gets built</h2>
-<p>Most of the day-to-day work is done by two AI agents. The first is a playtester that runs on a local language model. It plays the game on its own, talking to characters, making checks and getting into fights, and it writes down where it got stuck or confused. The second is a fixer, Claude Code, which works through those notes one at a time and turns each one into a change with a test, on its own branch. The playtester never touches the code and the fixer never plays, so neither one judges its own work. Merging into the main branch is still my job. Since March that's added up to about 1,700 commits and more than 700 test files.</p>
+<p>Most of the day-to-day work is done by two AI agents. The first is a playtester that runs on a local language model. It plays the game on its own, talking to characters, making checks and getting into fights, and it writes down where it got stuck or confused. The second is a fixer, Claude Code. It takes those notes one at a time and turns each into a change with a test, on its own branch. The playtester never touches the code and the fixer never plays, so neither one judges its own work. Merging into the main branch is still my job. Since March that's added up to about 1,700 commits and more than 700 test files.</p>
 <p>Next up is the goal I picked the small scope for: getting one town, with its 41 trades and 60 named characters, playable from start to finish.</p>
     </article>
 

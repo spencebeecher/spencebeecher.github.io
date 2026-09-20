@@ -18,6 +18,19 @@
       article h2 a:hover { text-decoration: underline; }
       time { color: #888; font-size: 0.9rem; }
       footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
+      .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 2rem; }
+      .pill { font: inherit; font-size: 0.85rem; color: #555; background: #f2f2f2; border: 1px solid #e2e2e2;
+              border-radius: 999px; padding: 0.3rem 0.8rem; cursor: pointer; }
+      .pill:hover { color: #111; border-color: #ccc; }
+      .pill[aria-pressed="true"] { background: #111; border-color: #111; color: #fff; }
+      .pill .count { opacity: 0.6; margin-left: 0.3rem; }
+      .filters input { font: inherit; font-size: 0.85rem; padding: 0.3rem 0.6rem; border: 1px solid #e2e2e2;
+                       border-radius: 4px; margin-left: auto; min-width: 12rem; }
+      .tag { display: inline-block; font-size: 0.8rem; color: #555; background: #f2f2f2; border-radius: 999px;
+             padding: 0.15rem 0.6rem; text-decoration: none; }
+      .tag:hover { color: #111; }
+      #empty { color: #888; }
+      @media (max-width: 560px) { .filters input { margin-left: 0; width: 100%; } }
     </style>
   </head>
   <body>
@@ -35,19 +48,80 @@
     </header>
 
     <main>
+      {% if tag_counts %}
+      <div class="filters">
+        <button class="pill" type="button" data-filter="all" aria-pressed="true">All<span class="count">{{ posts | length }}</span></button>
+        {% for t, n in tag_counts %}
+        <button class="pill" type="button" data-filter="{{ t }}" aria-pressed="false">{{ t }}<span class="count">{{ n }}</span></button>
+        {% endfor %}
+        <input type="search" id="post-search" placeholder="Search posts" aria-label="Search posts by word, title or tag">
+      </div>
+      {% endif %}
+
       {% for p in posts %}
-      <article>
+      <article data-tag="{{ p.tag }}" data-search="{{ (p.title ~ ' ' ~ p.summary ~ ' ' ~ p.tag) | lower }}">
         <h2><a href="/{{ p.url }}">{{ p.title }}</a></h2>
-        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time></p>{% endif %}
+        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time> <a class="tag" href="/?tag={{ p.tag | urlencode }}">{{ p.tag }}</a></p>{% endif %}
         {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
       </article>
       {% else %}
       <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
       {% endfor %}
+
+      <p id="empty" hidden>Nothing matches that. <button class="pill" type="button" data-filter="all">Show everything</button></p>
     </main>
 
     <footer>
       <p>&copy; Spencer Beecher</p>
     </footer>
+
+    <script>
+      (function () {
+        var articles = Array.prototype.slice.call(document.querySelectorAll('article[data-tag]'));
+        var pills = Array.prototype.slice.call(document.querySelectorAll('.pill'));
+        var search = document.getElementById('post-search');
+        var empty = document.getElementById('empty');
+        if (!articles.length) { return; }
+        var tag = 'all';
+        var query = '';
+
+        function apply() {
+          var shown = 0;
+          articles.forEach(function (el) {
+            var matchesTag = tag === 'all' || el.getAttribute('data-tag') === tag;
+            var matchesText = !query || el.getAttribute('data-search').indexOf(query) !== -1;
+            var show = matchesTag && matchesText;
+            el.hidden = !show;
+            if (show) { shown++; }
+          });
+          if (empty) { empty.hidden = shown > 0; }
+          pills.forEach(function (b) {
+            if (b.parentNode && b.parentNode.className === 'filters') {
+              b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === tag));
+            }
+          });
+          var url = tag === 'all' ? location.pathname : location.pathname + '?tag=' + encodeURIComponent(tag);
+          history.replaceState(null, '', url);
+        }
+
+        pills.forEach(function (b) {
+          b.addEventListener('click', function () { tag = b.getAttribute('data-filter'); apply(); });
+        });
+
+        if (search) {
+          search.addEventListener('input', function () { query = search.value.trim().toLowerCase(); apply(); });
+        }
+
+        // A /?tag=… link from a post page opens the list already filtered.
+        var wanted = new URLSearchParams(location.search).get('tag');
+        if (wanted) {
+          var match = pills.filter(function (b) {
+            return b.getAttribute('data-filter').toLowerCase() === wanted.toLowerCase();
+          })[0];
+          if (match) { tag = match.getAttribute('data-filter'); }
+        }
+        apply();
+      })();
+    </script>
   </body>
 </html>
