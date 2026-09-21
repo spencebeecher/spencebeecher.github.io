@@ -5,7 +5,7 @@ date: 2026-08-02
 summary: Basic strategy drills, a money game and the cheat sheet, in one offline HTML file with a thumb-friendly button dock.
 ---
 
-[Blackjack Coach](/blackjack/) drills basic strategy. It deals you a hand, you pick the play, and it tells you whether you were right and why.
+[Blackjack Coach](../blackjack/) drills basic strategy. It deals you a hand, you pick the play, and it tells you whether you were right and why.
 
 ![Coach mode: dealer shows a 9, the player holds two 9s, with hit, stand, double, split and surrender](../assets/misc/blackjack.jpg)
 

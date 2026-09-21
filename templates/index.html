@@ -35,11 +35,11 @@
   </head>
   <body>
     <nav>
-      <a class="logo" href="/">Spencer Beecher</a>
+      <a class="logo" href="{{ base }}index.html">Spencer Beecher</a>
       <ul>
-        <li><a href="/">Blog</a></li>
-        <li><a href="/misc.html">Misc</a></li>
-        <li><a href="/about.html">About</a></li>
+        <li><a href="{{ base }}index.html">Blog</a></li>
+        <li><a href="{{ base }}misc.html">Misc</a></li>
+        <li><a href="{{ base }}about.html">About</a></li>
       </ul>
     </nav>
 
@@ -60,8 +60,8 @@
 
       {% for p in posts %}
       <article data-tag="{{ p.tag }}" data-search="{{ (p.title ~ ' ' ~ p.summary ~ ' ' ~ p.tag) | lower }}">
-        <h2><a href="/{{ p.url }}">{{ p.title }}</a></h2>
-        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time> <a class="tag" href="/?tag={{ p.tag | urlencode }}">{{ p.tag }}</a></p>{% endif %}
+        <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
+        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time> <a class="tag" href="index.html?tag={{ p.tag | urlencode }}">{{ p.tag }}</a></p>{% endif %}
         {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
       </article>
       {% else %}

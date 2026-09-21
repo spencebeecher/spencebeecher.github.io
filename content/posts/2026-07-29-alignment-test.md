@@ -5,7 +5,7 @@ date: 2026-07-29
 summary: Eight everyday questions, two scales, and no rulebook needed — it places you on the D&D alignment grid.
 ---
 
-[The alignment test](/alignment/) asks you eight ordinary questions and puts you somewhere on the Dungeons & Dragons alignment grid, from Lawful Good to Chaotic Evil.
+[The alignment test](../alignment/) asks you eight ordinary questions and puts you somewhere on the Dungeons & Dragons alignment grid, from Lawful Good to Chaotic Evil.
 
 ![The alignment test's opening screen: What's Your Alignment?](../assets/misc/alignment.jpg)
 

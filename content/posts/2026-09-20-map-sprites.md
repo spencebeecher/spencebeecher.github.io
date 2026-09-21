@@ -5,7 +5,7 @@ date: 2026-09-20
 summary: Claude drew 35 map symbols, I wired them into the world generator, and the old drawing code lost most of the comparison.
 ---
 
-The [Living Legends](/posts/2026-09-19-living-legends.html) map used to draw itself. Every mountain, tree and town was ink laid down by code I had written: strokes, hatching, snow caps, all of it computed. It looked good, and it was a lot of code for something that is, in the end, a set of symbols stamped on paper.
+The [Living Legends](2026-09-19-living-legends.html) map used to draw itself. Every mountain, tree and town was ink laid down by code I had written: strokes, hatching, snow caps, all of it computed. It looked good, and it was a lot of code for something that is, in the end, a set of symbols stamped on paper.
 
 So I tried the other way round. I asked Claude for sprite sheets and dropped the SVG files it sent back into a folder. Claude Code built the pipeline that turns them into a map.
 

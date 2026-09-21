@@ -86,7 +86,7 @@ def build():
         slug = meta.get('slug') or slugify(md_file.stem)
         output_path = OUTPUT_DIR / 'posts' / f"{slug}.html"
 
-        rendered = post_template.render(title=title, date=date, content=html_body, tag=tag)
+        rendered = post_template.render(title=title, date=date, content=html_body, tag=tag, base='../')
         output_path.write_text(rendered, encoding='utf-8')
 
         posts.append({
@@ -105,14 +105,14 @@ def build():
     tag_counts = [(t, n) for t, n in tag_counts if n]
 
     # render index
-    index_html = index_template.render(posts=posts, tag_counts=tag_counts)
+    index_html = index_template.render(posts=posts, tag_counts=tag_counts, base='')
     (OUTPUT_DIR / 'index.html').write_text(index_html, encoding='utf-8')
 
     # render journal if it exists
     journal_path = ROOT / 'content' / 'journal.md'
     if journal_path.exists():
         journal_html, _ = read_markdown_file(journal_path)
-        rendered_journal = journal_template.render(content=journal_html)
+        rendered_journal = journal_template.render(content=journal_html, base='')
         (OUTPUT_DIR / 'journal.html').write_text(rendered_journal, encoding='utf-8')
         print(f'Built journal into {OUTPUT_DIR!s}/journal.html')
 
