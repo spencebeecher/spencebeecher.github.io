@@ -1,32 +1,58 @@
-# Personal static blog (generator)
+# spencebeecher.github.io
 
-This repository now contains a small static blog generator that converts markdown posts into a static `site/` directory suitable for GitHub Pages or other static hosts.
+The personal site: a blog, a Misc page pointing at three small web apps, and the
+generator that builds the blog from markdown.
 
-Quick start
+## Build it
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python3 generate_blog_pages.py
+.venv/bin/pip install -r requirements.txt   # Markdown and Jinja2, nothing else
+.venv/bin/python publish.py
 ```
 
-Output will be in `site/`. Serve locally to check:
+`publish.py` reads `content/posts/*.md`, renders through `templates/`, writes
+`site/`, then copies the result to the repository root, which is what both hosts
+serve. Check it locally by opening `index.html` — every link is relative, so it
+works straight off disk.
 
-```bash
-python3 -m http.server --directory site 8000
-# then open http://localhost:8000
+## Writing a post
+
+A file in `content/posts/`, named `YYYY-MM-DD-slug.md`, starting with a
+front-matter block:
+
+```
+---
+title: New sprites for the Living Legends map
+tag: Living Legends
+date: 2026-09-20
+summary: One sentence, shown under the title on the index.
+---
 ```
 
-Write posts as markdown files in `content/posts/`. Include optional metadata using the Markdown `meta` extension, for example:
+**Every post needs exactly one `tag`, and it has to be one of the three in
+`TAGS` in `publish.py`:** Data Science, Living Legends, Technology. The build
+fails on a missing tag or an unknown one, which is deliberate — a tag that lands
+on one post is a title, not a theme. Adding a fourth is an edit to that list.
 
-```
-Title: Hello
-Date: 2026-02-15
+The index carries the filter: a pill per tag with counts, a search box over
+title, summary and tag, and `?tag=` in the URL so a tag chip is a shareable
+link. It is plain JavaScript inside the template, with no dependencies.
 
-Your markdown content here
-```
+**Links must stay relative** (`index.html`, `posts/x.html`, `../assets/…`),
+because the site is served from more than one place.
 
-Deployment
+## Deployment — two hosts, two mechanisms
 
-- Configure GitHub Pages to serve the repository's `site/` folder, or copy `site/` contents to the branch GitHub Pages serves (e.g., `gh-pages`).
+| | |
+|---|---|
+| **spencebeecher.github.io** | GitHub Pages, from `master` at the repository root. Nothing to configure; a push deploys it |
+| **spencebeecher.me** | Cloudflare Workers. It clones the repo, runs `pip install -r requirements.txt`, then deploys with wrangler, with the **assets directory set to the repository root** |
+
+**`.assetsignore` is load-bearing for the Cloudflare half.** Because the assets
+directory is the repo root, wrangler tries to upload `.git` along with the site,
+and the pack file is larger than the 25 MiB per-asset limit, so the deploy
+fails. That happened on 2026-09-21 and left spencebeecher.me a commit behind,
+**showing the previous version with no error anywhere the browser could see it.**
+If the two domains ever disagree again, read the Cloudflare build log before
+anything else.
