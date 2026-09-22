@@ -1,0 +1,16 @@
+# Wrangler uploads the whole assets directory, which is the repo root.
+# Without this, the .git pack (42.9 MiB) exceeds the 25 MiB per-asset limit
+# and the Cloudflare deploy step fails — which froze spencebeecher.me on
+# 2026-09-21, one commit behind the favicon.
+.git
+.venv
+.wrangler
+node_modules
+
+# Build inputs, not the site
+content
+templates
+site
+*.py
+requirements.txt
+site-deploy.zip
