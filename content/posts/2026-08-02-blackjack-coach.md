@@ -1,6 +1,6 @@
 ---
 title: A blackjack coach that fits on a phone
-tag: Technology
+tag: Games
 date: 2026-08-02
 summary: Basic strategy drills, a money game and the cheat sheet, in one offline HTML file with a thumb-friendly button dock.
 ---

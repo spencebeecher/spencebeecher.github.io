@@ -24,7 +24,7 @@ OUTPUT_DIR = ROOT / 'site'
 # The whole tag vocabulary. One tag per post, and it has to be on this list.
 # Keeping it short is the point: a tag that only ever lands on one post is a
 # title, not a theme. Adding one is a deliberate edit here, not a typo in a post.
-TAGS = ['Data Science', 'Living Legends', 'Technology']
+TAGS = ['Data Science', 'Games', 'Living Legends', 'Technology']
 
 
 def fail(msg: str):

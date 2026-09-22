@@ -1,6 +1,6 @@
 ---
 title: A D&D alignment test made of ordinary dilemmas
-tag: Technology
+tag: Games
 date: 2026-07-29
 summary: Eight everyday questions, two scales, and no rulebook needed — it places you on the D&D alignment grid.
 ---

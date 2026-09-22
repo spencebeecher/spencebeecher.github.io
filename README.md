@@ -30,10 +30,12 @@ summary: One sentence, shown under the title on the index.
 ---
 ```
 
-**Every post needs exactly one `tag`, and it has to be one of the three in
-`TAGS` in `publish.py`:** Data Science, Living Legends, Technology. The build
-fails on a missing tag or an unknown one, which is deliberate — a tag that lands
-on one post is a title, not a theme. Adding a fourth is an edit to that list.
+**Every post needs exactly one `tag`, and it has to be one of the four in
+`TAGS` in `publish.py`:** Data Science, Games, Living Legends, Technology. The
+build fails on a missing tag or an unknown one, which is deliberate — a tag that
+lands on one post is a title, not a theme. Adding another is an edit to that
+list. Technology currently has no posts; a tag with none is left out of the
+filter bar rather than shown at zero.
 
 The index carries the filter: a pill per tag with counts, a search box over
 title, summary and tag, and `?tag=` in the URL so a tag chip is a shareable
