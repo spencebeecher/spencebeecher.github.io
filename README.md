@@ -1,6 +1,6 @@
 # spencebeecher.github.io
 
-The personal site: a blog, a Misc page pointing at three small web apps, and the
+The personal site: a blog, a Projects page pointing at three small web apps, and the
 generator that builds the blog from markdown.
 
 ## Build it
@@ -34,8 +34,8 @@ summary: One sentence, shown under the title on the index.
 `TAGS` in `publish.py`:** Data Science, Games, Living Legends, Technology. The
 build fails on a missing tag or an unknown one, which is deliberate — a tag that
 lands on one post is a title, not a theme. Adding another is an edit to that
-list. Technology currently has no posts; a tag with none is left out of the
-filter bar rather than shown at zero.
+list. Games and Technology currently have no posts; a tag with none is left out of
+the filter bar rather than shown at zero.
 
 The index carries the filter: a pill per tag with counts, a search box over
 title, summary and tag, and `?tag=` in the URL so a tag chip is a shareable
