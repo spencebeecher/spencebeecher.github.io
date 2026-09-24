@@ -84,6 +84,17 @@ h3 { font-size: 1.1rem; }
 
 .page-title { margin-bottom: 2rem; font-size: 1.5rem; }
 
+/* A section label the nav already states. Kept in the markup for screen
+   readers and the document outline, not drawn. */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* ---- the index: titles carry the page, everything else recedes ---- */
 
 .post-list { display: flex; flex-direction: column; gap: 2.25rem; }
