@@ -7,32 +7,10 @@
     <link rel="icon" href="../favicon.ico" sizes="any">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-    <style>
-      * { box-sizing: border-box; }
-      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 0 1rem; color: #333; line-height: 1.7; }
-      nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
-      nav .logo { font-weight: bold; font-size: 1.2rem; text-decoration: none; color: #111; }
-      nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
-      nav a { text-decoration: none; color: #555; }
-      nav a:hover { color: #000; }
-      header h1 { margin-bottom: 0.25rem; }
-      header .date { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
-      header .tag { display: inline-block; font-size: 0.8rem; color: #555; background: #f2f2f2;
-                    border-radius: 999px; padding: 0.15rem 0.6rem; text-decoration: none; margin-left: 0.4rem; }
-      header .tag:hover { color: #111; }
-      article h2, article h3, article h4 { margin-top: 1.5rem; }
-      article a { color: #0066cc; }
-      article a:hover { text-decoration: none; }
-      pre { background: #f7f7f8; padding: 1rem; overflow: auto; border-radius: 4px; }
-      code { font-family: Menlo, Monaco, Consolas, monospace; font-size: 0.9em; }
-      blockquote { border-left: 3px solid #ddd; margin-left: 0; padding-left: 1rem; color: #666; }
-      article img { max-width: 100%; height: auto; display: block; margin: 1.5rem 0 0.4rem; border-radius: 4px; }
-      article img + em, article p > em:only-child { color: #777; font-size: 0.9rem; }
-      footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
-    </style>
+    <link rel="stylesheet" href="../assets/site.css">
   </head>
   <body>
-    <nav>
+    <nav class="bar">
       <a class="logo" href="../index.html">Spencer Beecher</a>
       <ul>
         <li><a href="../index.html">Blog</a></li>
@@ -41,12 +19,15 @@
       </ul>
     </nav>
 
-    <header>
+    <header class="post-header">
       <h1>Bingo cards for whatever you&#39;re watching</h1>
-      <p class="date">February 15, 2026<a class="tag" href="../index.html?tag=Games">Games</a></p>
+      <p class="meta">
+        <time datetime="2026-02-15">February 15, 2026</time>
+        <a class="tag" href="../index.html?tag=Games">Games</a>
+      </p>
     </header>
 
-    <article>
+    <article class="prose">
       <p><a href="../bingo/">Bingo</a> started as a way to make a Halloween movie night more fun. It is a set of themed 5×5 cards you play while watching something — the squares are the things that are going to happen anyway.</p>
 <p><img alt="The bingo index, laid out as a bingo card with a game in each square" src="../assets/misc/bingo.jpg" /></p>
 <p><em>The index is itself a bingo card. Every square is a game.</em></p>
@@ -56,8 +37,13 @@
 <p>Where it falls short: the squares are fixed per theme, so the second time through a movie the card is familiar. Sizing the phrases to the square is also still by eye.</p>
     </article>
 
-    <footer>
-      <p>&copy; Spencer Beecher</p>
+    <footer class="bar">
+      <ul>
+        <li><a href="../index.html">Blog</a></li>
+        <li><a href="../misc.html">Misc</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <span class="copy">&copy; Spencer Beecher</span>
     </footer>
   </body>
 </html>

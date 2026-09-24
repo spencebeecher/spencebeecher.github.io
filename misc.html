@@ -4,29 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Misc</title>
-        <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>
-      * { box-sizing: border-box; }
-      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 0 1rem; color: #333; }
-      nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
-      nav .logo { font-weight: bold; font-size: 1.2rem; text-decoration: none; color: #111; }
-      nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
-      nav a { text-decoration: none; color: #555; }
-      nav a:hover { color: #000; }
-      header h1 { margin-bottom: 1rem; }
-      article { line-height: 1.7; }
-      article a { color: #0066cc; }
-      article a:hover { text-decoration: none; }
-      ul.projects { padding-left: 0; }
-      ul.projects li { list-style: none; margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 4px; }
-      ul.projects li a { font-weight: bold; }
-      footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
-    </style>
+    <link rel="stylesheet" href="assets/site.css">
   </head>
   <body>
-    <nav>
+    <nav class="bar">
       <a class="logo" href="index.html">Spencer Beecher</a>
       <ul>
         <li><a href="index.html">Blog</a></li>
@@ -36,10 +20,10 @@
     </nav>
 
     <header>
-      <h1>Misc</h1>
+      <h1 class="page-title">Misc</h1>
     </header>
 
-    <article>
+    <main>
       <ul class="projects">
         <li>
           <a href="alignment/">D&amp;D Alignment Test</a>
@@ -54,10 +38,15 @@
           <p>Fun bingo card generators for movies, holidays, and more.</p>
         </li>
       </ul>
-    </article>
+    </main>
 
-    <footer>
-      <p>&copy; Spencer Beecher</p>
+    <footer class="bar">
+      <ul>
+        <li><a href="index.html">Blog</a></li>
+        <li><a href="misc.html">Misc</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <span class="copy">&copy; Spencer Beecher</span>
     </footer>
   </body>
 </html>

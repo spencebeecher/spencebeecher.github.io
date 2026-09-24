@@ -7,32 +7,10 @@
     <link rel="icon" href="../favicon.ico" sizes="any">
     <link rel="icon" href="../favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-    <style>
-      * { box-sizing: border-box; }
-      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 0 1rem; color: #333; line-height: 1.7; }
-      nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
-      nav .logo { font-weight: bold; font-size: 1.2rem; text-decoration: none; color: #111; }
-      nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
-      nav a { text-decoration: none; color: #555; }
-      nav a:hover { color: #000; }
-      header h1 { margin-bottom: 0.25rem; }
-      header .date { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
-      header .tag { display: inline-block; font-size: 0.8rem; color: #555; background: #f2f2f2;
-                    border-radius: 999px; padding: 0.15rem 0.6rem; text-decoration: none; margin-left: 0.4rem; }
-      header .tag:hover { color: #111; }
-      article h2, article h3, article h4 { margin-top: 1.5rem; }
-      article a { color: #0066cc; }
-      article a:hover { text-decoration: none; }
-      pre { background: #f7f7f8; padding: 1rem; overflow: auto; border-radius: 4px; }
-      code { font-family: Menlo, Monaco, Consolas, monospace; font-size: 0.9em; }
-      blockquote { border-left: 3px solid #ddd; margin-left: 0; padding-left: 1rem; color: #666; }
-      article img { max-width: 100%; height: auto; display: block; margin: 1.5rem 0 0.4rem; border-radius: 4px; }
-      article img + em, article p > em:only-child { color: #777; font-size: 0.9rem; }
-      footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
-    </style>
+    <link rel="stylesheet" href="../assets/site.css">
   </head>
   <body>
-    <nav>
+    <nav class="bar">
       <a class="logo" href="../index.html">Spencer Beecher</a>
       <ul>
         <li><a href="../index.html">Blog</a></li>
@@ -41,12 +19,15 @@
       </ul>
     </nav>
 
-    <header>
+    <header class="post-header">
       <h1>Living Legends, the RPG I&#39;m building</h1>
-      <p class="date">September 19, 2026<a class="tag" href="../index.html?tag=Living%20Legends">Living Legends</a></p>
+      <p class="meta">
+        <time datetime="2026-09-19">September 19, 2026</time>
+        <a class="tag" href="../index.html?tag=Living%20Legends">Living Legends</a>
+      </p>
     </header>
 
-    <article>
+    <article class="prose">
       <p>Since March I've been building Living Legends, a role-playing game that runs on the D&amp;D 5e rules (the open SRD). The main design rule is that the rules engine makes every decision and the language model only writes the narration. Rolls, how much a character trusts you, which secrets they'll give up: all of it is worked out in code, and it replays exactly from a seed. The model gets the outcome and a list of what it's allowed to say. It can't invent a fact or hand you a secret you didn't earn.</p>
 <p>Each character is built from tags like <code>STUBBORN</code>, <code>INNKEEPER</code> and <code>PROTECT_LOVED_ONES</code>, which shape how they act and make checks against them easier or harder. Their secrets sit behind harder and harder checks, and those get easier as the character comes to trust you. If you keep trying the same approach, each repeat makes the next roll 2 points harder and costs you some of their trust. For now I've kept the scope small on purpose: one town of about a thousand people and the countryside around it.</p>
 <p><img alt="A generated world map: continents, rivers, mountains, forests and towns" src="../assets/living-legends/map.jpg" /></p>
@@ -65,8 +46,13 @@
 <p>Next up is the goal I picked the small scope for: getting one town, with its 41 trades and 60 named characters, playable from start to finish.</p>
     </article>
 
-    <footer>
-      <p>&copy; Spencer Beecher</p>
+    <footer class="bar">
+      <ul>
+        <li><a href="../index.html">Blog</a></li>
+        <li><a href="../misc.html">Misc</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <span class="copy">&copy; Spencer Beecher</span>
     </footer>
   </body>
 </html>

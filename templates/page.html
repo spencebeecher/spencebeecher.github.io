@@ -7,22 +7,10 @@
     <link rel="icon" href="{{ base }}favicon.ico" sizes="any">
     <link rel="icon" href="{{ base }}favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ base }}apple-touch-icon.png">
-    <style>
-      * { box-sizing: border-box; }
-      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 0 1rem; color: #333; line-height: 1.7; }
-      nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
-      nav .logo { font-weight: bold; font-size: 1.2rem; text-decoration: none; color: #111; }
-      nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
-      nav a { text-decoration: none; color: #555; }
-      nav a:hover { color: #000; }
-      header h1 { margin-bottom: 1rem; }
-      article a { color: #0066cc; }
-      article a:hover { text-decoration: none; }
-      footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
-    </style>
+    <link rel="stylesheet" href="{{ base }}assets/site.css">
   </head>
   <body>
-    <nav>
+    <nav class="bar">
       <a class="logo" href="{{ base }}index.html">Spencer Beecher</a>
       <ul>
         <li><a href="{{ base }}index.html">Blog</a></li>
@@ -32,15 +20,20 @@
     </nav>
 
     <header>
-      <h1>{{ title }}</h1>
+      <h1 class="page-title">{{ title }}</h1>
     </header>
 
-    <article>
+    <article class="prose">
       {{ content | safe }}
     </article>
 
-    <footer>
-      <p>&copy; Spencer Beecher</p>
+    <footer class="bar">
+      <ul>
+        <li><a href="{{ base }}index.html">Blog</a></li>
+        <li><a href="{{ base }}misc.html">Misc</a></li>
+        <li><a href="{{ base }}about.html">About</a></li>
+      </ul>
+      <span class="copy">&copy; Spencer Beecher</span>
     </footer>
   </body>
 </html>

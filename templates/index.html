@@ -3,41 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home</title>
+    <title>Spencer Beecher</title>
     <link rel="icon" href="{{ base }}favicon.ico" sizes="any">
     <link rel="icon" href="{{ base }}favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ base }}apple-touch-icon.png">
-    <style>
-      * { box-sizing: border-box; }
-      body { font-family: Helvetica, "Helvetica Neue", Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 0 1rem; color: #333; }
-      nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; margin-bottom: 2rem; }
-      nav .logo { font-weight: bold; font-size: 1.2rem; text-decoration: none; color: #111; }
-      nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; }
-      nav a { text-decoration: none; color: #555; }
-      nav a:hover { color: #000; }
-      article { margin-bottom: 2rem; }
-      article h2 { margin-bottom: 0.25rem; }
-      article h2 a { text-decoration: none; color: #111; }
-      article h2 a:hover { text-decoration: underline; }
-      time { color: #888; font-size: 0.9rem; }
-      footer { border-top: 1px solid #eee; margin-top: 3rem; padding: 1rem 0; color: #888; font-size: 0.85rem; }
-      .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 2rem; }
-      .pill { font: inherit; font-size: 0.85rem; color: #555; background: #f2f2f2; border: 1px solid #e2e2e2;
-              border-radius: 999px; padding: 0.3rem 0.8rem; cursor: pointer; }
-      .pill:hover { color: #111; border-color: #ccc; }
-      .pill[aria-pressed="true"] { background: #111; border-color: #111; color: #fff; }
-      .pill .count { opacity: 0.6; margin-left: 0.3rem; }
-      .filters input { font: inherit; font-size: 0.85rem; padding: 0.3rem 0.6rem; border: 1px solid #e2e2e2;
-                       border-radius: 4px; margin-left: auto; min-width: 12rem; }
-      .tag { display: inline-block; font-size: 0.8rem; color: #555; background: #f2f2f2; border-radius: 999px;
-             padding: 0.15rem 0.6rem; text-decoration: none; }
-      .tag:hover { color: #111; }
-      #empty { color: #888; }
-      @media (max-width: 560px) { .filters input { margin-left: 0; width: 100%; } }
-    </style>
+    <link rel="stylesheet" href="{{ base }}assets/site.css">
   </head>
   <body>
-    <nav>
+    <nav class="bar">
       <a class="logo" href="{{ base }}index.html">Spencer Beecher</a>
       <ul>
         <li><a href="{{ base }}index.html">Blog</a></li>
@@ -47,7 +20,7 @@
     </nav>
 
     <header>
-      <h1>Blog</h1>
+      <h1 class="page-title">Blog</h1>
     </header>
 
     <main>
@@ -61,22 +34,23 @@
       </div>
       {% endif %}
 
-      {% for p in posts %}
-      <article data-tag="{{ p.tag }}" data-search="{{ (p.title ~ ' ' ~ p.summary ~ ' ' ~ p.tag) | lower }}">
-        <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
-        {% if p.date %}<p><time>{{ p.date.strftime('%B %d, %Y') }}</time> <a class="tag" href="index.html?tag={{ p.tag | urlencode }}">{{ p.tag }}</a></p>{% endif %}
-        {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
-      </article>
-      {% else %}
-      <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
-      {% endfor %}
+      <div class="post-list">
+        {% for p in posts %}
+        <article data-tag="{{ p.tag }}" data-search="{{ (p.title ~ ' ' ~ p.summary ~ ' ' ~ p.tag) | lower }}">
+          <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
+          <p class="meta">
+            {% if p.date %}<time datetime="{{ p.date.strftime('%Y-%m-%d') }}">{{ p.date.strftime('%B %-d, %Y') }}</time>{% endif %}
+            <a class="tag" href="index.html?tag={{ p.tag | urlencode }}">{{ p.tag }}</a>
+          </p>
+          {% if p.summary %}<p class="summary">{{ p.summary }}</p>{% endif %}
+        </article>
+        {% else %}
+        <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
+        {% endfor %}
+      </div>
 
       <p id="empty" hidden>Nothing matches that. <button class="pill" type="button" data-filter="all">Show everything</button></p>
     </main>
-
-    <footer>
-      <p>&copy; Spencer Beecher</p>
-    </footer>
 
     <script>
       (function () {
@@ -110,12 +84,9 @@
         pills.forEach(function (b) {
           b.addEventListener('click', function () { tag = b.getAttribute('data-filter'); apply(); });
         });
-
         if (search) {
           search.addEventListener('input', function () { query = search.value.trim().toLowerCase(); apply(); });
         }
-
-        // A /?tag=… link from a post page opens the list already filtered.
         var wanted = new URLSearchParams(location.search).get('tag');
         if (wanted) {
           var match = pills.filter(function (b) {
@@ -126,5 +97,14 @@
         apply();
       })();
     </script>
+
+    <footer class="bar">
+      <ul>
+        <li><a href="{{ base }}index.html">Blog</a></li>
+        <li><a href="{{ base }}misc.html">Misc</a></li>
+        <li><a href="{{ base }}about.html">About</a></li>
+      </ul>
+      <span class="copy">&copy; Spencer Beecher</span>
+    </footer>
   </body>
 </html>
