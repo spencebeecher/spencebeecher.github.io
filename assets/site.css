@@ -95,23 +95,35 @@ h3 { font-size: 1.1rem; }
   white-space: nowrap;
 }
 
-/* ---- the index: titles carry the page, everything else recedes ---- */
+/* ---- entry lists: the blog index and Projects share one shape ---- */
 
-.post-list { display: flex; flex-direction: column; gap: 2.25rem; }
-
-article h2 { margin: 0 0 0.35rem; }
-article h2 a { color: var(--text); }
-article h2 a:hover { color: var(--accent); text-decoration: none; }
-
-.meta {
+.entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin: 0 0 0.4rem;
+  flex-direction: column;
+  gap: 2rem;
+}
+.entry-list > li {
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  transition: border-color .12s ease;
+}
+.entry-list > li:hover { border-left-color: var(--accent-dim); }
+
+/* A title reads as text until you reach for it. */
+.entry-list h2 { margin: 0; font-size: 1.1rem; }
+.entry-list h2 a { color: var(--text); }
+.entry-list h2 a:hover { color: var(--accent); text-decoration: none; }
+
+.entry-list .meta {
+  display: block;
+  margin: 0.2rem 0 0;
   color: var(--muted);
   font-size: 0.85rem;
 }
-.summary { margin: 0; color: var(--muted); max-width: var(--measure); }
+.entry-list p { margin: 0.3rem 0 0; color: var(--muted); max-width: var(--measure); }
 
 /* ---- an article ---- */
 
@@ -171,14 +183,6 @@ article.prose p > em:only-child {
 article.prose table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
 article.prose th, article.prose td { text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); }
 article.prose th { color: var(--muted); font-weight: 600; }
-
-/* ---- projects: a list, not a stack of boxes ---- */
-
-.projects { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2rem; }
-.projects li { padding-left: 1rem; border-left: 2px solid var(--border); }
-.projects li:hover { border-left-color: var(--accent-dim); }
-.projects a { font-weight: 600; font-size: 1.1rem; }
-.projects p { margin: 0.3rem 0 0; color: var(--muted); max-width: var(--measure); }
 
 /* ---- about ---- */
 

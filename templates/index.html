@@ -24,17 +24,17 @@
     </header>
 
     <main>
-      <div class="post-list">
+      <ul class="entry-list">
         {% for p in posts %}
-        <article>
+        <li>
           <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
-          {% if p.date %}<p class="meta"><time datetime="{{ p.date.strftime('%Y-%m-%d') }}">{{ p.date.strftime('%B %-d, %Y') }}</time></p>{% endif %}
-          {% if p.summary %}<p class="summary">{{ p.summary }}</p>{% endif %}
-        </article>
+          {% if p.date %}<time class="meta" datetime="{{ p.date.strftime('%Y-%m-%d') }}">{{ p.date.strftime('%B %-d, %Y') }}</time>{% endif %}
+          {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
+        </li>
         {% else %}
-        <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
+        <li>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</li>
         {% endfor %}
-      </div>
+      </ul>
     </main>
 
     <footer class="bar">

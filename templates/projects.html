@@ -24,10 +24,10 @@
     </header>
 
     <main>
-      <ul class="projects">
+      <ul class="entry-list">
         {% for p in projects %}
         <li>
-          <a href="{{ p.url }}">{{ p.title }}</a>
+          <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
           {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
         </li>
         {% endfor %}
