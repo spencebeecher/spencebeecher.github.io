@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Living Legends</title>
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+    <link rel="stylesheet" href="../assets/site.css">
+  </head>
+  <body>
+    <nav class="bar">
+      <a class="logo" href="../index.html">Spencer Beecher</a>
+      <ul>
+        <li><a href="../index.html">Blog</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+    </nav>
+
+    <header>
+      <h1 class="page-title">Living Legends</h1>
+    </header>
+
+    <article class="prose">
+      <p>Living Legends is a role-playing game that runs on the D&amp;D 5e rules, from the open SRD. You play it by talking: you say what you want to do, a character answers, and something in the world moves. There is no human dungeon master.</p>
+<p>The interesting part is what decides that movement.</p>
+<h2>The rule everything else follows</h2>
+<p><strong>The rules engine decides. The language model only narrates.</strong></p>
+<p>Every roll, every shift in how far a character trusts you, every secret they let go of is computed in code. The model receives the outcome along with a list of what it is allowed to say and what it is not. It writes the prose and nothing else. It cannot invent a fact, soften a failed roll, or hand you a secret you did not earn.</p>
+<p>That constraint costs some flexibility and buys the thing I actually want: the mechanics replay exactly from a seed. The same seed and the same inputs produce the same outcomes, every time.</p>
+<h2>Characters, and what they will not tell you</h2>
+<p>Nobody in the world is scripted. Each character is assembled from tags — <code>STUBBORN</code>, <code>INNKEEPER</code>, <code>PROTECT_LOVED_ONES</code> — and every tag carries both behaviour for the narrator and a number for the engine, so a stubborn innkeeper is genuinely harder to persuade rather than just described that way.</p>
+<p>Secrets sit behind checks that get harder the deeper they go, and trust makes them easier. The disposition ladder runs eight steps from hostile to helpful, and where somebody sits on it changes the difficulty of what you are trying.</p>
+<p><strong>Pushing the same angle twice is a mistake the engine notices.</strong> Each repeat of the same check makes the next roll 2 points harder and costs a step of trust. Grinding a conversation is the one strategy the design refuses.</p>
+<h2>The world builds itself</h2>
+<p>A world starts as a heightmap that becomes continents. Rivers begin in the snowfields and join on their way to the sea. The number of towns comes from how much land there is, at roughly the population density of England around 1300, and each is sized by rank. Roads avoid climbing where they can, merge when they are heading for the same place, and where three of them cross, a town grows at the junction.</p>
+<p><img alt="A generated world map: continents, rivers, mountains, forests and towns" src="../assets/living-legends/map.jpg" /></p>
+<p><em>Thunderdale, one generated world: 26 places — 2 cities, 11 towns, 13 market towns — holding 53,170 people.</em></p>
+<p><img alt="A small town at a road junction" src="../assets/living-legends/crossroads.jpg" /></p>
+<p><em>Salt Gate grew where three roads meet. Nobody placed it there; the road routing did.</em></p>
+<p>You can <a href="../assets/living-legends/thunderdale-atlas.html">explore that map</a> — hover a town for its name, click it for its population and the roads that reach it.</p>
+<h2>How the map gets drawn</h2>
+<p>The map used to draw itself in code: every mountain, tree and town was ink laid down by hand-written strokes and hatching. It worked, and it was a great deal of code for what is, in the end, a set of symbols stamped on paper.</p>
+<p>So the map now stamps symbols. I asked Claude for sprite sheets and got back 35 of them — 13 settlements, 12 kinds of terrain, 10 trees — and a pipeline turns those SVGs into 360 PNGs with paper masks, warped copies so no two are identical, and snow added per summit.</p>
+<p><img alt="The 35 sprites: settlements, terrain and trees, in a hand-inked style" src="../assets/living-legends-sprites/sprite-sheet.jpg" /></p>
+<p><em>The settlement symbols are typed — a capital, a port city, a crossroads town, a lake trade hub — because the generator already knows what kind of place it is putting down.</em></p>
+<p><img alt="The same world drawn twice: the old code on the left, sprites on the right" src="../assets/living-legends-sprites/before-after-map.jpg" /></p>
+<p><em>The same seed both ways. The old drawing code on the left, sprites on the right.</em></p>
+<p><strong>Everything is stamped in one pass, ordered by the bottom edge of each symbol</strong>, so whatever stands lower on the map is drawn last. It is a small difference per tree and a large one per wood.</p>
+<p><img alt="A close crop of the finished map: a castle, a crossroads town, a volcano and pine woods" src="../assets/living-legends-sprites/detail.jpg" /></p>
+<p>Sprites are how the map draws now. The old renderer is still there behind an environment variable, because two years of maps were made with it.</p>
+<h2>Two agents build it</h2>
+<p>Most of the day-to-day work is done by two AI agents with jobs that never overlap.</p>
+<p>A <strong>playtester</strong> runs on a local model on my own machine. It plays the game unattended — talking to characters, making checks, getting into fights — and writes down every place it got stuck or confused.</p>
+<p>A <strong>fixer</strong>, which is Claude Code, works through those notes one at a time and turns each into a change with a test, on its own branch.</p>
+<p>The playtester never touches the code and the fixer never plays, so neither one gets to judge its own work. Merging into the main line is my job. Since March that has added up to about <strong>1,863 commits and 808 test files</strong>.</p>
+<h2>The scope, on purpose</h2>
+<p>A world generator will happily make a continent, and a continent is the wrong thing to build first. The target is <strong>one town of about a thousand people and the land around it</strong>, playable end to end: its 41 trades, its 60 named residents, and the reasons they will or will not talk to you.</p>
+<p>Everything above exists to make that town worth standing in.</p>
+    </article>
+
+    <footer class="bar">
+      <ul>
+        <li><a href="../index.html">Blog</a></li>
+        <li><a href="../projects.html">Projects</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
+      <span class="copy">&copy; Spencer Beecher</span>
+    </footer>
+  </body>
+</html>

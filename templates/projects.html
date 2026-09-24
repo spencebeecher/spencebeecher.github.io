@@ -25,27 +25,12 @@
 
     <main>
       <ul class="projects">
-        
+        {% for p in projects %}
         <li>
-          <a href="projects/living-legends.html">Living Legends</a>
-          <p>A role-playing game where the rules engine decides everything and the language model only narrates. Generated world, hand-inked map, built day to day by two AI agents.</p>
+          <a href="{{ p.url }}">{{ p.title }}</a>
+          {% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
         </li>
-        
-        <li>
-          <a href="alignment/">D&amp;D Alignment Test</a>
-          <p>Answer a handful of everyday scenarios to find your D&amp;D alignment — Lawful Good to Chaotic Evil — with famous characters who share it.</p>
-        </li>
-        
-        <li>
-          <a href="blackjack/">Blackjack Coach</a>
-          <p>A basic-strategy trainer and money game. Drills you hand by hand, keeps the cheat sheet a tap away, and fits a thumb on a phone.</p>
-        </li>
-        
-        <li>
-          <a href="bingo/">Bingo Games</a>
-          <p>Themed bingo cards for whatever you are watching — Halloween, football, romcoms, Stranger Things. The index is itself a bingo card.</p>
-        </li>
-        
+        {% endfor %}
       </ul>
     </main>
 
