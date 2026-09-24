@@ -24,77 +24,16 @@
     </header>
 
     <main>
-      
-      <div class="filters">
-        <button class="pill" type="button" data-filter="all" aria-pressed="true">All<span class="count">1</span></button>
-        
-        <button class="pill" type="button" data-filter="Data Science" aria-pressed="false">Data Science<span class="count">1</span></button>
-        
-        <input type="search" id="post-search" placeholder="Search posts" aria-label="Search posts by word, title or tag">
-      </div>
-      
-
       <div class="post-list">
         
-        <article data-tag="Data Science" data-search="go-to career growth resources the books and courses i recommend to data scientists, hard skills first. data science">
+        <article>
           <h2><a href="posts/2026-02-15-books-that-helped-my-career.html">Go-To Career Growth Resources</a></h2>
-          <p class="meta">
-            <time datetime="2026-02-15">February 15, 2026</time>
-            <a class="tag" href="index.html?tag=Data%20Science">Data Science</a>
-          </p>
+          <p class="meta"><time datetime="2026-02-15">February 15, 2026</time></p>
           <p class="summary">The books and courses I recommend to data scientists, hard skills first.</p>
         </article>
         
       </div>
-
-      <p id="empty" hidden>Nothing matches that. <button class="pill" type="button" data-filter="all">Show everything</button></p>
     </main>
-
-    <script>
-      (function () {
-        var articles = Array.prototype.slice.call(document.querySelectorAll('article[data-tag]'));
-        var pills = Array.prototype.slice.call(document.querySelectorAll('.pill'));
-        var search = document.getElementById('post-search');
-        var empty = document.getElementById('empty');
-        if (!articles.length) { return; }
-        var tag = 'all';
-        var query = '';
-
-        function apply() {
-          var shown = 0;
-          articles.forEach(function (el) {
-            var matchesTag = tag === 'all' || el.getAttribute('data-tag') === tag;
-            var matchesText = !query || el.getAttribute('data-search').indexOf(query) !== -1;
-            var show = matchesTag && matchesText;
-            el.hidden = !show;
-            if (show) { shown++; }
-          });
-          if (empty) { empty.hidden = shown > 0; }
-          pills.forEach(function (b) {
-            if (b.parentNode && b.parentNode.className === 'filters') {
-              b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === tag));
-            }
-          });
-          var url = tag === 'all' ? location.pathname : location.pathname + '?tag=' + encodeURIComponent(tag);
-          history.replaceState(null, '', url);
-        }
-
-        pills.forEach(function (b) {
-          b.addEventListener('click', function () { tag = b.getAttribute('data-filter'); apply(); });
-        });
-        if (search) {
-          search.addEventListener('input', function () { query = search.value.trim().toLowerCase(); apply(); });
-        }
-        var wanted = new URLSearchParams(location.search).get('tag');
-        if (wanted) {
-          var match = pills.filter(function (b) {
-            return b.getAttribute('data-filter').toLowerCase() === wanted.toLowerCase();
-          })[0];
-          if (match) { tag = match.getAttribute('data-filter'); }
-        }
-        apply();
-      })();
-    </script>
 
     <footer class="bar">
       <span class="copy">&copy; Spencer Beecher</span>

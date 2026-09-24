@@ -21,10 +21,7 @@
 
     <header class="post-header">
       <h1>{{ title }}</h1>
-      <p class="meta">
-        {% if date %}<time datetime="{{ date.strftime('%Y-%m-%d') }}">{{ date.strftime('%B %-d, %Y') }}</time>{% endif %}
-        {% if tag %}<a class="tag" href="{{ base }}index.html?tag={{ tag | urlencode }}">{{ tag }}</a>{% endif %}
-      </p>
+      {% if date %}<p class="meta"><time datetime="{{ date.strftime('%Y-%m-%d') }}">{{ date.strftime('%B %-d, %Y') }}</time></p>{% endif %}
     </header>
 
     <article class="prose">

@@ -22,11 +22,6 @@ PROJECTS_DIR = ROOT / 'content' / 'projects'
 TEMPLATES_DIR = ROOT / 'templates'
 OUTPUT_DIR = ROOT / 'site'
 
-# The whole tag vocabulary. One tag per post, and it has to be on this list.
-# Keeping it short is the point: a tag that only ever lands on one post is a
-# title, not a theme. Adding one is a deliberate edit here, not a typo in a post.
-TAGS = ['Data Science', 'Games', 'Living Legends', 'Technology']
-
 
 def fail(msg: str):
     print('ERROR:', msg)
@@ -78,16 +73,10 @@ def build():
         except Exception:
             date = None
 
-        tag = meta.get('tag', '').strip()
-        if not tag:
-            fail(f'{md_file.name} has no "tag:" — one is required, from {TAGS}')
-        if tag not in TAGS:
-            fail(f'{md_file.name} has tag {tag!r}, which is not in {TAGS}')
-
         slug = meta.get('slug') or slugify(md_file.stem)
         output_path = OUTPUT_DIR / 'posts' / f"{slug}.html"
 
-        rendered = post_template.render(title=title, date=date, content=html_body, tag=tag, base='../')
+        rendered = post_template.render(title=title, date=date, content=html_body, base='../')
         output_path.write_text(rendered, encoding='utf-8')
 
         posts.append({
@@ -95,7 +84,6 @@ def build():
             'date': date,
             'url': f'posts/{slug}.html',
             'summary': meta.get('summary', ''),
-            'tag': tag,
         })
 
     # sort posts by date desc when available
@@ -132,12 +120,8 @@ def build():
             projects_template.render(projects=projects), encoding='utf-8')
         print(f'Built {len(projects)} projects into {OUTPUT_DIR!s}')
 
-    # tag counts for the index filter, in TAGS order, skipping the unused ones
-    tag_counts = [(t, sum(1 for p in posts if p['tag'] == t)) for t in TAGS]
-    tag_counts = [(t, n) for t, n in tag_counts if n]
-
     # render index
-    index_html = index_template.render(posts=posts, tag_counts=tag_counts, base='')
+    index_html = index_template.render(posts=posts, base='')
     (OUTPUT_DIR / 'index.html').write_text(index_html, encoding='utf-8')
 
     # render journal if it exists

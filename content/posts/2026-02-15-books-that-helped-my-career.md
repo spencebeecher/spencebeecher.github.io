@@ -1,6 +1,5 @@
 ---
 title: Go-To Career Growth Resources
-tag: Data Science
 date: 2026-02-15
 summary: The books and courses I recommend to data scientists, hard skills first.
 ---

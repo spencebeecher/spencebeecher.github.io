@@ -24,79 +24,18 @@
     </header>
 
     <main>
-      {% if tag_counts %}
-      <div class="filters">
-        <button class="pill" type="button" data-filter="all" aria-pressed="true">All<span class="count">{{ posts | length }}</span></button>
-        {% for t, n in tag_counts %}
-        <button class="pill" type="button" data-filter="{{ t }}" aria-pressed="false">{{ t }}<span class="count">{{ n }}</span></button>
-        {% endfor %}
-        <input type="search" id="post-search" placeholder="Search posts" aria-label="Search posts by word, title or tag">
-      </div>
-      {% endif %}
-
       <div class="post-list">
         {% for p in posts %}
-        <article data-tag="{{ p.tag }}" data-search="{{ (p.title ~ ' ' ~ p.summary ~ ' ' ~ p.tag) | lower }}">
+        <article>
           <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
-          <p class="meta">
-            {% if p.date %}<time datetime="{{ p.date.strftime('%Y-%m-%d') }}">{{ p.date.strftime('%B %-d, %Y') }}</time>{% endif %}
-            <a class="tag" href="index.html?tag={{ p.tag | urlencode }}">{{ p.tag }}</a>
-          </p>
+          {% if p.date %}<p class="meta"><time datetime="{{ p.date.strftime('%Y-%m-%d') }}">{{ p.date.strftime('%B %-d, %Y') }}</time></p>{% endif %}
           {% if p.summary %}<p class="summary">{{ p.summary }}</p>{% endif %}
         </article>
         {% else %}
         <p>No posts yet. Add markdown files to <strong>content/posts/</strong> and run the generator.</p>
         {% endfor %}
       </div>
-
-      <p id="empty" hidden>Nothing matches that. <button class="pill" type="button" data-filter="all">Show everything</button></p>
     </main>
-
-    <script>
-      (function () {
-        var articles = Array.prototype.slice.call(document.querySelectorAll('article[data-tag]'));
-        var pills = Array.prototype.slice.call(document.querySelectorAll('.pill'));
-        var search = document.getElementById('post-search');
-        var empty = document.getElementById('empty');
-        if (!articles.length) { return; }
-        var tag = 'all';
-        var query = '';
-
-        function apply() {
-          var shown = 0;
-          articles.forEach(function (el) {
-            var matchesTag = tag === 'all' || el.getAttribute('data-tag') === tag;
-            var matchesText = !query || el.getAttribute('data-search').indexOf(query) !== -1;
-            var show = matchesTag && matchesText;
-            el.hidden = !show;
-            if (show) { shown++; }
-          });
-          if (empty) { empty.hidden = shown > 0; }
-          pills.forEach(function (b) {
-            if (b.parentNode && b.parentNode.className === 'filters') {
-              b.setAttribute('aria-pressed', String(b.getAttribute('data-filter') === tag));
-            }
-          });
-          var url = tag === 'all' ? location.pathname : location.pathname + '?tag=' + encodeURIComponent(tag);
-          history.replaceState(null, '', url);
-        }
-
-        pills.forEach(function (b) {
-          b.addEventListener('click', function () { tag = b.getAttribute('data-filter'); apply(); });
-        });
-        if (search) {
-          search.addEventListener('input', function () { query = search.value.trim().toLowerCase(); apply(); });
-        }
-        var wanted = new URLSearchParams(location.search).get('tag');
-        if (wanted) {
-          var match = pills.filter(function (b) {
-            return b.getAttribute('data-filter').toLowerCase() === wanted.toLowerCase();
-          })[0];
-          if (match) { tag = match.getAttribute('data-filter'); }
-        }
-        apply();
-      })();
-    </script>
 
     <footer class="bar">
       <span class="copy">&copy; Spencer Beecher</span>
