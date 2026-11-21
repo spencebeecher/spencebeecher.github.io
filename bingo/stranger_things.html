@@ -118,6 +118,12 @@
             default: ['Nosebleed Power', 'Lights Flicker', 'Demogorgon Attack', 'Mind Flayer Shadow', 'Vecna Curse', 'Upside Down Portal', 'Spore Fog', 'Bike Chase', 'Walkie-Talkie Call', 'Dungeons & Dragons', 'Eggo Waffles', 'Government Van', 'Hawkins Lab', 'Russian Lab', 'Secret Tunnel', 'Underground Base', 'Monster Screech', 'Dragged Into Upside Down', 'Music Saves the Day', 'Running Through Woods', 'Stormy Night', 'Blood on Walls', 'Dustin’s Hat', 'Steve’s Perfect Hair', 'Robin Sarcasm', 'Erica Sass', 'Nancy with a Gun', 'Jonathan with Camera', 'Hopper Punches Someone', 'Hopper’s Hat', 'Joyce with Axe', 'Winona Yells ‘Will!’', 'Max Headphones', 'Billy Being Creepy', 'Vecna Monologue', 'Eleven Screams', 'Papa Says ‘For Your Own Good’', 'Mike Gives Speech', 'Will Draws Map', 'Surprise Betrayal', 'Creepy Clock Chime', 'Mirror Cracks', 'Flashlight Dies', 'Car Won’t Start', 'Group Hug Finale', '’80s Song Drop', 'Neon Lights', 'Snowball Dance', 'Scoops Ahoy Uniform', 'Surfer Boy Pizza', 'Rats Explode', 'Body Horror Tentacles', 'Shadow Monster Looms', 'Kids Argue, Then Make Up', 'Friend Gets Taken', 'Final Battle in Gym', 'Letters From Beyond', 'Bloody Nose Pileup', 'Portal Sealed (Again)', 'Someone Says ‘Crazy’', 'Steve Loses the Fight', 'Dustin Explains Science Badly', 'Mike Being Annoying', 'Erica Roasts Everyone', 'Joyce Goes Full Mom Mode', 'Conspiracy Theory', 'Someone Eats Too Many Eggos', 'Hop’s Shirt Too Small', 'Robin Rolls Her Eyes', 'Monster Dies… Maybe?', 'Plot Solved by Friendship', 'Mike Dramatic Hand Hold', 'Hopper Smokes Indoors', 'Joyce With Christmas Lights', 'Spooky Monster Noise', 'Portal Opens', 'Walkie-Talkie Static', 'Favorite Snack Obsession', 'Government Cover-Up', 'Secret Lab', 'Hidden Tunnel', 'Creepy Woods', 'Dragged Away Screaming', 'Music Saves Someone', 'Iconic Hair Moment', 'Comic Relief Sidekick', 'Sarcastic One-Liner', 'Unexpected Guitar Solo', 'Kid With Slingshot', 'Sassy Comeback', 'Teen With a Weapon', 'Camera Flash Scene', 'Parent Freak-Out', 'Small Town Gossip', 'Headphones Save the Day', 'Creepy Villain Monologue', 'Power Scream', 'Authority Figure Punches Someone', 'Hand-Drawn Map', 'Betrayal Reveal', 'Creepy Clock Sound', 'Flashlight Flicker', 'Car Trouble', '’80s Song Blast', 'Mall or Fair Scene', 'Uniform Joke', 'Pizza Reference', 'Gross Body Horror', 'Shadow Monster Lurks', 'Friends Argue', 'Big Showdown', 'Letters or Messages From Beyond', 'Somebody Yells ‘Crazy!’', 'Fan-Favorite Gets Hurt', 'Conspiracy Theory Guy', 'Mom Energy Moment', 'Nat 20 Reference'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {

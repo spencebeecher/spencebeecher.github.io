@@ -118,6 +118,12 @@
             default: ['Car Chase', 'Explosion', 'Hero Walks Away from Explosion', 'Gunfight', 'Martial Arts Fight', 'Helicopter Scene', 'Villain Monologue', 'Last-Minute Save', 'High-Speed Pursuit', 'Undercover Operation', 'Gadget Reveal', 'Hostage Rescue', 'Car Flip', 'Bullet Time Scene', 'Train Heist', 'Final Showdown', 'Sniper Shot', 'Hacking Scene', 'Plane Hijack', 'Boat Chase', 'Rooftop Jump', 'Disguised Identity', 'Explosive Device Defusal', 'Car Explosion Close-Up', 'Hero Gets Back Up After Being Shot', 'Villain Escapes Again', 'Secret Lair Reveal', 'Hero Uses Improvised Weapon', 'Daring Infiltration', 'Epic One-Liner Before Fight', 'Chase Through Crowded Market', 'Underwater Escape', 'Car Jumps Ramp', 'Helicopter Crash', 'Villain’s Henchman Betrayal', 'High-Tech Surveillance Hack', 'Explosive Car Door Kick-In', 'Hero Saves Civilians Amid Chaos', 'Final Duel on Moving Vehicle', 'Slow Motion Explosion', 'Hero Dangling From Cliff', 'Motorcycle Chase', 'Knife Fight', 'Falling Off a Skyscraper', 'Fight Scene in Kitchen', 'Secret Government Agency', 'Villain Says ‘You’re Too Late!’', 'Hand-to-Hand Combat in Rain', 'Someone Says ‘Go! I’ll Hold Them Off!’', 'Hero Escapes Just in Time', 'Double Agent Reveal', 'Laser Security System', 'Disguised Entry Into Base', 'Tracking Device Found', 'Villain Has a Scar', 'Hero Bleeding but Keeps Fighting', 'Car Crashes Through Glass', 'Helicopter Rescue', 'Chase Through Subway', 'Weapon Hidden in Everyday Object', 'Fight on a Moving Train', 'Explosion Underwater', 'Slow Clap by Villain', 'Hero Outruns Fireball', 'Briefcase Full of Money', 'Mission Briefing Scene', 'Map with Red Lines', 'Countdown Timer on Bomb', 'Team Montage Before Mission', 'Helicopter Shot of City', 'Villain’s Evil Laugh', 'Hero Refuses the Mission', 'Betrayal Twist', 'Main Character Thought Dead Returns', 'Secret Escape Tunnel', 'Villain’s Base Blows Up', 'Hero and Villain Team Up Temporarily', 'Innocent Civilian Helps Save the Day', 'Falling Debris Narrowly Misses Hero', 'Ending Helicopter Shot', 'Freeze Frame Victory Pose'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {

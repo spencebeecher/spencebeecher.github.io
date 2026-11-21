@@ -118,6 +118,12 @@
             default: ['Monster Roar', 'Heavy Footsteps', 'Shadowy Silhouette', 'Transformation Scene', 'Monster Eye Close-Up', 'Ancient Curse', 'Creature Emerges from Water', 'Fog Rolls In', 'Monster Breaks Chains', 'Screaming Crowd', 'Monster Climbs Building', 'Monster Attacks Village', 'Monster Attacks City', 'Army Arrives Too Late', 'Military Fires Missiles', 'Monster Shrugs Off Bullets', 'Reporter Explains Danger', 'Scientist With Chalkboard', 'Monster Weakness Discovered', 'Big Reveal Close-Up', 'Monster vs Monster', 'Creepy Lair', 'Monster Bursts Through Wall', 'Car Alarm Goes Off', 'Claw Through Door', 'Helicopter Crashes', 'Crowd Gasps in Unison', 'Monster Grabs Victim', 'Hero Sacrifice', 'Final Confrontation', 'Monster Dies Dramatically', 'Monster Disappears in Mist', 'Eggs or Babies Discovered', 'Sequel Tease', 'Child Befriends Monster', 'Villagers with Torches', 'Monster Destroys Landmark', 'Monster Theme Music', 'Monster Roars Louder', 'Stormy Night', 'Blood Drip', 'Monster Turns on Villain', 'Victim Crawls Away', 'Monster Shadow Looms', 'Ancient Tomb Discovery', 'Monster Awakens from Ice', 'End Credits Roar', 'Monster Smashes Helicopter', 'City Skyline Pan', 'Military Radio Chatter', 'Monster Caught on Camera', 'Monster Footprint Found', 'Scientist Warns Everyone', 'Nobody Listens', 'Ancient Map', 'Monster Shrugs Off Fire', 'Monster Eats a Car', 'Car Flipped Like a Toy', 'Bridge Collapse', 'Subway Scene', 'Monster at Carnival', 'Screams Drown Out Music', 'Monster Attacks Boat', 'Monster Destroys Plane', 'Creature in the Sewer', 'Monster Tail Smash', 'Hero Uses Torch', 'Monster Chained Up', 'Chains Break Loudly', 'Explosion Does Nothing', 'Crowd Runs in Slow Motion', 'Monster Climbs Mountain', 'Monster Attacks Train', 'Rain Pouring During Attack', 'Electrical Wires Spark', 'Monster Grabs Helicopter', 'Soldiers Open Fire', 'Radioactive Warning', 'Monster Glowing Eyes', 'Monster Knocked Down, Gets Up', 'Creature Fossil Found', 'Monster Statue in Temple', 'Monster Worship Cult', 'Monster Protects Child', 'Villain Tries to Control Monster', 'Monster Turns on Villain', 'Monster Attacks Scientist', 'Monster Burns in Sunlight', 'Monster Retreats to Ocean', 'Final Rocket Strike', 'Monster Surrounded by Fire', 'Dust Clears, Monster Gone', "Hero Says 'It’s Over' Too Soon", 'Monster Bursts Back Alive', 'Monster Roar Echoes', 'Silhouette Against Moon', 'Crowd Hides in Church', 'Monster Crashes Through Window', 'Creature Crawls on Ceiling', 'Monster Grabs Airplane', 'End Teaser'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {
