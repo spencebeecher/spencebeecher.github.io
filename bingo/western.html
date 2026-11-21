@@ -118,6 +118,12 @@
             default: ['Showdown at High Noon', 'Dusty Desert Town', 'Saloon Brawl', 'Wanted Poster', 'Sheriff’s Badge', 'Horseback Chase', 'Train Robbery', 'Cactus Close-Up', 'Whiskey Shot', 'Gunfight in the Street', 'Stagecoach Ride', 'Lassoing Scene', 'Campfire Storytelling', 'Tumbleweed Rolling By', 'Outlaw Gang', 'Duel at Dawn', 'Rustler Attack', 'Bank Heist', 'Posse Formation', 'Desert Sunset', 'Spur Jingle', 'Cattle Drive', 'Saloon Piano Music', 'Sheriff vs Outlaw Standoff', 'Gold Rush Discovery', 'Barroom Dance', 'Train Station Arrival', 'Wagon Wheel Close-Up', 'Desert Storm', 'Ranch Hand Work', 'Homestead Scene', 'Frontier Justice', 'Bounty Hunter Arrival', 'Gun Holster Close-Up', 'Desert Oasis', 'Sheriff’s Office Scene', 'Outlaw Hideout', 'Horse Taming Scene', 'Desert Night Sky', 'Saloon Showdown', 'Wanted Dead or Alive Sign', 'Cattle Rustling Scene', 'Train Tracks Close-Up', 'Desert Canyon Chase', 'Sheriff’s Posse Ride Out', 'Outlaw Capture Scene', 'Gunfight Finale', 'Poker Game Tension', 'Mysterious Stranger Arrives', 'Cigar Chomp Before Duel', 'Slow Pan to Revolver', 'Boots Crunch on Gravel', 'Hero Rides into Sunset', 'Villain Twirls Mustache', 'Bartender Wipes Glass', 'Hat Blows Away in Wind', 'Horse Neigh Echoes', 'Betrayal for Gold', 'Long Walk into Town', 'Saloon Doors Swinging', 'Rattlesnake Rattle', 'Crossed Pistols Shadow', 'Dust Devil Spins', 'Shot Glass Shatters', 'Train Whistle at Dawn', 'Desert Vultures Circling', 'Old Prospector Rambling', 'Rancher’s Daughter Scene', 'Saddle Up Montage', 'Silent Stranger Saves the Day', 'Guitar Strum by Campfire', 'Shootout in the Rain', 'Old Wanted Poster Flutters', 'Outlaw Gets Away (For Now)', 'Horses Gallop into Horizon', 'Rifle Reload Close-Up', 'Deputy Earns His Star', 'Hat Tip Goodbye'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {

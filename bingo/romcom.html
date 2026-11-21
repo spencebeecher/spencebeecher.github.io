@@ -118,6 +118,12 @@
             default: ['Meet-Cute', 'Accidental Kiss', 'Love Triangle', 'Grand Romantic Gesture', 'Best Friend Confidant', 'Misunderstanding', 'Makeover Montage', 'Chasing After Love Interest', 'Running Through Airport', 'Rain Kiss', 'Wedding Crash', 'Fake Relationship', 'Opposites Attract', 'Secret Admirer', 'Love Letter', 'Unexpected Confession', 'Song Dedication', 'Dancing Together', 'Cooking Together', 'Accidental Text Message', 'Jealousy Scene', 'Reunion Scene', 'Heartfelt Apology', 'Surprise Date', 'Couple’s First Fight', 'Cute Pet Interaction', 'Holiday Romance', 'Bookstore Encounter', 'Coffee Shop Meeting', 'Art Gallery Scene', 'Music Festival Date', 'Road Trip Together', 'Picnic in the Park', 'Stargazing Scene', 'Couple’s Inside Joke', 'Shared Secret Moment', 'Late-Night Phone Call', 'Dramatic Rain Scene', 'Unexpected Dance-Off', 'Couple’s First Home Cooked Meal', 'Surprise Visit from Out of Town', 'Meet Parents Disaster', 'Montage with Pop Song', 'Love Confession Interrupted', 'Public Declaration of Love', 'Slow Motion Eye Contact', 'Overheard Conversation', 'Grandma Knows Everything', 'Fake Relationship Becomes Real', '‘It’s Not What It Looks Like!’', 'Proposal Gone Wrong', 'Funny Text Exchange', 'Romantic Flashback', '‘We’re Just Friends’ (They’re Not)', 'Clumsy Fall into Arms', 'Heartfelt Speech', 'Cooking Disaster', 'They Reconnect at a Wedding', 'Romantic Song Plays at Perfect Time', 'Workplace Romance Reveal', '‘You Complete Me’ Moment', 'Kiss Interrupted by Phone Call', 'Sudden Downpour', 'Rival Turns Out to Be Nice', 'Someone Runs Through an Airport', 'Flower Shop Scene', 'Embarrassing Karaoke', 'Romantic Montage in City Streets', 'Accidental Confession', 'Cute Nickname Revealed', 'Group of Friends Cheer On', 'Unexpected Wedding Invitation', 'Hug That Lasts Too Long', 'Closing Scene Kiss'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {

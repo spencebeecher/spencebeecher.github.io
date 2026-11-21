@@ -69,6 +69,7 @@ the build loads it unconditionally.
 - "Games" button links to `index.html` within bingo folder
 - Share URLs point at `https://spencebeecher.me/bingo/<page>` (absolute, because they are copied to the clipboard)
 - The bingo index lays games out in `contexts` order and skips the centre FREE square (12), so the 13th game onward lands after it
+- A game can pass `sure_tropes` (nearly always happen) and `likely_tropes` (usually happen) alongside `tropes_list`; `dealCard` in `bingo_template.html` then puts one wild square in each row and column (never on a diagonal) and sure squares on the diagonals, so every card is winnable. Games without them deal the plain shuffled card. Airplane bingo uses this.
 
 ## Personal Details (for About page, etc.)
 

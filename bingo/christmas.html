@@ -118,6 +118,12 @@
             default: ['City Slicker Finds Small-Town Love', 'Attractive Widower or Devorcee', 'Family Business Needs Saving', 'Perfect Holiday Festival', 'Workaholic Learns Holiday Spirit', 'Small-Town Charm Wins Over Cynic', 'Over-achiever Learns to Relax', 'Small Town with Big Traditions', 'Snowed-In!', 'Sassy Friend Loves Holidays', 'Snow Globe', 'Grumpy Boss Finds Holiday Joy', 'Miracle Saves the Holidays', 'Special Ornament', 'Big Family Gathering', 'Adorable animal in a Santa Hat', 'Romantic Carriage Ride in Town', 'Epic Holiday Decor Showdown', 'Snowfall at the Perfect Moment', 'Mistletoe Kiss', 'Holiday Schedule Chaos', 'Big Secret Unveiled', 'Hometown Hero Restores Spirit', 'City Slicker Meets Rustic Charm', 'Volunteer Event', 'Clumsy Yet Sweet Helper', 'Rivalry Over Decorations', 'Magic Kiss on Christmas Eve', 'Tree Lighting Ceremony', 'Last-Minute Dash for Holiday Cheer', 'Enemies Fall in Love at Christmas', 'Town Legend of Christmas Magic', 'Holiday Market', 'Family Heirloom', 'Assistant Finally Gets Their Moment', 'Christmas Engagement', 'Small-Town Love Interest', 'City person can’t do small town things', 'Secret Santa Gift with Meaning', 'Plans Fall Apart', 'Lost Pet Found', 'Fake Dating Leads to Real Love', 'Holiday Photoshoot', 'Small-Town Festival', 'Surprise Family Visit', 'Holiday Costume Disaster', 'Petty Argument Ends in Love', 'Child Helps Adults Believe Again', 'Snowball Fight', 'Tree Farm', 'Reindeer', 'Hidden Talent', 'Holiday Concert', 'Holiday Grump', 'Santa Stand-In', 'Holiday Workaholic', 'Over-bearing Relative', 'Perfect Love Interest', 'City Slicker', 'Cynical Teen', 'Grumpy Boss', 'Elder shares wisdom', 'Small Town with Big Christmas Spirit', 'Family Cabin', 'Busy Department Store', 'Cozy Bakery', 'Snowy Landscape', 'Over-the-Top Holiday House', 'Big City at Christmas', "'Save Christmas' Mission", 'Mistaken Identity', 'Holiday Bet or Dare', 'Christmas Competition', 'Return Home for the Holidays', 'Christmas Wish', 'Holiday Makeover', 'Romantic Mix-Up', 'Last-Minute Gift Dash', 'Holiday Proposal', 'Dcovery of True Meaning of Christmas', 'Redemption and Forgiveness', 'Overcoming Holiday Cynicism', 'Conflict Across Generations', 'Spirit of Giving', 'Snowy Nights', 'Mistletoe', 'Caroling', 'Ugly Christmas Sweaters', 'Festive Food Feasts', 'Christmas Markets', 'Special Ornament', 'Naughty or Nice', 'Snow Globe', 'Over-the-Top Neighbors', 'Magical Creatures', 'Stockings', 'Christmas Lights', 'Candy Canes', 'Poinsettias', 'Nativity Scenes', 'Santa Claus', 'Sitting with Santa', 'Reindeer', 'Sleighs', 'Snowmen', 'Gingerbread Houses', 'Hot Cocoa or Eggnog', 'Christmas Cookies', 'Yule Log (Cake) or Fruit Cake', 'Fire Roaring in the Fireplace', 'Gift Wrapping Paper', 'Christmas Morning', 'Christmas Hits', 'Holiday Movie Reference', 'Christmas Villages', 'Snowflakes', 'Christmas Bells', 'Santa Hats', 'Winter Scarves', 'Holiday Pajamas', 'North Pole', 'Christmas Elves', 'Christmas Parties', 'Gift Exchanges', 'Caroling', 'Snowball Fights', 'Holiday Mugs', 'Nutcracker', 'French Horn in Soundtrack', 'Sleigh Bells Ringing', 'Christmas Stockings', 'Festive Table Settings', 'Holiday Baking', 'Festive Wreaths', 'Ice Skating', 'Holiday Classics Music', 'Holiday Magic', 'Generous application of fake snow', 'Generous application of hairspray'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {

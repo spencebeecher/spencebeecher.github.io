@@ -118,6 +118,12 @@
             default: ['Final Survivor', 'Masked Killer', 'Mask Reveal', 'Iconic Mask', 'Creepy Breathing', 'Knife Glint', 'Killer’s Gloved Hand', 'Car Won’t Start', 'Phone Line Cut', 'Phone Call From Inside', 'Group Splits Up', 'Don’t Split Up', 'First Victim Dies Early', 'Killer’s POV Shot', 'Weapon Close-Up', 'Weapon From Kitchen', 'Weapon Drops at Key Moment', 'Killer Uses Unusual Weapon', 'Creepy Old House', 'Abandoned Cabin', 'Abandoned Hospital', 'Stormy Night', 'Storm at Night', 'Basement Scene', 'Locked Door Panic', 'Locked From Outside', 'Lost Keys', 'Hidden Body Discovered', 'Victim Hides in Closet', 'Victim Crawls Away', 'Victim Trips While Running', 'Victim Sacrifices Self', 'Victim Calls for Help', 'Running Upstairs Instead of Out', 'Chase Through Woods', 'Heavy Footsteps', 'False Sense of Safety', 'Killer’s Shadow Looms', 'Killer Appears in Window', 'Killer in the Backseat', 'Killer in the Mirror', 'Killer Melts into Shadows', 'Unstoppable Killer', 'Killer Back From Dead', 'Killer Returns After Death', 'Killer Disappears When Looked Away', 'Killer’s Mask Removed', 'Killer’s Catchphrase', 'Killer’s Backstory Revealed', 'Sequel Tease', 'Final Showdown', 'Final Confrontation in House', 'Screaming Victim', 'Scream Echo', 'Jump Scare', 'Jump Scare Cat', 'Jump Cut to Screaming', 'Fake-Out Death', 'Fake Jump Scare', 'Comic Relief Dies', 'Teen Sneaks Off', 'Sex Equals Death', 'Pet Senses Danger', 'Police Don’t Believe', 'Police Arrive Too Late', 'Friend Group Shrinks Fast', 'Shower Scene', 'Door Slams Shut', 'Mirror Scare', 'Bloody Weapon Drop', 'Bloody Handprint', 'Blood on the Walls', 'Blood Dripping', 'Blood Splatter on Camera', 'Body Disappears', 'Creepy Nursery Rhyme', 'Creepy Lullaby', 'Creepy Music Box', 'Creepy Phone Ring', 'Creepy Doll', 'Creepy Mask Collection', 'TV Static', 'Empty Swing Moving', 'Crowd Gasps in Unison', 'Flashlight Flicker', 'Broken Flashlight', 'Power Goes Out', 'Ambiguous Ending', '‘It Was Just a Prank’', '‘We Should Stay Together’', '‘Who’s There?’'],
         };
 
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = [];
+        const likelyTropes = [];
+
         function applyColorScheme(scheme) {
             console.log('applyColorScheme');
             const colors = colorSchemes[scheme] || colorSchemes.default;
@@ -186,13 +192,44 @@
             return userId;
         }
 
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
         function generateBoard() {
             const userId = getOrCreateUserId();
             console.log('User ID:', userId);
             
             const seed = hashString(userId);
-            const christmasTropes = getTropes('default');
-            seededShuffle(christmasTropes, seed);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
 
             const cells = document.querySelectorAll('.cell');
             cells.forEach((cell, index) => {
