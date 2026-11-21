@@ -1143,6 +1143,11 @@ def main():
                 "Dog in a Carrier",
                 "Stroller Gate-Checked",
                 "Boards Before Their Group",
+                "Kid Riding a Suitcase",
+                "Charging Phone on the Floor",
+                "Crew Rolls By in Formation",
+                "$7 Bottle of Water",
+                "Kid Watching Planes at the Window",
                 # Boarding
                 "Overhead Bins Full",
                 "Carry-On Gets Gate-Checked",
@@ -1154,6 +1159,7 @@ def main():
                 "Asleep Before Takeoff",
                 "Window Shade Debate",
                 "Late Passenger Walk of Shame",
+                "Taxiing Forever",
                 # In flight
                 "Crying Baby",
                 "Seat Kicker",
@@ -1175,6 +1181,9 @@ def main():
                 "Pungent Snack Unwrapped",
                 "Someone Wipes Down Their Tray",
                 "Line for the Bathroom",
+                "Chatty Seatmate",
+                "Staring at the Flight Map",
+                "Brought Their Own Blanket",
                 # Crew and cabin
                 "‘Folks, From the Flight Deck…’",
                 "Pilot Cracks a Joke",
@@ -1184,6 +1193,7 @@ def main():
                 "Birthday Announced on the PA",
                 "Seatbelt Sign Dings Back On",
                 "Turbulence!",
+                "Holding Pattern",
                 "Drink Service Paused",
                 "Drink Cart Blocks the Aisle",
                 "Tiny Bag of Pretzels",
@@ -1204,17 +1214,6 @@ def main():
                 "Mountains Out the Window",
                 "Another Plane Spotted",
                 "Flying Over Water",
-                # Landing
-                "Holding Pattern",
-                "Bumpy Landing",
-                "Applause on Landing",
-                "Stands Up Before the Ding",
-                "Taxiing Forever",
-                "Waiting for a Gate",
-                "Bag Tumbles from Overhead",
-                "Your Bag Comes Out First",
-                "Golf Bag at Baggage Claim",
-                "Bag Wrapped in Plastic",
         ]
     }
 
