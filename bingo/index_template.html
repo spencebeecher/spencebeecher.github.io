@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bingo Games</title>
-
-
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 
     <style>
         body {
@@ -104,11 +105,11 @@
             {% for row in range(5) %}
                 <tr>
                     {% for col in range(5) %}
-                        {% set idx = row * 5 + col %}
+                        {% set idx = row * 5 + col %}{% set page = idx if idx < 12 else idx - 1 %}{# square 12 is FREE, so games after the 12th shift one square along #}
                         <td
                             style="
-                                {% if idx < len(bingo_pages) %}
-                                    background-image: url('{{ page_images[bingo_pages[idx]] }}');
+                                {% if idx != 12 and page < len(bingo_pages) %}
+                                    background-image: url('{{ page_images[bingo_pages[page]] }}');
                                     background-size: cover;
                                     background-position: center;
                                 {% end %}
@@ -116,9 +117,9 @@
                         >
                             {% if idx == 12 %}
                                 <span class="bingo-link">FREE</span>
-                            {% elif idx < len(bingo_pages) %}
-                                <a href="{{ bingo_pages[idx] }}" class="bingo-link">
-                                    {{ bingo_pages[idx].replace('.html', '').replace('_', ' ').capitalize() }}
+                            {% elif page < len(bingo_pages) %}
+                                <a href="{{ bingo_pages[page] }}" class="bingo-link">
+                                    {{ bingo_pages[page].replace('.html', '').replace('_', ' ').capitalize() }}
                                 </a>
                             {% else %}
                                 <!-- Blank cell -->
