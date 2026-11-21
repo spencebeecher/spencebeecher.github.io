@@ -67,7 +67,7 @@ the build loads it unconditionally.
 ### Bingo Specifics
 - Bingo games use `bingo_template.html` and `generate_pages.py` inside `/bingo/`
 - "Games" button links to `index.html` within bingo folder
-- Share URLs include `/bingo/` prefix
+- Share URLs point at `https://spencebeecher.me/bingo/<page>` (absolute, because they are copied to the clipboard)
 - The bingo index lays games out in `contexts` order and skips the centre FREE square (12), so the 13th game onward lands after it
 
 ## Personal Details (for About page, etc.)
