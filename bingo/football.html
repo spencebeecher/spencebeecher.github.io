@@ -47,8 +47,23 @@
         .marked {
             background-color: #024EA0;
         }
+        .wild {
+            background-color: #B388EB; /* wild squares: same colour in every game */
+        }
+        #wild-tracker {
+            display: inline-block;
+            font-family: Arial, sans-serif;
+            font-size: 1.15em;
+            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #B388EB;
+            color: #000;
+            margin-bottom: 18px;
+        }
         #copy-emojis,
         #generate-board,
+        #add-wild,
         button[onclick] {
             font-size: 1.15em;      /* Slightly smaller font */
             padding: 10px 22px;     /* Slightly less padding */
@@ -63,6 +78,7 @@
         }
         #copy-emojis:hover,
         #generate-board:hover,
+        #add-wild:hover,
         button[onclick]:hover {
             background: #024EA0;
             box-shadow: 0 0 6px #888;
@@ -76,11 +92,13 @@
     <button onclick="resetBoardAndNavigate('index.html')">
         Games
     </button>
+    <button id="add-wild">🃏 Add Wild</button>
+    <span id="wild-tracker">Wilds: <span id="wild-count">0</span></span>
 
     <script>
         function resetBoardAndNavigate(page) {
-            // Clear cell colors and user id cookies
-            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            // Clear this game's marks and the user id cookies
+            document.cookie = "bingo-football.html=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             window.location.href = page;
         }
@@ -243,22 +261,55 @@
             });
         }
 
+        // Marks are saved per game, together with the card they were made on,
+        // so a new card or another game never starts with squares highlighted.
+        const stateCookie = 'bingo-football.html';
+
+        function updateWildCount() {
+            document.getElementById('wild-count').textContent =
+                document.querySelectorAll('#bingo-board td.wild').length;
+        }
+
         function saveCellColors() {
             console.log('saveCellColors');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
-            const colors = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
-            setCookie('cell-colors', JSON.stringify(colors), 7);
+            const marks = Array.from(cells).map(cell =>
+                cell.classList.contains('wild') ? 'wild' : cell.classList.contains('marked') ? 'marked' : '');
+            const state = { id: getOrCreateUserId(), marks: marks };
+            setCookie(stateCookie, encodeURIComponent(JSON.stringify(state)), 7);
+            updateWildCount();
         }
 
         function loadCellColors() {
             console.log('loadCellColors');
-            const colors = JSON.parse(getCookie('cell-colors') || '[]');
-            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
-            cells.forEach((cell, index) => {
-                if (colors[index] === 'marked') {
-                    cell.classList.add('marked');
-                }
-            });
+            // The old cookie was shared by every game; drop it
+            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            let state = {};
+            try {
+                state = JSON.parse(decodeURIComponent(getCookie(stateCookie) || '{}'));
+            } catch (e) {
+                state = {};
+            }
+            if (state.id === getOrCreateUserId() && Array.isArray(state.marks)) {
+                const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+                cells.forEach((cell, index) => {
+                    if (state.marks[index] === 'marked' || state.marks[index] === 'wild') {
+                        cell.classList.add(state.marks[index]);
+                    }
+                });
+            }
+            updateWildCount();
+        }
+
+        // A wild highlights a random open square, in the wild colour
+        function addWild() {
+            const open = Array.from(document.querySelectorAll('#bingo-board td.cell'))
+                .filter(cell => !cell.classList.contains('marked') && !cell.classList.contains('wild'));
+            if (!open.length) {
+                return;
+            }
+            open[Math.floor(Math.random() * open.length)].classList.add('wild');
+            saveCellColors();
         }
 
         function copyBoardEmojis() {
@@ -275,8 +326,13 @@
                 if (index % 5 === 0 && index !== 0) {
                     boardEmojis += '\n';
                 }
-                boardEmojis += cell.classList.contains('marked') ? '✅' : '⬜';
+                boardEmojis += cell.classList.contains('wild') ? '🃏' : cell.classList.contains('marked') ? '✅' : '⬜';
             });
+            const wilds = document.querySelectorAll('#bingo-board td.wild').length;
+            if (wilds) {
+                boardEmojis += '\n';
+                boardEmojis += '🃏 Wilds used: ' + wilds;
+            }
             
             boardEmojis += '\n';
             boardEmojis += 'https://spencebeecher.me/bingo/football.html';
@@ -297,19 +353,21 @@
             getOrCreateUserId(true);
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
             cells.forEach((cell, index) => {
-                cell.classList.remove('marked');
+                cell.classList.remove('marked', 'wild');
             });
             generateBoard();
             saveCellColors();
         });
+
+        document.getElementById('add-wild').addEventListener('click', addWild);
 
         document.getElementById('copy-emojis').addEventListener('click', copyBoardEmojis);
 
         document.querySelectorAll('#bingo-board tr:not(.header-row) td').forEach(cell => {
             cell.addEventListener('click', () => {
                 console.log('cell click');
-                if (cell.classList.contains('marked')) {
-                    cell.classList.remove('marked');
+                if (cell.classList.contains('marked') || cell.classList.contains('wild')) {
+                    cell.classList.remove('marked', 'wild');
                 } else {
                     cell.classList.add('marked');
                 }
