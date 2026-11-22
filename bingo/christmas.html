@@ -79,8 +79,8 @@
 
     <script>
         function resetBoardAndNavigate(page) {
-            // Clear cell colors and user id cookies
-            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            // Clear this game's marks and the user id cookies
+            document.cookie = "bingo-christmas.html=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             window.location.href = page;
         }
@@ -243,22 +243,36 @@
             });
         }
 
+        // Marks are saved per game, together with the card they were made on,
+        // so a new card or another game never starts with squares highlighted.
+        const stateCookie = 'bingo-christmas.html';
+
         function saveCellColors() {
             console.log('saveCellColors');
             const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
-            const colors = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
-            setCookie('cell-colors', JSON.stringify(colors), 7);
+            const marks = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
+            const state = { id: getOrCreateUserId(), marks: marks };
+            setCookie(stateCookie, encodeURIComponent(JSON.stringify(state)), 7);
         }
 
         function loadCellColors() {
             console.log('loadCellColors');
-            const colors = JSON.parse(getCookie('cell-colors') || '[]');
-            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
-            cells.forEach((cell, index) => {
-                if (colors[index] === 'marked') {
-                    cell.classList.add('marked');
-                }
-            });
+            // The old cookie was shared by every game; drop it
+            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            let state = {};
+            try {
+                state = JSON.parse(decodeURIComponent(getCookie(stateCookie) || '{}'));
+            } catch (e) {
+                state = {};
+            }
+            if (state.id === getOrCreateUserId() && Array.isArray(state.marks)) {
+                const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+                cells.forEach((cell, index) => {
+                    if (state.marks[index] === 'marked') {
+                        cell.classList.add('marked');
+                    }
+                });
+            }
         }
 
         function copyBoardEmojis() {
