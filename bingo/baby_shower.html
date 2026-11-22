@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2214%22 font-size=%2214%22>🍞</text></svg>">
+    <title>Bun in the Oven Bingo!</title>
+    <style>
+        body {
+            background-image: url(./baby_shower.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* Add some basic styling width: 100%;*/
+        table {
+            border-collapse: collapse;
+            width: 380px;
+            height: 400px;
+            margin: auto;
+            margin-left: 0; /* Align table to the left */
+            padding-left: 3px; /* Add padding to the left */
+            padding-right: 3px; /* Add padding to the right */
+            table-layout: fixed; /* Ensure equal width for all cells */
+        }
+        
+        td {
+            border: 1px solid #000;
+            width: 20%; 
+            height: 18%; /* Ensure equal height for all rows */
+            text-align: center;
+            vertical-align: middle;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            border-right: 1px solid #000;
+            background-color: white; /* Set cell background to white */
+        }
+        .header-row td {
+            height: auto; /* Allow the header row to have auto height */
+            font-size: 35px;
+            font-weight: bold;
+            color: #000; /* Set text color to black */
+        }
+        
+        
+        .marked {
+            background-color: #B85C38;
+        }
+        #copy-emojis,
+        #generate-board,
+        button[onclick] {
+            font-size: 1.15em;      /* Slightly smaller font */
+            padding: 10px 22px;     /* Slightly less padding */
+            border-radius: 8px;
+            font-weight: bold;
+            background: #B85C38;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 18px;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        #copy-emojis:hover,
+        #generate-board:hover,
+        button[onclick]:hover {
+            background: #B85C38;
+            box-shadow: 0 0 6px #888;
+        }
+    </style>
+</head>
+<body>
+    <button id="generate-board">Refresh</button>
+    <button id="copy-emojis">Share</button>
+    <!-- Add button to go to index.html -->
+    <button onclick="resetBoardAndNavigate('index.html')">
+        Games
+    </button>
+
+    <script>
+        function resetBoardAndNavigate(page) {
+            // Clear cell colors and user id cookies
+            document.cookie = "cell-colors=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "user-id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = page;
+        }
+    </script>
+    <table id="bingo-board">
+        <!-- ...existing code... -->
+        <!-- Generate a 5x5 Bingo board -->
+        <tr class="header-row">
+            <td>B</td><td>I</td><td>N</td><td>G</td><td>O</td>
+        </tr>
+        <!-- ...existing code... -->
+        <!-- Add rows for numbers -->
+        <tr>
+            <td class="cell">1</td><td class="cell">16</td><td class="cell">31</td><td class="cell">46</td><td class="cell">61</td>
+        </tr>
+        <tr>
+            <td class="cell">2</td><td class="cell">17</td><td class="cell">32</td><td class="cell">47</td><td class="cell">62</td>
+        </tr>
+        <tr>
+            <td class="cell">3</td><td class="cell">18</td><td class="cell">33</td><td class="cell">48</td><td class="cell">63</td>
+        </tr>
+        <tr>
+            <td class="cell">4</td><td class="cell">19</td><td class="cell">34</td><td class="cell">49</td><td class="cell">64</td>
+        </tr>
+        <tr>
+            <td class="cell">5</td><td class="cell">20</td><td class="cell">35</td><td class="cell">50</td><td class="cell">65</td>
+        </tr>
+    </table>
+    <script>
+        const colorSchemes = {
+            default: ['#F2A7B5', '#F6D67A', '#A8CBA0', '#A9CFEA', '#EDBB7A'],
+        };
+
+        const tropesList = {
+            default: ['‘You’re Glowing!’', '‘Bun in the Oven’ Said Out Loud', 'Bun Pun Gets a Groan', '‘Sleep While You Can!’', '‘When Are You Due?’ (Again)', '‘How Are You Feeling?’ on Repeat', '‘It’s So Tiny!’', 'Tissue Paper Mountain', 'Waffles Gets More Pets Than the Bump', 'Waffles Patrols the Pastry Table', 'Golden Hair on a Fancy Outfit', 'Photo Op by the Balloons', 'Mocktail for the Mom-to-Be', 'Cake Photos Before Cutting', '‘Send Me That Photo!’', 'Card Read Aloud Gets an ‘Aww’', 'Unsolicited Advice Avalanche', '‘It Goes So Fast!’', 'Someone’s on Mimosa #2', '‘Wait, That’s CAKE?!’', 'Cake Cut Gets a Gasp', 'Two Pastries ‘for Later’', 'Second Croissant, No Regrets', 'Croissant Crumbs Everywhere', 'Bakery Name Requested Twice', 'Gluten-Free Inquiry', 'Coffee Station Traffic Jam', 'Coffee in One Hand, Mimosa in the Other', '‘Is That Decaf?’', 'Oat Milk Emergency', 'Mostly-Champagne Mimosa', 'Cork Pop, Everyone Jumps', 'Birth Story Gets Very Detailed', 'Old Wives’ Tale Shared', 'Guest Pitches a Baby Name', '40 Photos of Someone’s Kids', 'Group Photo Takes 10 Tries', 'Grandma-to-Be Gets Misty', 'Happy Tears During Gifts', 'Duplicate Gift Spotted', 'Onesie With a Food Pun', 'Mystery Baby Gadget Nobody Can ID', 'Gift Opening Runs Long', 'Someone Saves Every Bow', 'Someone Films the Gift Opening', 'Ultrasound Pic Makes the Rounds', 'Weird Cravings Story', 'Nursery Questions Galore', 'Late Guest Grand Entrance', 'Someone Asks to Feel the Bump', 'Hostess Gets a Toast', 'Someone Sneaks Waffles a Treat', 'Waffles Sits on Someone’s Feet', 'Waffles Crashes a Photo', 'Waffles Called the Guest of Honor', 'Waffles Performs a Trick', '‘This Is So Pinterest!’', 'Pastel Outfit Majority', 'Stroller Brand Debate', 'Sleep Training Hot Take', '‘Just You Wait!’', '‘At My Shower…’ Story', 'Diaper Cake Spotted', 'Someone Leaves With a Pastry Bag', 'Waffles Steals a Baked Good', 'Waffles vs. a Balloon', 'Waffles Runs Off With Tissue Paper', 'Waffles Naps in the Gift Pile', 'Waffles Wears Something Fancy', 'Balloon Pops, Someone Screams', 'Balloon Escapes to the Ceiling', 'Static-Hair Balloon Moment', 'Two Guests in the Same Dress', 'Fascinator or Fancy Hat', 'Someone Brings a Baby, Everyone Swoons', 'Baby Kicks on Cue', 'Mimosa Splash Zone', 'Gift Bigger Than the Guest', 'Handmade Quilt Gets a Gasp', 'Dad-to-Be Gets a Round of Applause', 'A Husband Wanders In, Looks Lost', 'Coffee Machine Goes Rogue', 'Pun Contest Breaks Out', 'Toddler Steals the Spotlight', 'Champagne Outlasts the OJ'],
+        };
+
+        // Optional tiers: squares that happen nearly every time (sure) and most
+        // of the time (likely). Everything else in tropesList is wild. Games
+        // without tiers keep the plain shuffled card.
+        const sureTropes = ['‘You’re Glowing!’', '‘Bun in the Oven’ Said Out Loud', 'Bun Pun Gets a Groan', '‘Sleep While You Can!’', '‘When Are You Due?’ (Again)', '‘How Are You Feeling?’ on Repeat', '‘It’s So Tiny!’', 'Tissue Paper Mountain', 'Waffles Gets More Pets Than the Bump', 'Waffles Patrols the Pastry Table', 'Golden Hair on a Fancy Outfit', 'Photo Op by the Balloons', 'Mocktail for the Mom-to-Be', 'Cake Photos Before Cutting', '‘Send Me That Photo!’', 'Card Read Aloud Gets an ‘Aww’', 'Unsolicited Advice Avalanche', '‘It Goes So Fast!’', 'Someone’s on Mimosa #2'];
+        const likelyTropes = ['‘Wait, That’s CAKE?!’', 'Cake Cut Gets a Gasp', 'Two Pastries ‘for Later’', 'Second Croissant, No Regrets', 'Croissant Crumbs Everywhere', 'Bakery Name Requested Twice', 'Gluten-Free Inquiry', 'Coffee Station Traffic Jam', 'Coffee in One Hand, Mimosa in the Other', '‘Is That Decaf?’', 'Oat Milk Emergency', 'Mostly-Champagne Mimosa', 'Cork Pop, Everyone Jumps', 'Birth Story Gets Very Detailed', 'Old Wives’ Tale Shared', 'Guest Pitches a Baby Name', '40 Photos of Someone’s Kids', 'Group Photo Takes 10 Tries', 'Grandma-to-Be Gets Misty', 'Happy Tears During Gifts', 'Duplicate Gift Spotted', 'Onesie With a Food Pun', 'Mystery Baby Gadget Nobody Can ID', 'Gift Opening Runs Long', 'Someone Saves Every Bow', 'Someone Films the Gift Opening', 'Ultrasound Pic Makes the Rounds', 'Weird Cravings Story', 'Nursery Questions Galore', 'Late Guest Grand Entrance', 'Someone Asks to Feel the Bump', 'Hostess Gets a Toast', 'Someone Sneaks Waffles a Treat', 'Waffles Sits on Someone’s Feet', 'Waffles Crashes a Photo', 'Waffles Called the Guest of Honor', 'Waffles Performs a Trick', '‘This Is So Pinterest!’', 'Pastel Outfit Majority', 'Stroller Brand Debate', 'Sleep Training Hot Take', '‘Just You Wait!’', '‘At My Shower…’ Story', 'Diaper Cake Spotted', 'Someone Leaves With a Pastry Bag'];
+
+        function applyColorScheme(scheme) {
+            console.log('applyColorScheme');
+            const colors = colorSchemes[scheme] || colorSchemes.default;
+            const headerCells = document.querySelectorAll('.header-row td');
+            console
+            console.log('Colors:', colors);
+            headerCells.forEach((cell, index) => {
+                cell.style.backgroundColor = colors[index];
+                console.log('Set header cell', index, 'to color', colors[index]);
+            });
+        }
+
+        function getTropes(list) {
+            return [...new Set(tropesList[list] || tropesList.default)];
+        }
+
+        function seededShuffle(array, s) {
+            var seed = s + 1;
+            for (let i = array.length - 1; i > 0; i--) {
+                var x = Math.sin(seed++) * 10000;
+                x = x - Math.floor(x);
+                const j = Math.floor(x * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function hashString(str) {
+            let hash = 0;
+            for (let i = 0, len = str.length; i < len; i++) {
+                let chr = str.charCodeAt(i);
+                hash = (hash << 5) - hash + chr;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        }
+
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            //name = name + "-" + "baby_shower.html"; // Make cookie name unique per page
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function generateRandomUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function getOrCreateUserId(reset) {
+            let userId = getCookie('user-id');
+            if (!userId || reset) {
+                userId = generateRandomUserId();
+                setCookie('user-id', userId, 7);
+            }
+            return userId;
+        }
+
+        // Lay out a tiered card so every line can realistically finish: one wild
+        // square in each row and column, never on a diagonal, up to six sure
+        // squares on the diagonals, and likely squares everywhere else.
+        function dealCard(shuffled, seed) {
+            if (!sureTropes.length && !likelyTropes.length) {
+                return shuffled;
+            }
+            const sure = shuffled.filter(t => sureTropes.includes(t));
+            const likely = shuffled.filter(t => likelyTropes.includes(t));
+            const wild = shuffled.filter(t => !sureTropes.includes(t) && !likelyTropes.includes(t));
+
+            // Each row's wild square goes in a different column, off both diagonals
+            let cols = [0, 1, 2, 3, 4];
+            for (let tries = 0; cols.some((c, r) => c === r || c === 4 - r); tries++) {
+                if (tries > 500) { cols = [1, 0, 3, 4, 2]; break; }
+                seededShuffle(cols, seed + tries);
+            }
+            const diagonals = [0, 6, 18, 24, 4, 8, 16, 20];
+            seededShuffle(diagonals, seed);
+
+            const card = new Array(25);
+            card[12] = 'FREE';
+            cols.forEach((c, r) => { card[r * 5 + c] = wild.pop() || likely.pop(); });
+            diagonals.slice(0, 6).forEach(i => { card[i] = sure.pop() || likely.pop(); });
+            for (let i = 0; i < 25; i++) {
+                if (card[i] === undefined) card[i] = likely.pop() || sure.pop() || wild.pop();
+            }
+            return card;
+        }
+
+        function generateBoard() {
+            const userId = getOrCreateUserId();
+            console.log('User ID:', userId);
+            
+            const seed = hashString(userId);
+            const shuffled = getTropes('default');
+            seededShuffle(shuffled, seed);
+            const christmasTropes = dealCard(shuffled, seed);
+
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                if (index < christmasTropes.length) {
+                    cell.textContent = christmasTropes[index];
+                    if (index === 12) {
+                        cell.textContent = 'FREE';
+                        cell.classList.add('marked');
+                    }
+                }
+            });
+        }
+
+        function saveCellColors() {
+            console.log('saveCellColors');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            const colors = Array.from(cells).map(cell => cell.classList.contains('marked') ? 'marked' : '');
+            setCookie('cell-colors', JSON.stringify(colors), 7);
+        }
+
+        function loadCellColors() {
+            console.log('loadCellColors');
+            const colors = JSON.parse(getCookie('cell-colors') || '[]');
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            cells.forEach((cell, index) => {
+                if (colors[index] === 'marked') {
+                    cell.classList.add('marked');
+                }
+            });
+        }
+
+        function copyBoardEmojis() {
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            
+            let boardEmojis = '';
+            boardEmojis += 'Bun in the Oven Bingo!';
+
+            boardEmojis += '\n';
+            boardEmojis += '🍞🍼🎈🥂🐶';
+
+            boardEmojis += '\n';
+            cells.forEach((cell, index) => {
+                if (index % 5 === 0 && index !== 0) {
+                    boardEmojis += '\n';
+                }
+                boardEmojis += cell.classList.contains('marked') ? '✅' : '⬜';
+            });
+            
+            boardEmojis += '\n';
+            boardEmojis += 'https://spencebeecher.me/bingo/baby_shower.html';
+
+            navigator.clipboard.writeText(boardEmojis).then(() => {
+                alert('Copied to clipboard!');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyColorScheme('default');
+            generateBoard();
+            loadCellColors();
+        });
+
+        document.getElementById('generate-board').addEventListener('click', async () => {
+            console.log('generate board click');
+            getOrCreateUserId(true);
+            const cells = document.querySelectorAll('#bingo-board tr:not(.header-row) td');
+            cells.forEach((cell, index) => {
+                cell.classList.remove('marked');
+            });
+            generateBoard();
+            saveCellColors();
+        });
+
+        document.getElementById('copy-emojis').addEventListener('click', copyBoardEmojis);
+
+        document.querySelectorAll('#bingo-board tr:not(.header-row) td').forEach(cell => {
+            cell.addEventListener('click', () => {
+                console.log('cell click');
+                if (cell.classList.contains('marked')) {
+                    cell.classList.remove('marked');
+                } else {
+                    cell.classList.add('marked');
+                }
+                saveCellColors();
+            });
+        });
+    </script>
+    
+</body>
+</html>
